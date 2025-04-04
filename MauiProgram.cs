@@ -25,6 +25,9 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+        //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachedRequestBehaviour<,>));
+
         return builder.Build();
     }
 }

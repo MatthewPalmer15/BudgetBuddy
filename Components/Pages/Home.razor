@@ -1,8 +1,36 @@
 ﻿@page "/"
+@using BudgetBuddy.Mediator.Profiles
+@using MediatR
+@inject IMediator Mediator
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<a href="/counter">Counter</a>
 
-<SfButton CssClass="e-primary">Click Me</SfButton>
-<SfButton CssClass="e-success">Success</SfButton>
+
+<div class="col-lg-12 control-section">
+	<div class="content-wrapper">
+		<div class="row">
+			<SfGrid DataSource="@Transactions" AllowPaging="true">
+				<GridColumns>
+					<GridColumn Field=@nameof(GetTransactionsResult.Transaction.Name) HeaderText="Name" Width="120"></GridColumn>
+					<GridColumn Field=@nameof(GetTransactionsResult.Transaction.Price) HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+				</GridColumns>
+			</SfGrid>
+		</div>
+	</div>
+</div>
+
+@code
+{
+	private List<GetTransactionsResult.Transaction> Transactions { get; set; } = [];
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		var cancellationToken = new CancellationTokenSource().Token;
+		//Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
+
+		Transactions.Add(new GetTransactionsResult.Transaction { Name = "Test", Price = 20.00m });
+	}
+
+}

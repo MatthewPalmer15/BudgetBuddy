@@ -3,9 +3,9 @@
 using Android.Content;
 using Android.Content.Res;
 
-namespace BudgetBuddy.Platforms.Android.Services;
+namespace BudgetBuddy.Services.System;
 
-public class SystemService(Context context)
+public class AndroidSystemService(Context context) : ISystemService
 {
     public AppTheme GetSystemPreference()
     {
@@ -16,6 +16,11 @@ public class SystemService(Context context)
         return ((currentNightMode & UiMode.NightMask) == UiMode.NightYes) ? AppTheme.Dark : AppTheme.Light;
     }
 
+    public string GetAppId()
+    {
+
+        return "";
+    }
 
 }
 #endif
