@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BudgetBuddy;
+namespace BudgetBuddy.Platforms.MacCatalyst;
 
 public class Program
 {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace BudgetBuddy;
+namespace BudgetBuddy.Platforms.iOS;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace BudgetBuddy;
+namespace BudgetBuddy.Platforms.iOS;
 
 public class Program
 {

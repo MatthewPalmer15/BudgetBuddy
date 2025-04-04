@@ -43,6 +43,5 @@
 	protected override async Task OnInitializedAsync()
 	{
 		IsMobile = DeviceInfo.Platform == DevicePlatform.iOS || DeviceInfo.Platform == DevicePlatform.Android;
-		var isDarkMode = await JSRuntime.InvokeAsync<bool>("window.matchMedia", "(prefers-color-scheme: dark)").IsMatch;
 	}
 }
