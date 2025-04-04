@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@inject NavigationManager UriHelper
+<div class="col-lg-12 appbar-control-section">
+	<div class="default-appbar-container">
+		<div class="row">
+			<div class="col-md-12">
+				<h5>Simple AppBar</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+
+				@if (IsMobile)
+				{
+					<SfAppBar ColorMode="AppBarColor.Primary" Position="AppBarPosition.Bottom">
+						<SfButton aria-label="menu" CssClass="e - inherit menu" IconCss="e - icons e - menu"></SfButton>
+						<span class="regular">Blazor AppBar</span>
+						<AppBarSpacer></AppBarSpacer>
+						<SfButton CssClass="e - inherit login" Content="FREE TRIAL"></SfButton>
+					</SfAppBar>
+
+				}
+				else
+				{
+					<SfAppBar ColorMode="AppBarColor.Primary" Position="AppBarPosition.Top">
+						<SfButton aria-label="menu" CssClass="e - inherit menu" IconCss="e - icons e - menu"></SfButton>
+						<span class="regular">Blazor AppBar</span>
+						<AppBarSpacer></AppBarSpacer>
+						<SfButton CssClass="e - inherit login" Content="FREE TRIAL"></SfButton>
+					</SfAppBar>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+@code
+{
+	private bool IsMobile { get; set; } = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		IsMobile = DeviceInfo.Platform == DevicePlatform.iOS || DeviceInfo.Platform == DevicePlatform.Android;
+		var isDarkMode = await JSRuntime.InvokeAsync<bool>("window.matchMedia", "(prefers-color-scheme: dark)").IsMatch;
+	}
+}
