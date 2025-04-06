@@ -1,32 +1,65 @@
 ﻿@page "/"
 @using BudgetBuddy.Mediator.Profiles
 @using MediatR
+@using Syncfusion.Blazor.Layouts
 @inject IMediator Mediator
 
 
 <a href="/counter">Counter</a>
 <a href="/weather">Weather</a>
 
+@* *@
+<SfDashboardLayout @ref="sfDashboardLayout" CellSpacing="@(new double[]{15 ,15 })" CellAspectRatio="@(DeviceInfo.Platform == DevicePlatform.Android ? 1 : 0.8)" Columns="12">
+	<DashboardLayoutPanels>
+		<DashboardLayoutEvents OnWindowResize="OnWindowResize"></DashboardLayoutEvents>
+
+		<DashboardLayoutPanel Column="0" Row="0" SizeX="8" SizeY="2" AllowDragging="false">
+			<ContentTemplate>
+
+				<SfAccumulationChart EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.TailwindDark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
+					<AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
+					<AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
+					<AccumulationChartSeriesCollection>
+						<AccumulationChartSeries DataSource="@ChartData" Radius="75%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+							<AccumulationChartSeriesBorder Color="#1F2937" Width="3"></AccumulationChartSeriesBorder>
+							<AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
+								<AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
+								<AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
+							</AccumulationDataLabelSettings>
+						</AccumulationChartSeries>
+					</AccumulationChartSeriesCollection>
+					<AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+				</SfAccumulationChart>
+
+			</ContentTemplate>
+		</DashboardLayoutPanel>
 
 
+		<DashboardLayoutPanel Column="8" Row="0" SizeX="4" SizeY="2" AllowDragging="false">
+			<ContentTemplate>
+				
+				<SfGrid DataSource="@Transactions" AllowPaging="true">
+					<GridColumns>
+						<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
+						<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+					</GridColumns>
+				</SfGrid>
 
-<div class="col-lg-12 control-section">
-	<div class="content-wrapper">
-		<div class="row">
-			<SfGrid DataSource="@Transactions" AllowPaging="true">
-				<GridColumns>
-					<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
-					<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-				</GridColumns>
-			</SfGrid>
-		</div>
-	</div>
-</div>
+			</ContentTemplate>
+		</DashboardLayoutPanel>
+
+	</DashboardLayoutPanels>
+</SfDashboardLayout>
 
 @code
 {
-	private List<GetTransactionsResult.Transaction> Transactions { get; } = [];
+	private readonly string[] _colourPalette = ["#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA", "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7","#4472c4", "#ed7d31", "#ffc000", "#70ad47", "#5b9bd5", "#c1c1c1", "#6f6fe2", "#e269ae", "#9e480e", "#997300"];
+	
+	SfDashboardLayout sfDashboardLayout;
+	DateTime previousRequestTime = DateTime.MinValue;
 
+	private List<GetTransactionsResult.Transaction> Transactions { get; } = [];
+	public List<ChartDataViewModel> ChartData { get; set; } = [];
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -34,6 +67,41 @@
 		//Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
 
 		Transactions.Add(new GetTransactionsResult.Transaction { Name = "Test", Price = 20.00m });
+		Transactions.Add(new GetTransactionsResult.Transaction { Name = "Test", Price = 14.00m, CategoryName = "Test Category"});
+
+		var totalAmount = Transactions.Sum(t => t.Price);
+
+		ChartData = Transactions
+			.GroupBy(t => t.CategoryName ?? "Uncategorized")
+			.Select(g => new ChartDataViewModel
+			{
+				Title = g.Key,
+				Price = g.Sum(t => t.Price),
+				Percentage = Math.Round((g.Sum(t => t.Price) / totalAmount) * 100, 2),
+				Tooltip = $"{g.Key} - {Math.Round((g.Sum(t => t.Price) / totalAmount) * 100, 2)}%"
+			})
+			.ToList();
 	}
 
+
+	private async Task OnWindowResize(Syncfusion.Blazor.Layouts.ResizeArgs args)
+	{
+		const int UPDATETHRESHOLD = 200;
+		if ((previousRequestTime == DateTime.MinValue || (DateTime.Now - previousRequestTime).TotalMilliseconds > UPDATETHRESHOLD))
+		{
+			previousRequestTime = DateTime.Now;
+			await Task.Delay(250);
+			await sfDashboardLayout.RefreshAsync();
+		}
+	}
+
+
+
+	public class ChartDataViewModel
+	{
+		public string Tooltip { get; set; }
+		public decimal Percentage { get; set; }
+		public decimal Price { get; set; }
+		public string Title { get; set; }
+	}
 }
