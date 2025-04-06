@@ -81,5 +81,9 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Data\Entities\Profiles\" />
+	</ItemGroup>
+
 
 </Project>

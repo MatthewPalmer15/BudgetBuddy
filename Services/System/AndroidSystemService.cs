@@ -13,14 +13,12 @@ public class AndroidSystemService(Context context) : ISystemService
             return AppInfo.RequestedTheme;
 
         var currentNightMode = context?.Resources?.Configuration?.UiMode & UiMode.NightMask;
-        return ((currentNightMode & UiMode.NightMask) == UiMode.NightYes) ? AppTheme.Dark : AppTheme.Light;
+        return (currentNightMode & UiMode.NightMask) == UiMode.NightYes ? AppTheme.Dark : AppTheme.Light;
     }
 
     public string GetAppId()
     {
-
         return "";
     }
-
 }
 #endif

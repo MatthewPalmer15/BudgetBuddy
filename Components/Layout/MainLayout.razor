@@ -1,8 +1,7 @@
-﻿@inherits LayoutComponentBase
-@using Syncfusion.Blazor.Navigations
+﻿@using Syncfusion.Blazor.Navigations
+@inherits LayoutComponentBase
 @inject NavigationManager UriHelper
 @inject IJSRuntime JSRuntime
-
 
 
 <div class="col-lg-12 appbar-control-section">
@@ -17,7 +16,6 @@
 						<AppBarSpacer></AppBarSpacer>
 						<SfButton CssClass="e - inherit login" Content="FREE TRIAL"></SfButton>
 					</SfAppBar>
-
 				}
 				else
 				{
@@ -41,8 +39,8 @@
 
 @code
 {
-	private bool IsMobile { get; set; } = false;
-	private bool IsDarkMode { get; set; } = false;
+	private bool IsMobile { get; set; }
+	private bool IsDarkMode { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

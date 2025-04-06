@@ -6,10 +6,9 @@ public class GetTransactionsQuery : IRequest<GetTransactionsResult>
 {
     internal class Handler : IRequestHandler<GetTransactionsQuery, GetTransactionsResult>
     {
-        public async Task<GetTransactionsResult> Handle(GetTransactionsQuery request, CancellationToken cancellationToken = default)
+        public async Task<GetTransactionsResult> Handle(GetTransactionsQuery request,
+            CancellationToken cancellationToken = default)
         {
-
-
             return new GetTransactionsResult();
         }
     }
@@ -21,8 +20,8 @@ public class GetTransactionsResult
 
     public class Transaction
     {
+        public string? CategoryName { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-
     }
 }

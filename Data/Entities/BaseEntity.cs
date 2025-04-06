@@ -27,7 +27,6 @@ public class BaseEntity<T> : IBaseEntity<T> where T : struct
     public bool Deleted { get; set; }
 }
 
-
 /// <summary>
 ///     Represents a base entity with common properties such as ID, creation date, and status.
 /// </summary>

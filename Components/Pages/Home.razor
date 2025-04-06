@@ -5,6 +5,9 @@
 
 
 <a href="/counter">Counter</a>
+<a href="/weather">Weather</a>
+
+
 
 
 <div class="col-lg-12 control-section">
@@ -12,8 +15,8 @@
 		<div class="row">
 			<SfGrid DataSource="@Transactions" AllowPaging="true">
 				<GridColumns>
-					<GridColumn Field=@nameof(GetTransactionsResult.Transaction.Name) HeaderText="Name" Width="120"></GridColumn>
-					<GridColumn Field=@nameof(GetTransactionsResult.Transaction.Price) HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+					<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
+					<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
 				</GridColumns>
 			</SfGrid>
 		</div>
@@ -22,7 +25,7 @@
 
 @code
 {
-	private List<GetTransactionsResult.Transaction> Transactions { get; set; } = [];
+	private List<GetTransactionsResult.Transaction> Transactions { get; } = [];
 
 
 	protected override async Task OnInitializedAsync()
