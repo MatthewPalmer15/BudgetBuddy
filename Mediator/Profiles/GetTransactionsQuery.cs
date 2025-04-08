@@ -23,5 +23,6 @@ public class GetTransactionsResult
         public string? CategoryName { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public Data.Entities.Transaction.TransactionType Type { get; set; }
     }
 }
