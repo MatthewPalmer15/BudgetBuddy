@@ -5,31 +5,91 @@
 @using Syncfusion.Blazor.Cards
 @inject IMediator Mediator
 
-<div class="row">
-	<div class="col-12 col-lg-6" style="min-height: 300px;">
-		<SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100%" Height="100%" EnableAdaptiveRendering="true" Theme="@Theme.Bootstrap5Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
-			<AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
-			<AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
-			<AccumulationChartSeriesCollection>
-				<AccumulationChartSeries DataSource="@ChartData" Radius="75%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
-					<AccumulationChartSeriesBorder Color="#1F2937" Width="3"></AccumulationChartSeriesBorder>
-					<AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
-						<AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
-						<AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
-					</AccumulationDataLabelSettings>
-				</AccumulationChartSeries>
-			</AccumulationChartSeriesCollection>
-			<AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
-		</SfAccumulationChart>
+<div class="row p-3 p-lg-5">
+	<div class="col-12 col-lg-6">
+		<div class="row">
+
+			<div class="col-12 my-1 my-lg-5">
+				<div class="d-flex justify-content-center">
+					
+					<SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.Bootstrap5Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false" HighlightPattern="SelectionPattern.Circle">
+						<AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
+						<AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
+						<AccumulationChartSeriesCollection>
+							<AccumulationChartSeries DataSource="@ChartData" Radius="85%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+								<AccumulationChartSeriesBorder Color="#1F2937" Width="3"></AccumulationChartSeriesBorder>
+								<AccumulationDataLabelSettings Visible="false" Name="Title" Position="AccumulationLabelPosition.Outside">
+									<AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
+									<AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
+								</AccumulationDataLabelSettings>
+							</AccumulationChartSeries>
+						</AccumulationChartSeriesCollection>
+						<AccumulationChartLegendSettings Visible="false" Position="LegendPosition.Bottom" Background="transparent" EnableHighlight="true">
+							<AccumulationChartLegendFont Color="white" Size="14px" FontFamily="Segoe UI"></AccumulationChartLegendFont>
+						</AccumulationChartLegendSettings>
+					</SfAccumulationChart>
+
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="row px-0 px-lg-5">
+					<div class="col-6">
+						<SfCard CssClass="card">
+							<CardContent>
+								<div class="card-body m-1 p-1">
+									<small class="text-secondary">INCOME</small>
+									<h5 class="text-success fw-bold mb-0">
+										£50,000
+									</h5>
+								</div>
+							</CardContent>
+						</SfCard>
+					</div>
+					<div class="col-6">
+						<SfCard CssClass="card">
+							<CardContent>
+								<div class="card-body m-1 p-1">
+									<small class="text-secondary">OUTCOME</small>
+									<h5 class="text-danger fw-bold mb-0">£5,000</h5>
+								</div>
+							</CardContent>
+						</SfCard>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
 	</div>
+
 	<div class="col-12 col-lg-6" style="min-height: 300px;">
-						
+		<h3>Transactions (@Transactions.Count)</h3>
+
+		@foreach (var transaction in Transactions)
+		{
+			<SfCard CssClass="card mb-2">
+				<CardContent>
+					<div class="d-flex justify-content-between">
+						<span>@transaction.Name</span>
+						<span>£@transaction.Price</span>
+						<span class="text-danger" @onclick="@(() => Delete(transaction.Name))">Delete</span>
+					</div>
+				</CardContent>
+			</SfCard>
+
+			
+
+		}
+
+		@*
 		<SfGrid DataSource="@Transactions" Width="100%" Height="100%" AllowPaging="true">
-			<GridColumns>
-				<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
-				<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-			</GridColumns>
-		</SfGrid>
+   			<GridColumns>
+   				<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
+   				<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
+   			</GridColumns>
+		   </SfGrid>
+		*@
 	
 	</div>
 </div>
@@ -37,59 +97,7 @@
 <a href="/counter">Counter</a>
 <a href="/weather">Weather</a>
 
-@*
 	
-<SfCard>
-   	<CardHeader Title="Monthly Sales" />
-   	<CardContent>
-   		<!-- Chart, Text, etc -->
-   	</CardContent>
-   </SfCard>
-   
-
-<SfDashboardLayout @ref="sfDashboardLayout" CellSpacing="@(new double[]{15 ,15 })" CellAspectRatio="@(DeviceInfo.Platform == DevicePlatform.Android ? 1 : 0.8)" Columns="12" AllowDragging="false" ShowGridLines="false">
-	<DashboardLayoutPanels>
-		<DashboardLayoutEvents OnWindowResize="OnWindowResize"></DashboardLayoutEvents>
-
-		<DashboardLayoutPanel Column="0" Row="0" SizeX="8" SizeY="2" AllowDragging="false">
-			<ContentTemplate>
-
-				<SfAccumulationChart EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.Bootstrap5Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
-					<AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
-					<AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
-					<AccumulationChartSeriesCollection>
-						<AccumulationChartSeries DataSource="@ChartData" Radius="75%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
-							<AccumulationChartSeriesBorder Color="#1F2937" Width="3"></AccumulationChartSeriesBorder>
-							<AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
-								<AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
-								<AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
-							</AccumulationDataLabelSettings>
-						</AccumulationChartSeries>
-					</AccumulationChartSeriesCollection>
-					<AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
-				</SfAccumulationChart>
-
-			</ContentTemplate>
-		</DashboardLayoutPanel>
-
-
-		<DashboardLayoutPanel Column="8" Row="0" SizeX="4" SizeY="2" AllowDragging="false">
-			<ContentTemplate>
-				
-				<SfGrid DataSource="@Transactions" AllowPaging="true">
-					<GridColumns>
-						<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Name)" HeaderText="Name" Width="120"></GridColumn>
-						<GridColumn Field="@nameof(GetTransactionsResult.Transaction.Price)" HeaderText="Price (£)" HeaderTextAlign="TextAlign.Right" TextAlign="TextAlign.Right" Width="150"></GridColumn>
-					</GridColumns>
-				</SfGrid>
-
-			</ContentTemplate>
-		</DashboardLayoutPanel>
-
-	</DashboardLayoutPanels>
-</SfDashboardLayout>
-*@
-
 @code
 {
 	private readonly string[] _colourPalette = ["#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA", "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7","#4472c4", "#ed7d31", "#ffc000", "#70ad47", "#5b9bd5", "#c1c1c1", "#6f6fe2", "#e269ae", "#9e480e", "#997300"];
@@ -128,6 +136,10 @@
 		await sfDashboardLayout.RefreshAsync();
 	}
 
+	private async Task Delete(string id)
+	{
+
+	}
 
 
 	private async Task OnChartResize(AccumulationResizeEventArgs args)
