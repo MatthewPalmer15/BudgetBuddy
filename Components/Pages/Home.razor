@@ -1,8 +1,7 @@
 ﻿@page "/"
 @using BudgetBuddy.Data.Entities
-@using BudgetBuddy.Mediator.Profiles
+@using BudgetBuddy.Mediator.Transactions.Models
 @using MediatR
-@using Syncfusion.Blazor.Layouts
 @using Syncfusion.Blazor.Cards
 @inject IMediator Mediator
 @inject IJSRuntime JsRuntime
@@ -174,17 +173,11 @@
 <BudgetBuddy.Components.Component.Modal @ref="Modal" >
 	<Title>This is a <em>Title!</em></Title>
 	<Body>
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Omnes enim iucundum motum, quo sensus hilaretur.
-			<i>Quis istud possit, inquit, negare?</i>
-			<mark>Ego vero isti, inquam, permitto.</mark> Duo Reges: constructio interrete.
-		</p>
-		<dl>
-			<dt><dfn>Stoici scilicet.</dfn></dt>
-			<dd>An hoc usque quaque, aliter in vita?</dd>
-			<dt><dfn>Erat enim Polemonis.</dfn></dt>
-			<dd>Quod cum accidisset ut alter alterum necopinato videremus, surrexit statim.</dd>
-		</dl>
+	<div class="row">
+		<div class="col-12 text-end">
+			Hello!
+		</div>
+	</div>
 	</Body>
 	<Footer>
 		<SfButton @onclick="() => Delete(string.Empty)" CssClass="btn btn-danger">Delete</SfButton>

@@ -83,6 +83,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Data\Entities\Profiles\" />
+	  <Folder Include="Mediator\Transactions\Commands\" />
 	</ItemGroup>
 
 

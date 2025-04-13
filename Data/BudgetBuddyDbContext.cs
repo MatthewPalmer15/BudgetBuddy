@@ -11,7 +11,7 @@ namespace BudgetBuddy.Data;
 /// <summary>
 ///     Athena DB Context without ASP.NET Identity
 /// </summary>
-public class BudgetBuddyDbContext(IEncryptionService encryptionService) : DbContext
+public class BudgetBuddyDbContext(IEncryptionService encryptionService) : DbContext, IDbContext
 {
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<ServiceProvider> ServiceProviders { get; set; }
