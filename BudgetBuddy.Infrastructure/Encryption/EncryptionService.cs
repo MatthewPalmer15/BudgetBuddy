@@ -1,10 +1,10 @@
-﻿using System.Text;
-using BlazorHybrid.Infrastructure.Encryption.Providers.Concrete;
-using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+﻿using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+using BudgetBuddy.Infrastructure.Encryption.Providers.Concrete;
+using System.Text;
 
 namespace BudgetBuddy.Infrastructure.Encryption;
 
-internal class EncryptionService : IEncryptionService
+public class EncryptionService : IEncryptionService
 {
     public EncryptionService()
     {

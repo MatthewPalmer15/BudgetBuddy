@@ -1,6 +1,5 @@
 ﻿namespace BudgetBuddy.Database.Entities.Transactions;
 
-
 public class Transaction : BaseEntity<Guid>
 {
     public enum TransactionType
@@ -22,7 +21,6 @@ public class Transaction : BaseEntity<Guid>
 
     public Guid? ServiceProviderId { get; set; }
     public virtual ServiceProvider? ServiceProvider { get; set; }
-
 }
 
 public class Category : BaseEntity<Guid>

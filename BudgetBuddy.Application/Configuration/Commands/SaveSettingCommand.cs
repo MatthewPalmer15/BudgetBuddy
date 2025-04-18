@@ -66,8 +66,8 @@ public class SaveSettingCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from s in context.Settings
-                          where !s.Deleted && s.Id == request.Id
-                          select s).FirstOrDefaultAsync(cancellationToken);
+                where !s.Deleted && s.Id == request.Id
+                select s).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

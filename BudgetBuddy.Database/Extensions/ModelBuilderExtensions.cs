@@ -1,5 +1,4 @@
-﻿using BlazorHybrid.Database.Internal.Encryption;
-using BudgetBuddy.Database.Internal.Encryption;
+﻿using BudgetBuddy.Database.Internal.Encryption;
 using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore;

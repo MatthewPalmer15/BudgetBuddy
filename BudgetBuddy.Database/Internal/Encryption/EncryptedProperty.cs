@@ -1,7 +1,7 @@
-﻿using BudgetBuddy.Infrastructure.Attributes;
+﻿using System.Reflection;
+using BudgetBuddy.Infrastructure.Attributes;
 using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.Reflection;
 
 namespace BudgetBuddy.Database.Internal.Encryption;
 

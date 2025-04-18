@@ -1,6 +1,4 @@
-﻿using BudgetBuddy.Database.Entities;
-
-namespace BudgetBuddy.Database.Entities.Configuration;
+﻿namespace BudgetBuddy.Database.Entities.Configuration;
 
 public class Setting : BaseEntity<Guid>
 {

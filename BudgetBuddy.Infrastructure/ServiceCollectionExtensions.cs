@@ -1,36 +1,23 @@
 ﻿using BudgetBuddy.Infrastructure.Encryption;
 using BudgetBuddy.Infrastructure.Services;
-using BudgetBuddy.Infrastructure.Services.Notification;
-using BudgetBuddy.Infrastructure.Services.Csv;
-using BudgetBuddy.Infrastructure.Platforms.MacCatalyst;
 using BudgetBuddy.Infrastructure.Services.Caching;
-using BudgetBuddy.Infrastructure.Platforms.Windows;
-using BudgetBuddy.Infrastructure.Platforms.iOS;
-using BudgetBuddy.Infrastructure.Platforms.Android;
-
-
-
-
-
-
-
-
-
+using BudgetBuddy.Infrastructure.Services.Csv;
+using BudgetBuddy.Infrastructure.Services.Notification;
 
 #if ANDROID
-using BlazorHybrid.Infrastructure.Platforms.Android;
+using BudgetBuddy.Infrastructure.Platforms.Android;
 #endif
 
 #if WINDOWS
-using BlazorHybrid.Infrastructure.Platforms.Windows;
+using BudgetBuddy.Infrastructure.Platforms.Windows;
 #endif
 
 #if IOS
-using BlazorHybrid.Infrastructure.Platforms.iOS;
+using BudgetBuddy.Infrastructure.Platforms.iOS;
 #endif
 
 #if MACCATALYST
-using BlazorHybrid.Infrastructure.Platforms.MacCatalyst;
+using BudgetBuddy.Infrastructure.Platforms.MacCatalyst;
 #endif
 
 namespace BudgetBuddy.Infrastructure;

@@ -178,7 +178,7 @@ internal class CacheManager(IMemoryCache memoryCache) : ICacheManager
     public void Clear()
     {
         if (_resetCacheToken != null && _resetCacheToken is
-            { IsCancellationRequested: false, Token.CanBeCanceled: true })
+                { IsCancellationRequested: false, Token.CanBeCanceled: true })
         {
             _resetCacheToken.Cancel();
             _resetCacheToken.Dispose();

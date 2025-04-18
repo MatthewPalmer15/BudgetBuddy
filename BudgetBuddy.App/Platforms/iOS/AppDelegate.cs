@@ -1,10 +1,12 @@
 ﻿using Foundation;
 
-namespace BlazorHybrid.App.Platforms.iOS
+namespace BlazorHybrid.App.Platforms.iOS;
+
+[Register("AppDelegate")]
+public class AppDelegate : MauiUIApplicationDelegate
 {
-    [Register("AppDelegate")]
-    public class AppDelegate : MauiUIApplicationDelegate
+    protected override MauiApp CreateMauiApp()
     {
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        return MauiProgram.CreateMauiApp();
     }
 }

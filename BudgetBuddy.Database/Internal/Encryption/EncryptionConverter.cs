@@ -1,7 +1,7 @@
-﻿using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+﻿using System.Text;
+using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.Text;
 
 namespace BudgetBuddy.Database.Internal.Encryption;
 
