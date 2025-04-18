@@ -1,4 +1,18 @@
 ﻿@page "/"
 @inherits CustomComponentBase
 
-<h1>This is the home page.</h1>
+<SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="300px" Height="300px" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
+    <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
+    <AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
+    <AccumulationChartSeriesCollection>
+        <AccumulationChartSeries DataSource="@ChartData" Radius="85%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+            <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
+                <AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
+                <AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
+            </AccumulationDataLabelSettings>
+        </AccumulationChartSeries>
+    </AccumulationChartSeriesCollection>
+    <AccumulationChartLegendSettings Visible="true" Position="LegendPosition.Bottom" Background="transparent" EnableHighlight="true">
+        <AccumulationChartLegendFont Color="white" Size="14px" FontFamily="Segoe UI"></AccumulationChartLegendFont>
+    </AccumulationChartLegendSettings>
+</SfAccumulationChart>

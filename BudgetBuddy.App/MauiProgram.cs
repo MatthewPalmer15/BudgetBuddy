@@ -1,6 +1,7 @@
-﻿using BudgetBuddy.Database;
-using BudgetBuddy.Infrastructure;
+﻿using BudgetBuddy.Application;
 using Microsoft.Extensions.Logging;
+using Syncfusion.Blazor;
+using Syncfusion.Licensing;
 
 namespace BlazorHybrid.App;
 
@@ -14,9 +15,11 @@ public static class MauiProgram
             .ConfigureFonts(fonts => { fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); });
 
         builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddSyncfusionBlazor();
 
-        builder.Services.AddInfrastructure();
-        builder.Services.AddDatabase();
+
+        builder.Services.AddApplication();
+        SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtfeHVdQ2lZVkd2XEdWYUA=");
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

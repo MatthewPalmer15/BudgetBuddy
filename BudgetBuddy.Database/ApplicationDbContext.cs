@@ -6,7 +6,7 @@ using BudgetBuddy.Database.Entities.Transactions;
 using BudgetBuddy.Database.Extensions;
 using BudgetBuddy.Infrastructure.Encryption;
 using Microsoft.EntityFrameworkCore;
-using ServiceProvider = Microsoft.Extensions.DependencyInjection.ServiceProvider;
+using ServiceProvider = BudgetBuddy.Database.Entities.Transactions.ServiceProvider;
 
 namespace BudgetBuddy.Database;
 
