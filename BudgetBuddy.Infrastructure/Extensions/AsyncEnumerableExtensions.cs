@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Extensions;
+﻿namespace BudgetBuddy.Infrastructure.Extensions;
 
 public static class AsyncEnumerableExtensions
 {

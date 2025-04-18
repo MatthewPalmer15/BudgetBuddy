@@ -1,10 +1,10 @@
-﻿using BlazorHybrid.Application.Configuration.Models;
-using BlazorHybrid.Database;
+﻿using BudgetBuddy.Application.Configuration.Models;
+using BudgetBuddy.Database;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorHybrid.Application.Configuration.Queries;
+namespace BudgetBuddy.Application.Configuration.Queries;
 
 public class GetSettingByKeyQuery : IRequest<GetSettingByKeyResult?>
 {
@@ -20,14 +20,14 @@ public class GetSettingByKeyQuery : IRequest<GetSettingByKeyResult?>
                 return null;
 
             return await (from s in context.Settings
-                where !s.Deleted && s.Key == request.Key
-                select new GetSettingByKeyResult
-                {
-                    Id = s.Id,
-                    Key = s.Key,
-                    Value = s.Value,
-                    IsSystemManaged = s.IsSystemManaged
-                }).FirstOrDefaultAsync(cancellationToken);
+                          where !s.Deleted && s.Key == request.Key
+                          select new GetSettingByKeyResult
+                          {
+                              Id = s.Id,
+                              Key = s.Key,
+                              Value = s.Value,
+                              IsSystemManaged = s.IsSystemManaged
+                          }).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

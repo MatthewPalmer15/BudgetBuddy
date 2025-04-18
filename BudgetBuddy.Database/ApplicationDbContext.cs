@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using BlazorHybrid.Database.Entities.Configuration;
-using BlazorHybrid.Database.Extensions;
-using BlazorHybrid.Infrastructure.Encryption;
+using BudgetBuddy.Database.Entities.Configuration;
+using BudgetBuddy.Database.Extensions;
+using BudgetBuddy.Infrastructure.Encryption;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorHybrid.Database;
+namespace BudgetBuddy.Database;
 
 /// <summary>
 ///     Athena DB Context without ASP.NET Identity

@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace BlazorHybrid.Application;
+namespace BudgetBuddy.Application;
 
 public class BaseResponse(List<RequestError>? errors = null)
 {

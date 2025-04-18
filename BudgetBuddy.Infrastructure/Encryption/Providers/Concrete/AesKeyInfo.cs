@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Encryption.Providers.Concrete;
+﻿namespace BudgetBuddy.Infrastructure.Encryption.Providers.Concrete;
 
 /// <summary>
 ///     Defines an AES key info structure containing a Key and Initialization Vector used for the AES encryption algorithm.

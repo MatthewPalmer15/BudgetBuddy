@@ -1,10 +1,10 @@
-﻿using BlazorHybrid.Database;
-using BlazorHybrid.Database.Entities.Configuration;
+﻿using BudgetBuddy.Database;
+using BudgetBuddy.Database.Entities.Configuration;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorHybrid.Application.Configuration.Commands;
+namespace BudgetBuddy.Application.Configuration.Commands;
 
 public class SaveSettingCommand : IRequest<BaseResponse>
 {
@@ -66,8 +66,8 @@ public class SaveSettingCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from s in context.Settings
-                where !s.Deleted && s.Id == request.Id
-                select s).FirstOrDefaultAsync(cancellationToken);
+                          where !s.Deleted && s.Id == request.Id
+                          select s).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Encryption.Providers.Concrete;
+﻿namespace BudgetBuddy.Infrastructure.Encryption.Providers.Concrete;
 
 /// <summary>
 ///     Specifies the available AES Key sizes used for generating encryption keys and initialization vectors.

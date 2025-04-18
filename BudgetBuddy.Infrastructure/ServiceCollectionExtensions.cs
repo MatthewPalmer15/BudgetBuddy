@@ -1,8 +1,22 @@
-﻿using BlazorHybrid.Infrastructure.Encryption;
-using BlazorHybrid.Infrastructure.Services;
-using BlazorHybrid.Infrastructure.Services.Caching;
-using BlazorHybrid.Infrastructure.Services.Csv;
-using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Encryption;
+using BudgetBuddy.Infrastructure.Services;
+using BudgetBuddy.Infrastructure.Services.Notification;
+using BudgetBuddy.Infrastructure.Services.Csv;
+using BudgetBuddy.Infrastructure.Platforms.MacCatalyst;
+using BudgetBuddy.Infrastructure.Services.Caching;
+using BudgetBuddy.Infrastructure.Platforms.Windows;
+using BudgetBuddy.Infrastructure.Platforms.iOS;
+using BudgetBuddy.Infrastructure.Platforms.Android;
+
+
+
+
+
+
+
+
+
+
 #if ANDROID
 using BlazorHybrid.Infrastructure.Platforms.Android;
 #endif
@@ -19,7 +33,7 @@ using BlazorHybrid.Infrastructure.Platforms.iOS;
 using BlazorHybrid.Infrastructure.Platforms.MacCatalyst;
 #endif
 
-namespace BlazorHybrid.Infrastructure;
+namespace BudgetBuddy.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {

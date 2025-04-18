@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Enums;
+﻿namespace BudgetBuddy.Infrastructure.Enums;
 
 /// <summary>
 ///     Specifies different types of caching expiration.

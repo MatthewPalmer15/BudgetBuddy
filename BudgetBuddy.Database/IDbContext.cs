@@ -1,7 +1,7 @@
-﻿using BlazorHybrid.Database.Entities.Configuration;
+﻿using BudgetBuddy.Database.Entities.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorHybrid.Database;
+namespace BudgetBuddy.Database;
 
 public interface IDbContext
 {

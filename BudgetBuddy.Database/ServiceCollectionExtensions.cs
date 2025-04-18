@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Database;
+﻿namespace BudgetBuddy.Database;
 
 public static class ServiceCollectionExtensions
 {

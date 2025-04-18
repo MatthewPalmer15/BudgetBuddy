@@ -1,7 +1,7 @@
-﻿using BlazorHybrid.Infrastructure.Services;
+﻿using BudgetBuddy.Infrastructure.Services;
 using Environment = Android.OS.Environment;
 
-namespace BlazorHybrid.Infrastructure.Platforms.Android;
+namespace BudgetBuddy.Infrastructure.Platforms.Android;
 
 internal class FileSystemManager : IFileSystemManager
 {

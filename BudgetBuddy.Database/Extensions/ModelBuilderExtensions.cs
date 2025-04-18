@@ -1,12 +1,13 @@
 ﻿using BlazorHybrid.Database.Internal.Encryption;
-using BlazorHybrid.Infrastructure.Encryption.Providers.Abstract;
-using BlazorHybrid.Infrastructure.Enums.Encryption;
+using BudgetBuddy.Database.Internal.Encryption;
+using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BlazorHybrid.Database.Extensions;
+namespace BudgetBuddy.Database.Extensions;
 
 public static class ModelBuilderExtensions
 {

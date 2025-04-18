@@ -1,8 +1,8 @@
-﻿using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.iOSOption;
 
-namespace BlazorHybrid.Infrastructure.Platforms.iOS;
+namespace BudgetBuddy.Infrastructure.Platforms.iOS;
 
 internal class NotificationEngine : INotificationEngine
 {

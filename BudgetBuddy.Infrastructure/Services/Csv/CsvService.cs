@@ -3,10 +3,10 @@
 
 using System.Globalization;
 using System.Text;
-using BlazorHybrid.Infrastructure.Extensions;
+using BudgetBuddy.Infrastructure.Extensions;
 using CsvHelper;
 
-namespace BlazorHybrid.Infrastructure.Services.Csv;
+namespace BudgetBuddy.Infrastructure.Services.Csv;
 
 public interface ICsvService
 {

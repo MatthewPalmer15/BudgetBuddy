@@ -1,4 +1,4 @@
-﻿using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorHybrid.App.Components.Pages;

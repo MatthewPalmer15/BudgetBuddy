@@ -1,6 +1,6 @@
-﻿using BlazorHybrid.Infrastructure.Enums.Encryption;
+﻿using BudgetBuddy.Infrastructure.Enums.Encryption;
 
-namespace BlazorHybrid.Infrastructure.Attributes;
+namespace BudgetBuddy.Infrastructure.Attributes;
 
 /// <summary>
 ///     Specifies that the data field value should be encrypted.

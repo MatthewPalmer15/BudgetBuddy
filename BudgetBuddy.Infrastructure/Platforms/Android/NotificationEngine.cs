@@ -1,8 +1,8 @@
-﻿using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.AndroidOption;
 
-namespace BlazorHybrid.Infrastructure.Platforms.Android;
+namespace BudgetBuddy.Infrastructure.Platforms.Android;
 
 internal class NotificationEngine : INotificationEngine
 {

@@ -1,8 +1,8 @@
-﻿using BlazorHybrid.Database.Internal.Encryption;
-using BlazorHybrid.Infrastructure.Enums.Encryption;
+﻿using BudgetBuddy.Database.Internal.Encryption;
+using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BlazorHybrid.Database.Extensions;
+namespace BudgetBuddy.Database.Extensions;
 
 /// <summary>
 ///     Provides extensions for the <see cref="PropertyBuilder" /> type.

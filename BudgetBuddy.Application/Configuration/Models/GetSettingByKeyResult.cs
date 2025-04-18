@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Application.Configuration.Models;
+﻿namespace BudgetBuddy.Application.Configuration.Models;
 
 public class GetSettingByKeyResult
 {

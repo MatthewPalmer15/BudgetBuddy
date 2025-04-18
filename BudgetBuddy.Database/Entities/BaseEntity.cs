@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
-namespace BlazorHybrid.Database.Entities;
+namespace BudgetBuddy.Database.Entities;
 
 /// <summary>
 ///     Represents a base entity with common properties such as ID, creation date, and status.

@@ -1,6 +1,6 @@
-﻿using BlazorHybrid.Infrastructure.Encryption.Providers.Abstract;
+﻿using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 
-namespace BlazorHybrid.Infrastructure.Encryption;
+namespace BudgetBuddy.Infrastructure.Encryption;
 
 public interface IEncryptionService
 {

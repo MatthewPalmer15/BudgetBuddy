@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ValidationResult = BlazorHybrid.Infrastructure.Validation.Results.ValidationResult;
+using ValidationResult = BudgetBuddy.Infrastructure.Validation.Results.ValidationResult;
 
-namespace BlazorHybrid.Infrastructure.Validation;
+namespace BudgetBuddy.Infrastructure.Validation;
 
 public class DataAnnotationsValidator<TEntity> : IDataAnnotationsValidator<TEntity> where TEntity : class
 {

@@ -1,6 +1,6 @@
-﻿using BlazorHybrid.Infrastructure.Services;
+﻿using BudgetBuddy.Infrastructure.Services;
 
-namespace BlazorHybrid.Infrastructure.Platforms.iOS;
+namespace BudgetBuddy.Infrastructure.Platforms.iOS;
 
 internal class FileSystemManager : IFileSystemManager
 {

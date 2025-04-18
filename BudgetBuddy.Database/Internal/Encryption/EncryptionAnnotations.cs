@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Database.Internal.Encryption;
+﻿namespace BudgetBuddy.Database.Internal.Encryption;
 
 internal class EncryptionAnnotations
 {

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
-using BlazorHybrid.Infrastructure.Encryption.Providers.Abstract;
+using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 
-namespace BlazorHybrid.Infrastructure.Encryption.Providers.Concrete;
+namespace BudgetBuddy.Infrastructure.Encryption.Providers.Concrete;
 
 /// <summary>
 ///     Implements the Advanced Encryption Standard (AES) symmetric algorithm.

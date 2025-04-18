@@ -1,9 +1,9 @@
-﻿using BlazorHybrid.Infrastructure.Attributes;
-using BlazorHybrid.Infrastructure.Enums.Encryption;
+﻿using BudgetBuddy.Infrastructure.Attributes;
+using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
 
-namespace BlazorHybrid.Database.Internal.Encryption;
+namespace BudgetBuddy.Database.Internal.Encryption;
 
 internal class EncryptedProperty
 {

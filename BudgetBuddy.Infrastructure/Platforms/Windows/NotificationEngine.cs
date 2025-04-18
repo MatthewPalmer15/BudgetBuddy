@@ -1,8 +1,8 @@
-﻿using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
 
-namespace BlazorHybrid.Infrastructure.Platforms.Windows;
+namespace BudgetBuddy.Infrastructure.Platforms.Windows;
 
 internal class NotificationEngine : INotificationEngine
 {

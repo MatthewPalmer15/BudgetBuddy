@@ -1,5 +1,5 @@
-﻿using BlazorHybrid.Database;
-using BlazorHybrid.Infrastructure;
+﻿using BudgetBuddy.Database;
+using BudgetBuddy.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorHybrid.App;

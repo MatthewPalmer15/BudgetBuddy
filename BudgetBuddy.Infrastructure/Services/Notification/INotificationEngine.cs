@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Services.Notification;
+﻿namespace BudgetBuddy.Infrastructure.Services.Notification;
 
 public interface INotificationEngine
 {

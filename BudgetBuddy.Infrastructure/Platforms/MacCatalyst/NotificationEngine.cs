@@ -1,8 +1,8 @@
-﻿using BlazorHybrid.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using UserNotifications;
 
 
-namespace BlazorHybrid.Infrastructure.Platforms.MacCatalyst;
+namespace BudgetBuddy.Infrastructure.Platforms.MacCatalyst;
 
 internal class NotificationEngine : INotificationEngine
 {

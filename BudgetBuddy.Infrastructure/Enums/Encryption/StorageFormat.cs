@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Enums.Encryption;
+﻿namespace BudgetBuddy.Infrastructure.Enums.Encryption;
 
 /// <summary>
 ///     Represents the storage format for an encrypted value.

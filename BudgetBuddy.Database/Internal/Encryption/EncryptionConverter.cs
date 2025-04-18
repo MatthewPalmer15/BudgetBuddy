@@ -1,9 +1,9 @@
-﻿using BlazorHybrid.Infrastructure.Encryption.Providers.Abstract;
-using BlazorHybrid.Infrastructure.Enums.Encryption;
+﻿using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+using BudgetBuddy.Infrastructure.Enums.Encryption;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Text;
 
-namespace BlazorHybrid.Database.Internal.Encryption;
+namespace BudgetBuddy.Database.Internal.Encryption;
 
 /// <summary>
 ///     Defines the internal encryption converter for string values.

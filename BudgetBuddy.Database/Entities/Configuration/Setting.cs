@@ -1,4 +1,6 @@
-﻿namespace BlazorHybrid.Database.Entities.Configuration;
+﻿using BudgetBuddy.Database.Entities;
+
+namespace BudgetBuddy.Database.Entities.Configuration;
 
 public class Setting : BaseEntity<Guid>
 {

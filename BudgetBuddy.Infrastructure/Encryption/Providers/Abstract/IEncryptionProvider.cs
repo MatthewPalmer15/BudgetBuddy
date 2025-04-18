@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Encryption.Providers.Abstract;
+﻿namespace BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 
 /// <summary>
 ///     Provides a mechanism to encrypt and decrypt data.

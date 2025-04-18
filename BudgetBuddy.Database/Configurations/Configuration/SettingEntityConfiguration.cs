@@ -1,9 +1,9 @@
-﻿using BlazorHybrid.Database.Entities.Configuration;
-using BlazorHybrid.Database.Extensions;
+﻿using BudgetBuddy.Database.Entities.Configuration;
+using BudgetBuddy.Database.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BlazorHybrid.Database.Configurations.Configuration;
+namespace BudgetBuddy.Database.Configurations.Configuration;
 
 internal class SettingEntityConfiguration : IEntityTypeConfiguration<Setting>
 {

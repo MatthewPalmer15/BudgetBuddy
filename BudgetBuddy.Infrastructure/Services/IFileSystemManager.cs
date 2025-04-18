@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.Infrastructure.Services;
+﻿namespace BudgetBuddy.Infrastructure.Services;
 
 public interface IFileSystemManager
 {

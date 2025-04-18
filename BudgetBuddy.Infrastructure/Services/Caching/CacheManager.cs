@@ -1,11 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using BlazorHybrid.Infrastructure.Enums;
+using BudgetBuddy.Infrastructure.Enums;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 
-namespace BlazorHybrid.Infrastructure.Services.Caching;
+namespace BudgetBuddy.Infrastructure.Services.Caching;
 
 public interface ICacheManager
 {
@@ -178,7 +178,7 @@ internal class CacheManager(IMemoryCache memoryCache) : ICacheManager
     public void Clear()
     {
         if (_resetCacheToken != null && _resetCacheToken is
-                { IsCancellationRequested: false, Token.CanBeCanceled: true })
+            { IsCancellationRequested: false, Token.CanBeCanceled: true })
         {
             _resetCacheToken.Cancel();
             _resetCacheToken.Dispose();
