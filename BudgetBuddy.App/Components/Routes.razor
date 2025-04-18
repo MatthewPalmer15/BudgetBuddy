@@ -1,0 +1,11 @@
+﻿@using BlazorHybrid.App.Components.Layout
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <NotFound/>
+        </LayoutView>
+    </NotFound>
+</Router>

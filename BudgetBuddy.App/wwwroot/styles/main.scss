@@ -1,0 +1,12 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.hs-overlay-backdrop.bg-gray-900 {
+  background-color: rgba(17, 24, 39, 0.5); /* Set your desired background color and opacity */
+}
+
+/* Override for elements with both hs-overlay-backdrop and dark:bg-neutral-900 */
+.hs-overlay-backdrop.dark\:bg-neutral-900 {
+  background-color: rgba(38, 50, 56, 0.8); /* Set your desired background color and opacity */
+}
