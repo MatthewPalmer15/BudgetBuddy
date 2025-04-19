@@ -1,4 +1,5 @@
-﻿using BudgetBuddy.Application;
+﻿using BlazorHybrid.App.Extensions;
+using BudgetBuddy.Application;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
@@ -17,8 +18,8 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddSyncfusionBlazor();
 
-
         builder.Services.AddApplication();
+        builder.Services.RunDatabaseMigrations();
         SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtfeHVdQ2lZVkd2XEdWYUA=");
 
 #if DEBUG

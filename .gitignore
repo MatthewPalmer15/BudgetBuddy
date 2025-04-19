@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /BlazorHybrid.App/wwwroot/dist
+/BudgetBuddy.App/wwwroot/dist/bundle.css

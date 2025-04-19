@@ -27,12 +27,13 @@ public partial class Home : CustomComponentBase
 
         Transactions.AddRange(new[]
         {
-                new GetTransactionsResult.Transaction { Name = "Work Pay", Price = 2189.92m, CategoryName = "Earnings", Type = Transaction.TransactionType.Income },
+                new GetTransactionsResult.Transaction { Name = "Work Pay", Price = 1636.53m, CategoryName = "Earnings", Type = Transaction.TransactionType.Income },
                 new GetTransactionsResult.Transaction { Name = "Rent", Price = 950.00m, CategoryName = "Expenses", Type = Transaction.TransactionType.Outcome },
                 new GetTransactionsResult.Transaction { Name = "Phone Contract", Price = 40.23m, CategoryName = "Mobile", Type = Transaction.TransactionType.Outcome },
                 new GetTransactionsResult.Transaction { Name = "Car Insurance", Price = 140.91m, CategoryName = "Car", Type = Transaction.TransactionType.Outcome },
                 new GetTransactionsResult.Transaction { Name = "Car Tax", Price = 15.55m, CategoryName = "Car", Type = Transaction.TransactionType.Outcome },
-                new GetTransactionsResult.Transaction { Name = "Car Fuel", Price = 70.00m, CategoryName = "Car", Type = Transaction.TransactionType.Pending }
+                new GetTransactionsResult.Transaction { Name = "Car Fuel", Price = 70.00m, CategoryName = "Car", Type = Transaction.TransactionType.Pending },
+                new GetTransactionsResult.Transaction { Name = "Entertainment", Price = 156.93m, CategoryName = "Entertainment", Type = Transaction.TransactionType.Outcome }
             });
 
         ChartData = Transactions
