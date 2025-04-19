@@ -1,4 +1,5 @@
-﻿using BudgetBuddy.Application.Transactions.Models;
+﻿using BlazorHybrid.App.Components.Components;
+using BudgetBuddy.Application.Transactions.Models;
 using BudgetBuddy.Database.Enums;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -16,6 +17,23 @@ public partial class Home : CustomComponentBase
 
     private SfAccumulationChart _sfAccumulationChart;
 
+    private Modal? modalRef;
+
+    private TransactionModel _transactionModel = new();
+
+
+    public class TransactionModel
+    {
+        public Guid? Id { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public bool IsRecurring { get; set; }
+        public TransactionType Type { get; set; }
+        public int Rank { get; set; }
+        public Guid? ServiceProviderId { get; set; }
+    }
     [Inject] public IJSRuntime JsRuntime { get; set; }
 
     private List<GetTransactionsResult.Transaction> Transactions { get; } = [];
