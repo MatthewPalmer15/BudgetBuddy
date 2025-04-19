@@ -1,13 +1,10 @@
 ﻿@page "/"
 @inherits CustomComponentBase
 @using BudgetBuddy.Database.Entities.Transactions
-@using BudgetBuddy.Mediator.Transactions.Models
 @using Syncfusion.Blazor.Cards
 
 <div class="flex flex-col lg:flex-row gap-4 p-6">
-    <!-- Chart & Totals Section -->
     <div class="w-full lg:w-1/2 flex flex-col gap-8">
-        <!-- Chart -->
         <div class="flex justify-center min-h-96">
             <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
                 <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
@@ -26,7 +23,6 @@
             </SfAccumulationChart>
         </div>
 
-        <!-- Totals -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <SfCard CssClass="shadow-md">
                 <CardContent>
@@ -69,9 +65,9 @@
         </div>
     </div>
 
-    <!-- Transactions List -->
     <div class="w-full lg:w-1/2">
         <h5 class="text-xl font-bold mb-4">Transactions (@Transactions.Count)</h5>
+        <a href="/transactions/edit/">Create button</a>
 
         @foreach (var transaction in Transactions)
         {
