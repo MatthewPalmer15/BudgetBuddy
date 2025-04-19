@@ -1,6 +1,6 @@
-﻿using BudgetBuddy.Infrastructure.Services.Notification;
+﻿using Windows.UI.Notifications;
+using BudgetBuddy.Infrastructure.Services.Notification;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Notifications;
 
 namespace BudgetBuddy.Infrastructure.Platforms.Windows;
 
@@ -42,9 +42,7 @@ internal class NotificationEngine : INotificationEngine
         for (var dateTime = request.Schedule.ScheduleDateTime.Add(timeSpanInterval.Value);
              dateTime <= request.Schedule.RecurringEndDateTime;
              dateTime = dateTime.Add(timeSpanInterval.Value))
-        {
             notifier.AddToSchedule(new ScheduledToastNotification(toastXml, new DateTimeOffset(dateTime)));
-        }
 
         return true;
     }

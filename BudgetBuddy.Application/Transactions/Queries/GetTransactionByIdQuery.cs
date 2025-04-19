@@ -1,9 +1,9 @@
-﻿using BudgetBuddy.Database;
-using BudgetBuddy.Mediator.Transactions.Models;
+﻿using BudgetBuddy.Application.Transactions.Models;
+using BudgetBuddy.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BudgetBuddy.Mediator.Transactions.Queries;
+namespace BudgetBuddy.Application.Transactions.Queries;
 
 public class GetTransactionByIdQuery : IRequest<GetTransactionByIdResult?>
 {
@@ -15,21 +15,16 @@ public class GetTransactionByIdQuery : IRequest<GetTransactionByIdResult?>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                          where !t.Deleted && request.Id == t.Id
-                          select new GetTransactionByIdResult
-                          {
-                              Id = t.Id,
-                              Name = t.Name,
-                              Price = t.Price,
-                              StartDate = t.StartDate,
-                              EndDate = t.EndDate,
-                              Type = t.Type,
-                              IsRecurring = t.IsRecurring,
-                              CategoryName = (from sp in context.ServiceProviders
-                                              join c in context.Categories on sp.CategoryId.Value equals c.Id
-                                              where !c.Deleted && !sp.Deleted && sp.Id == t.ServiceProviderId
-                                              select c.Title).FirstOrDefault()
-                          }).FirstOrDefaultAsync(cancellationToken);
+                where !t.Deleted && request.Id == t.Id
+                select new GetTransactionByIdResult
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    TransactionDate = t.TransactionDate,
+                    Type = t.Type,
+                    Category = t.Category
+                }).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

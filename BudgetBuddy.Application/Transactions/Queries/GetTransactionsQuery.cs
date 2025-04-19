@@ -1,9 +1,9 @@
-﻿using BudgetBuddy.Database;
-using BudgetBuddy.Mediator.Transactions.Models;
+﻿using BudgetBuddy.Application.Transactions.Models;
+using BudgetBuddy.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace BudgetBuddy.Mediator.Transactions.Queries;
+namespace BudgetBuddy.Application.Transactions.Queries;
 
 public class GetTransactionsQuery : IRequest<GetTransactionsResult>
 {
@@ -19,14 +19,9 @@ public class GetTransactionsQuery : IRequest<GetTransactionsResult>
                                           Id = t.Id,
                                           Name = t.Name,
                                           Price = t.Price,
-                                          StartDate = t.StartDate,
-                                          EndDate = t.EndDate,
+                                          TransactionDate = t.TransactionDate,
                                           Type = t.Type,
-                                          IsRecurring = t.IsRecurring,
-                                          CategoryName = (from sp in context.ServiceProviders
-                                                          join c in context.Categories on sp.CategoryId.Value equals c.Id
-                                                          where !c.Deleted && !sp.Deleted && sp.Id == t.ServiceProviderId
-                                                          select c.Title).FirstOrDefault()
+                                          Category = t.Category
                                       }).ToListAsync(cancellationToken);
 
             return new GetTransactionsResult { Transactions = transactions };

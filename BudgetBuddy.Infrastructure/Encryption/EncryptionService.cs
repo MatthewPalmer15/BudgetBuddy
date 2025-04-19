@@ -1,6 +1,6 @@
-﻿using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
+﻿using System.Text;
+using BudgetBuddy.Infrastructure.Encryption.Providers.Abstract;
 using BudgetBuddy.Infrastructure.Encryption.Providers.Concrete;
-using System.Text;
 
 namespace BudgetBuddy.Infrastructure.Encryption;
 

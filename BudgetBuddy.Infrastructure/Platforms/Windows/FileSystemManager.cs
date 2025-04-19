@@ -4,26 +4,6 @@ namespace BudgetBuddy.Infrastructure.Platforms.Windows;
 
 internal class FileSystemManager : IFileSystemManager
 {
-    private string? GetSpecialFolderDirectory(IFileSystemManager.SpecialFolder folder)
-    {
-        return folder switch
-        {
-            IFileSystemManager.SpecialFolder.Downloads =>
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
-
-            IFileSystemManager.SpecialFolder.Documents =>
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-
-            IFileSystemManager.SpecialFolder.Pictures =>
-                Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
-
-            IFileSystemManager.SpecialFolder.Videos =>
-                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
-
-            _ => null
-        };
-    }
-
     public async Task<byte[]?> Read(IFileSystemManager.SpecialFolder folder, string filePath,
         CancellationToken cancellationToken = default)
     {
@@ -51,5 +31,25 @@ internal class FileSystemManager : IFileSystemManager
 
         await File.WriteAllBytesAsync(filePath, file, cancellationToken);
         return true;
+    }
+
+    private string? GetSpecialFolderDirectory(IFileSystemManager.SpecialFolder folder)
+    {
+        return folder switch
+        {
+            IFileSystemManager.SpecialFolder.Downloads =>
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads"),
+
+            IFileSystemManager.SpecialFolder.Documents =>
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+
+            IFileSystemManager.SpecialFolder.Pictures =>
+                Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+
+            IFileSystemManager.SpecialFolder.Videos =>
+                Environment.GetFolderPath(Environment.SpecialFolder.MyVideos),
+
+            _ => null
+        };
     }
 }

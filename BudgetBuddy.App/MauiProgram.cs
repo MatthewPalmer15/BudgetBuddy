@@ -20,7 +20,8 @@ public static class MauiProgram
 
         builder.Services.AddApplication();
         builder.Services.RunDatabaseMigrations();
-        SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtfeHVdQ2lZVkd2XEdWYUA=");
+        SyncfusionLicenseProvider.RegisterLicense(
+            "Ngo9BigBOggjHTQxAR8/V1NNaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXtfeHVdQ2lZVkd2XEdWYUA=");
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

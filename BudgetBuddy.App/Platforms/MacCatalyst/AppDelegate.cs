@@ -1,10 +1,12 @@
 ﻿using Foundation;
 
-namespace BlazorHybrid.App.Platforms.MacCatalyst
+namespace BlazorHybrid.App.Platforms.MacCatalyst;
+
+[Register("AppDelegate")]
+public class AppDelegate : MauiUIApplicationDelegate
 {
-    [Register("AppDelegate")]
-    public class AppDelegate : MauiUIApplicationDelegate
+    protected override MauiApp CreateMauiApp()
     {
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        return MauiProgram.CreateMauiApp();
     }
 }

@@ -1,12 +1,12 @@
-﻿using ServiceProvider = BudgetBuddy.Database.Entities.Transactions.ServiceProvider;
+﻿using BudgetBuddy.Database.Entities.Transactions;
 
 namespace BudgetBuddy.Database.Seeds;
 
-internal class ServiceProviderDataSeedConfiguration : IDataSeedConfiguration<ServiceProvider>
+internal class VendorDataSeedConfiguration : IDataSeedConfiguration<Vendor>
 {
-    public ServiceProvider[] Fetch()
+    public Vendor[] Fetch()
     {
-        ServiceProvider[] serviceProviders = [];
+        Vendor[] serviceProviders = [];
 
 
         return serviceProviders;

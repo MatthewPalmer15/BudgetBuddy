@@ -6,15 +6,13 @@ using BudgetBuddy.Database.Entities.Transactions;
 using BudgetBuddy.Database.Extensions;
 using BudgetBuddy.Infrastructure.Encryption;
 using Microsoft.EntityFrameworkCore;
-using ServiceProvider = BudgetBuddy.Database.Entities.Transactions.ServiceProvider;
 
 namespace BudgetBuddy.Database;
 
 public class ApplicationDbContext(IEncryptionService encryptionService) : DbContext, IDbContext
 {
     public DbSet<Transaction> Transactions { get; set; }
-    public DbSet<ServiceProvider> ServiceProviders { get; set; }
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Vendor> Vendors { get; set; }
     public DbSet<Setting> Settings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -1,13 +1,13 @@
-﻿using BudgetBuddy.Infrastructure.Encryption;
+﻿#if ANDROID
+using BudgetBuddy.Infrastructure.Platforms.Android;
+#endif
+
+using BudgetBuddy.Infrastructure.Encryption;
 using BudgetBuddy.Infrastructure.Services;
 using BudgetBuddy.Infrastructure.Services.Caching;
 using BudgetBuddy.Infrastructure.Services.Csv;
 using BudgetBuddy.Infrastructure.Services.Notification;
-
-#if ANDROID
-using BudgetBuddy.Infrastructure.Platforms.Android;
-#endif
-
+using BudgetBuddy.Infrastructure.Services.Toast;
 #if WINDOWS
 using BudgetBuddy.Infrastructure.Platforms.Windows;
 #endif
@@ -33,6 +33,8 @@ public static class ServiceCollectionExtensions
 
         services.AddMemoryCache();
         services.AddScoped<ICacheManager, CacheManager>();
+
+        services.AddScoped<ToastService>();
 
 
 #if ANDROID

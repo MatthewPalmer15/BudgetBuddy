@@ -1,16 +1,18 @@
 ﻿@page "/"
-@inherits CustomComponentBase
-@using BudgetBuddy.Database.Entities.Transactions
+@using BudgetBuddy.Database.Enums
+@using BudgetBuddy.Infrastructure.Services.Toast
 @using Syncfusion.Blazor.Cards
+@inherits CustomComponentBase
+@inject ToastService ToastService
 
 <div class="flex flex-col lg:flex-row gap-4 p-6">
     <div class="w-full lg:w-1/2 flex flex-col gap-8">
         <div class="flex justify-center min-h-96">
-            <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
+            <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100 %" Height="100 %" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
                 <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
-                <AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
+                <AccumulationChartTooltipSettings Enable="true" Format="${ point.x }" EnableHighlight="true"></AccumulationChartTooltipSettings>
                 <AccumulationChartSeriesCollection>
-                    <AccumulationChartSeries DataSource="@ChartData" Radius="85%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+                    <AccumulationChartSeries DataSource="@ChartData" Radius="85 %" XName="Tooltip" YName="Percentage" InnerRadius="40 %" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
                         <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
                             <AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="Transparent"></AccumulationChartConnector>
                             <AccumulationChartDataLabelFont Color="Transparent"></AccumulationChartDataLabelFont>
@@ -24,35 +26,35 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <SfCard CssClass="shadow-md">
+            <SfCard CssClass="shadow - md">
                 <CardContent>
                     <div class="m-2 p-2">
                         <p class="text-gray-400 text-sm">INCOME</p>
                         <h6 class="text-green-400 font-bold text-lg flex items-center">
                             @TotalIncome.ToString("£#,0.00")
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
                             </svg>
                         </h6>
                     </div>
                 </CardContent>
             </SfCard>
 
-            <SfCard CssClass="shadow-md">
+            <SfCard CssClass="shadow - md">
                 <CardContent>
                     <div class="m-2 p-2">
                         <p class="text-gray-400 text-sm">OUTCOME</p>
                         <h6 class="text-red-400 font-bold text-lg flex items-center">
                             @TotalOutcome.ToString("£#,0.00")
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                             </svg>
                         </h6>
                     </div>
                 </CardContent>
             </SfCard>
 
-            <SfCard CssClass="shadow-md">
+            <SfCard CssClass="shadow - md">
                 <CardContent>
                     <div class="m-2 p-2">
                         <p class="text-gray-400 text-sm">LEFT OVER</p>
@@ -66,12 +68,12 @@
     </div>
 
     <div class="w-full lg:w-1/2">
-        <h5 class="text-xl font-bold mb-4">Transactions (@Transactions.Count)</h5>
+        <h5 class="text-xl font-bold mb-4"  @onclick='() => ToastService.ShowToast("Saved successfully!", ToastType.Success)'>Transactions (@Transactions.Count)</h5>
         <a href="/transactions/edit/">Create button</a>
 
         @foreach (var transaction in Transactions)
         {
-            <SfCard CssClass="mb-3 shadow">
+            <SfCard CssClass="mb - 3 shadow">
                 <CardContent>
                     <div class="p-2">
                         <div class="flex justify-between items-center">
@@ -79,19 +81,19 @@
                             <div class="flex items-center gap-2 text-sm">
                                 @switch (transaction.Type)
                                 {
-                                    case Transaction.TransactionType.Income:
+                                    case TransactionType.Income:
                                         <svg class="w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
                                         </svg>
                                         break;
-                                    case Transaction.TransactionType.Outcome:
+                                    case TransactionType.Outcome:
                                         <svg class="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                                         </svg>
                                         break;
-                                    case Transaction.TransactionType.Pending:
+                                    case TransactionType.Pending:
                                         <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
                                         </svg>
                                         break;
                                 }
@@ -102,13 +104,13 @@
                             <div class="flex items-center gap-4 text-sm">
                                 @switch (transaction.Type)
                                 {
-                                    case Transaction.TransactionType.Income:
+                                    case TransactionType.Income:
                                         <span class="text-green-400">@transaction.Price.ToString("£#,0.00")</span>
                                         break;
-                                    case Transaction.TransactionType.Outcome:
+                                    case TransactionType.Outcome:
                                         <span class="text-red-400">@transaction.Price.ToString("£#,0.00")</span>
                                         break;
-                                    case Transaction.TransactionType.Pending:
+                                    case TransactionType.Pending:
                                         <span class="text-yellow-400">@transaction.Price.ToString("£#,0.00")</span>
                                         break;
                                 }

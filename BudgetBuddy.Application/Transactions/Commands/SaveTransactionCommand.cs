@@ -1,5 +1,6 @@
 ﻿using BudgetBuddy.Database;
 using BudgetBuddy.Database.Entities.Transactions;
+using BudgetBuddy.Database.Enums;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,14 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
     public decimal Price { get; set; }
     public DateTime? TransactionDate { get; set; }
     public bool IsRecurring { get; set; }
-    public Transaction.TransactionType Type { get; set; }
+    public TransactionType Type { get; set; }
     public int Rank { get; set; }
-    public Guid? ServiceProviderId { get; set; }
+    public Guid? VendorId { get; set; }
 
     public class Handler(IDbContext context) : IRequestHandler<SaveTransactionCommand, BaseResponse>
     {
-        public async Task<BaseResponse> Handle(SaveTransactionCommand request, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse> Handle(SaveTransactionCommand request,
+            CancellationToken cancellationToken = default)
         {
             var validationResult = await new Validator().ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
@@ -41,11 +43,10 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
                 Name = request.Name,
                 Description = request.Description,
                 Price = request.Price,
-                StartDate = request.TransactionDate,
-                IsRecurring = request.IsRecurring,
+                TransactionDate = request.TransactionDate,
                 Type = request.Type,
                 Rank = request.Rank,
-                ServiceProviderId = request.ServiceProviderId
+                VendorId = request.VendorId
             };
 
             context.Transactions.Add(transaction);
@@ -64,11 +65,10 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             transaction.Name = request.Name;
             transaction.Description = request.Description;
             transaction.Price = request.Price;
-            transaction.StartDate = request.TransactionDate;
+            transaction.TransactionDate = request.TransactionDate;
             transaction.Type = request.Type;
-            transaction.IsRecurring = request.IsRecurring;
             transaction.Rank = request.Rank;
-            transaction.ServiceProviderId = request.ServiceProviderId;
+            transaction.VendorId = request.VendorId;
 
 
             context.Transactions.Update(transaction);
@@ -81,8 +81,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                          where !t.Deleted && t.Id == request.Id
-                          select t).FirstOrDefaultAsync(cancellationToken);
+                where !t.Deleted && t.Id == request.Id
+                select t).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

@@ -1,21 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BudgetBuddy.Database.Entities.Transactions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ServiceProvider = BudgetBuddy.Database.Entities.Transactions.ServiceProvider;
 
 namespace BudgetBuddy.Database.Configurations;
 
-internal class ServiceProviderEntityConfiguration : IEntityTypeConfiguration<ServiceProvider>
+internal class VendorEntityConfiguration : IEntityTypeConfiguration<Vendor>
 {
-    public void Configure(EntityTypeBuilder<ServiceProvider> builder)
+    public void Configure(EntityTypeBuilder<Vendor> builder)
     {
-        builder.ToTable("tbl_ServiceProvider");
+        builder.ToTable("tbl_Vendor");
 
         builder.HasKey(e => e.Id);
         builder.HasIndex(e => e.Id)
             .IsUnique();
 
         builder.Property(e => e.Id)
-            .HasColumnName("ServiceProviderId")
+            .HasColumnName("VendorId")
             .HasColumnOrder(1)
             .ValueGeneratedOnAdd()
             .IsRequired();
@@ -38,15 +38,6 @@ internal class ServiceProviderEntityConfiguration : IEntityTypeConfiguration<Ser
         builder.Property(e => e.ImageUrl)
             .HasMaxLength(500)
             .IsRequired(false);
-
-        builder.Property(e => e.CategoryId)
-            .IsRequired(false);
-
-        builder.HasOne(e => e.Category)
-            .WithOne()
-            .HasForeignKey<ServiceProvider>(e => e.CategoryId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(e => e.Rank)
             .HasDefaultValue(0)
