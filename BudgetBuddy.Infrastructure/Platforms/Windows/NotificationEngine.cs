@@ -1,6 +1,6 @@
-﻿using Windows.UI.Notifications;
-using BudgetBuddy.Infrastructure.Services.Notification;
+﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Windows.UI.Notifications;
 
 namespace BudgetBuddy.Infrastructure.Platforms.Windows;
 
@@ -49,6 +49,5 @@ internal class NotificationEngine : INotificationEngine
 
     public void Cancel(int notificationId)
     {
-        throw new NotSupportedException("Not supported with Windows");
     }
 }
