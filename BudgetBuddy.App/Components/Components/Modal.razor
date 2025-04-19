@@ -1,0 +1,86 @@
+﻿@if (Show)
+{
+    <div class="fixed inset-0 z-50 flex justify-center bg-black bg-opacity-50 @GetVerticalAlignmentClass()" @onclick="Close">
+        <div class="@GetSizeClasses() bg-white dark:bg-neutral-800 rounded-xl shadow-lg mx-4" @onclick:stopPropagation>
+            <div class="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-neutral-700">
+                <h3 class="text-lg font-bold text-gray-800 dark:text-white">@Title</h3>
+                <button class="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white" @onclick="Close">✕</button>
+            </div>
+            <div class="px-4 py-3 text-gray-800 dark:text-neutral-400">
+                @Body
+            </div>
+            <div class="px-4 py-3 border-t border-gray-200 dark:border-neutral-700">
+                @Footer
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    [Parameter]
+    public string Title { get; set; } = "Modal title";
+
+    [Parameter]
+    public ModalSize Size { get; set; } = ModalSize.Medium;
+
+    [Parameter]
+    public ModalVerticalAlignment VerticalAlignment { get; set; } = ModalVerticalAlignment.Center;
+
+
+    [Parameter]
+    public RenderFragment? Body { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+
+    private bool Show { get; set; }
+
+
+    public void Open() => Show = true;
+    public void Close() => Show = false;
+
+    public enum ModalSize
+    {
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+        FullScreen
+    }
+
+    public enum ModalVerticalAlignment
+    {
+        Top,
+        Center,
+        Bottom
+    }
+
+    private string GetSizeClasses()
+    {
+        return Size switch
+        {
+            ModalSize.Small => "w-full max-w-sm",
+            ModalSize.Medium => "w-full max-w-lg",
+            ModalSize.Large => "w-full max-w-2xl",
+            ModalSize.ExtraLarge => "w-full max-w-5xl",
+            ModalSize.FullScreen => "w-screen",
+            _ => "w-full max-w-lg"
+        };
+    }
+
+    private string GetVerticalAlignmentClass()
+    {
+        return VerticalAlignment switch
+        {
+            ModalVerticalAlignment.Top => "items-start pt-10",
+            ModalVerticalAlignment.Center => "items-center",
+            ModalVerticalAlignment.Bottom => "items-end pb-10",
+            _ => "items-center"
+        };
+    }
+
+
+}
