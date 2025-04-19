@@ -1,0 +1,137 @@
+﻿@page "/"
+@using BudgetBuddy.Database.Enums
+@using BudgetBuddy.Infrastructure.Enums.Toast
+@using BudgetBuddy.Infrastructure.Services.Toast
+@using Syncfusion.Blazor.Cards
+@inherits CustomComponentBase
+@inject IToastManager ToastManager
+
+<div class="flex flex-col lg:flex-row gap-4 p-6">
+    <div class="w-full lg:w-1/2 flex flex-col gap-8">
+        <div class="flex justify-center min-h-96">
+            <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100 %" Height="100 %" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
+                <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
+                <AccumulationChartTooltipSettings Enable="true" Format="${ point.x }" EnableHighlight="true"></AccumulationChartTooltipSettings>
+                <AccumulationChartSeriesCollection>
+                    <AccumulationChartSeries DataSource="@ChartData" Radius="85 %" XName="Tooltip" YName="Percentage" InnerRadius="40 %" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+                        <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
+                            <AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="Transparent"></AccumulationChartConnector>
+                            <AccumulationChartDataLabelFont Color="Transparent"></AccumulationChartDataLabelFont>
+                        </AccumulationDataLabelSettings>
+                    </AccumulationChartSeries>
+                </AccumulationChartSeriesCollection>
+                <AccumulationChartLegendSettings Visible="true" Position="LegendPosition.Bottom" Background="transparent" EnableHighlight="true">
+                    <AccumulationChartLegendFont Color="white" Size="10px" FontFamily="Segoe UI"></AccumulationChartLegendFont>
+                </AccumulationChartLegendSettings>
+            </SfAccumulationChart>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <SfCard CssClass="shadow - md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">INCOME</p>
+                        <h6 class="text-green-400 font-bold text-lg flex items-center">
+                            @TotalIncome.ToString("£#,0.00")
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
+                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                            </svg>
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+
+            <SfCard CssClass="shadow - md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">OUTCOME</p>
+                        <h6 class="text-red-400 font-bold text-lg flex items-center">
+                            @TotalOutcome.ToString("£#,0.00")
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+
+            <SfCard CssClass="shadow - md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">LEFT OVER</p>
+                        <h6 class="text-cyan-400 font-bold text-lg">
+                            @((TotalIncome - TotalOutcome).ToString("£#,0.00"))
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+        </div>
+    </div>
+
+    <div class="w-full lg:w-1/2">
+        <h5 class="text-xl font-bold mb-4"  @onclick='() => ToastManager.Show("Saved successfully!", ToastType.Success)'>Transactions (@Transactions.Count)</h5>
+        <a href="/transactions/edit/">Create button</a>
+
+        @foreach (var transaction in Transactions)
+        {
+            <SfCard CssClass="mb - 3 shadow">
+                <CardContent>
+                    <div class="p-2">
+                        <div class="flex justify-between items-center">
+                            <!-- Name & Icon -->
+                            <div class="flex items-center gap-2 text-sm">
+                                @switch (transaction.Type)
+                                {
+                                    case TransactionType.Income:
+                                        <svg class="w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                                        </svg>
+                                        break;
+                                    case TransactionType.Outcome:
+                                        <svg class="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                        </svg>
+                                        break;
+                                    case TransactionType.Pending:
+                                        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                                        </svg>
+                                        break;
+                                }
+                                <span>@transaction.Name</span>
+                            </div>
+
+                            <!-- Price & Actions -->
+                            <div class="flex items-center gap-4 text-sm">
+                                @switch (transaction.Type)
+                                {
+                                    case TransactionType.Income:
+                                        <span class="text-green-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case TransactionType.Outcome:
+                                        <span class="text-red-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case TransactionType.Pending:
+                                        <span class="text-yellow-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                }
+
+                                <span class="text-cyan-400 cursor-pointer" @onclick="@(() => Delete(transaction.Name))">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                                    </svg>
+                                </span>
+
+                                <span class="text-red-500 cursor-pointer">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </SfCard>
+        }
+    </div>
+</div>

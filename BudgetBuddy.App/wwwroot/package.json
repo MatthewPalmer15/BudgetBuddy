@@ -1,0 +1,43 @@
+{
+  "name": "maruki",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/aos": "^3.0.7",
+    "autoprefixer": "^10.4.20",
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.0",
+    "postcss": "^8.4.40",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.77.8",
+    "sass-loader": "^16.0.0",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.9",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.4",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "build": "webpack --mode production",
+    "builddev": "webpack --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@preline/accordion": "^2.4.1",
+    "@preline/carousel": "^2.4.1",
+    "@preline/dropdown": "^2.6.0",
+    "@preline/overlay": "^2.4.1",
+    "@preline/stepper": "^2.4.1",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.14",
+    "@types/webpack-sources": "^3.2.3",
+    "aos": "^3.0.0-beta.6",
+    "preline": "^2.4.1"
+  }
+}
