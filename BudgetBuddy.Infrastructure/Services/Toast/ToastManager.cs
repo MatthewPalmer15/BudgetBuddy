@@ -1,9 +1,19 @@
-﻿namespace BudgetBuddy.Infrastructure.Services.Toast;
-public class ToastService
+﻿using BudgetBuddy.Infrastructure.Enums.Toast;
+
+namespace BudgetBuddy.Infrastructure.Services.Toast;
+
+public interface IToastManager
+{
+    event Action<ToastMessage>? OnShow;
+
+    void Show(string message, ToastType type = ToastType.Info, TimeSpan? duration = null);
+}
+
+public class ToastManager : IToastManager
 {
     public event Action<ToastMessage>? OnShow;
 
-    public void ShowToast(string message, ToastType type = ToastType.Info, TimeSpan? duration = null)
+    public void Show(string message, ToastType type = ToastType.Info, TimeSpan? duration = null)
     {
         OnShow?.Invoke(new ToastMessage
         {
@@ -12,14 +22,6 @@ public class ToastService
             Duration = duration ?? TimeSpan.FromSeconds(3)
         });
     }
-}
-
-public enum ToastType
-{
-    Success,
-    Error,
-    Info,
-    Warning
 }
 
 public class ToastMessage

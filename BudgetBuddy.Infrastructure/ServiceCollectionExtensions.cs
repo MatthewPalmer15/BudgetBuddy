@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddMemoryCache();
         services.AddScoped<ICacheManager, CacheManager>();
 
-        services.AddScoped<ToastService>();
+        services.AddScoped<IToastManager, ToastManager>();
 
 
 #if ANDROID

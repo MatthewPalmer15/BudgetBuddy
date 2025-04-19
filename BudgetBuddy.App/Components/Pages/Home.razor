@@ -1,9 +1,10 @@
 ﻿@page "/"
 @using BudgetBuddy.Database.Enums
+@using BudgetBuddy.Infrastructure.Enums.Toast
 @using BudgetBuddy.Infrastructure.Services.Toast
 @using Syncfusion.Blazor.Cards
 @inherits CustomComponentBase
-@inject ToastService ToastService
+@inject IToastManager ToastManager
 
 <div class="flex flex-col lg:flex-row gap-4 p-6">
     <div class="w-full lg:w-1/2 flex flex-col gap-8">
@@ -68,7 +69,7 @@
     </div>
 
     <div class="w-full lg:w-1/2">
-        <h5 class="text-xl font-bold mb-4"  @onclick='() => ToastService.ShowToast("Saved successfully!", ToastType.Success)'>Transactions (@Transactions.Count)</h5>
+        <h5 class="text-xl font-bold mb-4"  @onclick='() => ToastManager.Show("Saved successfully!", ToastType.Success)'>Transactions (@Transactions.Count)</h5>
         <a href="/transactions/edit/">Create button</a>
 
         @foreach (var transaction in Transactions)
