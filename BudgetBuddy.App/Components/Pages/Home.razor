@@ -1,18 +1,138 @@
 ﻿@page "/"
 @inherits CustomComponentBase
+@using BudgetBuddy.Database.Entities.Transactions
+@using BudgetBuddy.Mediator.Transactions.Models
+@using Syncfusion.Blazor.Cards
 
-<SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="300px" Height="300px" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
-    <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
-    <AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
-    <AccumulationChartSeriesCollection>
-        <AccumulationChartSeries DataSource="@ChartData" Radius="85%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
-            <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
-                <AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
-                <AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
-            </AccumulationDataLabelSettings>
-        </AccumulationChartSeries>
-    </AccumulationChartSeriesCollection>
-    <AccumulationChartLegendSettings Visible="true" Position="LegendPosition.Bottom" Background="transparent" EnableHighlight="true">
-        <AccumulationChartLegendFont Color="white" Size="14px" FontFamily="Segoe UI"></AccumulationChartLegendFont>
-    </AccumulationChartLegendSettings>
-</SfAccumulationChart>
+<div class="flex flex-col lg:flex-row gap-4 p-6">
+    <!-- Chart & Totals Section -->
+    <div class="w-full lg:w-1/2 flex flex-col gap-8">
+        <!-- Chart -->
+        <div class="flex justify-center min-h-96">
+            <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true" Width="100%" Height="100%" Theme="@Theme.Tailwind3Dark" Background="Transparent" EnableBorderOnMouseMove="false" EnableSmartLabels="false">
+                <AccumulationChartBorder Color="Transparent"></AccumulationChartBorder>
+                <AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"></AccumulationChartTooltipSettings>
+                <AccumulationChartSeriesCollection>
+                    <AccumulationChartSeries DataSource="@ChartData" Radius="85%" XName="Tooltip" YName="Percentage" InnerRadius="40%" Palettes="@_colourPalette" StartAngle="270" EndAngle="270">
+                        <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
+                            <AccumulationChartConnector Length="10px" Type="ConnectorType.Curve" Color="#FFFFFF"></AccumulationChartConnector>
+                            <AccumulationChartDataLabelFont Color="white"></AccumulationChartDataLabelFont>
+                        </AccumulationDataLabelSettings>
+                    </AccumulationChartSeries>
+                </AccumulationChartSeriesCollection>
+                <AccumulationChartLegendSettings Visible="true" Position="LegendPosition.Bottom" Background="transparent" EnableHighlight="true">
+                    <AccumulationChartLegendFont Color="white" Size="14px" FontFamily="Segoe UI"></AccumulationChartLegendFont>
+                </AccumulationChartLegendSettings>
+            </SfAccumulationChart>
+        </div>
+
+        <!-- Totals -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <SfCard CssClass="shadow-md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">INCOME</p>
+                        <h6 class="text-green-400 font-bold text-lg flex items-center">
+                            @TotalIncome.ToString("£#,0.00")
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
+                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                            </svg>
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+
+            <SfCard CssClass="shadow-md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">OUTCOME</p>
+                        <h6 class="text-red-400 font-bold text-lg flex items-center">
+                            @TotalOutcome.ToString("£#,0.00")
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 w-5 h-5 fill-current" viewBox="0 0 16 16">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                            </svg>
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+
+            <SfCard CssClass="shadow-md">
+                <CardContent>
+                    <div class="m-2 p-2">
+                        <p class="text-gray-400 text-sm">LEFT OVER</p>
+                        <h6 class="text-cyan-400 font-bold text-lg">
+                            @((TotalIncome - TotalOutcome).ToString("£#,0.00"))
+                        </h6>
+                    </div>
+                </CardContent>
+            </SfCard>
+        </div>
+    </div>
+
+    <!-- Transactions List -->
+    <div class="w-full lg:w-1/2">
+        <h5 class="text-xl font-bold mb-4">Transactions (@Transactions.Count)</h5>
+
+        @foreach (var transaction in Transactions)
+        {
+            <SfCard CssClass="mb-3 shadow">
+                <CardContent>
+                    <div class="p-2">
+                        <div class="flex justify-between items-center">
+                            <!-- Name & Icon -->
+                            <div class="flex items-center gap-2 text-sm">
+                                @switch (transaction.Type)
+                                {
+                                    case Transaction.TransactionType.Income:
+                                        <svg class="w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                        </svg>
+                                        break;
+                                    case Transaction.TransactionType.Outcome:
+                                        <svg class="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                        </svg>
+                                        break;
+                                    case Transaction.TransactionType.Pending:
+                                        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                        </svg>
+                                        break;
+                                }
+                                <span>@transaction.Name</span>
+                            </div>
+
+                            <!-- Price & Actions -->
+                            <div class="flex items-center gap-4 text-sm">
+                                @switch (transaction.Type)
+                                {
+                                    case Transaction.TransactionType.Income:
+                                        <span class="text-green-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case Transaction.TransactionType.Outcome:
+                                        <span class="text-red-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case Transaction.TransactionType.Pending:
+                                        <span class="text-yellow-400">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                }
+
+                                <span class="text-cyan-400 cursor-pointer" @onclick="@(() => Delete(transaction.Name))">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708z" />
+                                    </svg>
+                                </span>
+
+                                <span class="text-red-500 cursor-pointer">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </SfCard>
+        }
+    </div>
+</div>
