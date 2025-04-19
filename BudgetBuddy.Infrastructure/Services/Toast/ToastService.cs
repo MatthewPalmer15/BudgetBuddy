@@ -29,4 +29,5 @@ public class ToastMessage
     public string Message { get; set; }
     public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(3);
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public bool IsVisible { get; set; } = false;
 }

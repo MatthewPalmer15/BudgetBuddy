@@ -1,10 +1,10 @@
 @using BudgetBuddy.Infrastructure.Services.Toast
 @inject ToastService ToastService
 
-<div class="fixed top-5 right-5 z-50 flex flex-col gap-4">
+<div class="fixed top-6 inset-x-4 sm:inset-x-auto sm:right-5 z-50 flex flex-col gap-4 items-center sm:items-end">
     @foreach (var toast in toasts)
     {
-        <div class="@GetToastClass(toast.Type) w-full max-w-xs rounded-lg shadow-lg p-4 text-white relative flex items-center justify-between" role="alert" @key="toast.Id">
+        <div class="@GetToastClass(toast.Type) w-full sm:max-w-xs rounded-lg shadow-lg p-4 text-white relative flex items-center justify-between transition-opacity duration-300 ease-in-out @(toast.IsVisible ? "opacity-100" : "opacity-0")" role="alert" @key="toast.Id">
             <div class="flex items-center gap-2">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="@GetIconPath(toast.Type)" clip-rule="evenodd" />
@@ -33,20 +33,29 @@
 
     private void ShowToast(ToastMessage toast)
     {
+        toast.IsVisible = true;
+
         toasts.Add(toast);
         StateHasChanged();
 
         _ = Task.Run(async () =>
         {
             await Task.Delay(toast.Duration);
-            toasts.Remove(toast);
+            toast.IsVisible = false;
             InvokeAsync(StateHasChanged);
+            await Task.Delay(300);
+            toasts.Remove(toast);
+            await InvokeAsync(StateHasChanged);
         });
     }
 
-    private void DismissToast(ToastMessage toast)
+    private async void DismissToast(ToastMessage toast)
     {
+        toast.IsVisible = false;
+        StateHasChanged();
+        await Task.Delay(300); // match fade-out time
         toasts.Remove(toast);
+        await InvokeAsync(StateHasChanged);
     }
 
     private string GetToastClass(ToastType type) => type switch
