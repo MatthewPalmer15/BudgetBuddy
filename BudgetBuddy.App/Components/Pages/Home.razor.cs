@@ -1,6 +1,10 @@
 ﻿using BlazorHybrid.App.Components.Components;
+using BudgetBuddy.Application.Transactions.Commands;
 using BudgetBuddy.Application.Transactions.Models;
+using BudgetBuddy.Application.Transactions.Queries;
 using BudgetBuddy.Database.Enums;
+using BudgetBuddy.Infrastructure.Enums.Toast;
+using BudgetBuddy.Infrastructure.Services.Toast;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Syncfusion.Blazor.Charts;
@@ -9,6 +13,10 @@ namespace BlazorHybrid.App.Components.Pages;
 
 public partial class Home : CustomComponentBase
 {
+    [Inject] public IJSRuntime JsRuntime { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IToastManager ToastManager { get; set; }
+
     private readonly string[] _colourPalette =
     [
         "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA", "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7",
@@ -17,7 +25,7 @@ public partial class Home : CustomComponentBase
 
     private SfAccumulationChart _sfAccumulationChart;
 
-    private Modal? modalRef;
+    private Modal? _transactionModal;
 
     private TransactionModel _transactionModel = new();
 
@@ -31,12 +39,13 @@ public partial class Home : CustomComponentBase
         public DateTime? TransactionDate { get; set; }
         public bool IsRecurring { get; set; }
         public TransactionType Type { get; set; }
+        public CategoryEnum Category { get; set; }
         public int Rank { get; set; }
         public Guid? ServiceProviderId { get; set; }
     }
-    [Inject] public IJSRuntime JsRuntime { get; set; }
 
-    private List<GetTransactionsResult.Transaction> Transactions { get; } = [];
+
+    private List<GetTransactionsResult.Transaction> Transactions { get; set; } = [];
     private List<ChartDataViewModel> ChartData { get; set; } = [];
 
     private decimal TotalIncome => Transactions.Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
@@ -44,29 +53,14 @@ public partial class Home : CustomComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        await FetchData();
+    }
+
+    public async Task FetchData()
+    {
         var cancellationToken = new CancellationTokenSource().Token;
 
-        //Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
-
-        Transactions.AddRange(new[]
-        {
-            new GetTransactionsResult.Transaction
-                { Name = "Work Pay", Price = 1636.53m, Category = CategoryEnum.None, Type = TransactionType.Income },
-            new GetTransactionsResult.Transaction
-                { Name = "Rent", Price = 950.00m, Category = CategoryEnum.Bills, Type = TransactionType.Outcome },
-            new GetTransactionsResult.Transaction
-                { Name = "Phone Contract", Price = 40.23m, Category = CategoryEnum.Bills, Type = TransactionType.Outcome },
-            new GetTransactionsResult.Transaction
-                { Name = "Car Insurance", Price = 140.91m, Category = CategoryEnum.Bills, Type = TransactionType.Outcome },
-            new GetTransactionsResult.Transaction
-                { Name = "Car Tax", Price = 15.55m, Category = CategoryEnum.Bills, Type = TransactionType.Outcome },
-            new GetTransactionsResult.Transaction
-                { Name = "Car Fuel", Price = 70.00m, Category = CategoryEnum.Travel, Type = TransactionType.Pending },
-            new GetTransactionsResult.Transaction
-            {
-                Name = "Entertainment", Price = 156.93m, Category = CategoryEnum.Entertainment, Type = TransactionType.Outcome
-            }
-        });
+        Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
 
         ChartData = Transactions
             .Where(x => x.Type == TransactionType.Outcome)
@@ -90,17 +84,82 @@ public partial class Home : CustomComponentBase
         });
     }
 
+    public async Task OpenTransactionModal(Guid? id = null)
+    {
+        var cancellationToken = new CancellationTokenSource().Token;
+        if (id.HasValue && id.Value != Guid.Empty)
+        {
+            var transaction = await Mediator.Send(new GetTransactionByIdQuery { Id = id.Value }, cancellationToken);
+            if (transaction != null)
+            {
+                _transactionModel = new TransactionModel
+                {
+                    Id = transaction.Id,
+                    Name = transaction.Name,
+                    Description = transaction.Description,
+                    Price = transaction.Price,
+                    TransactionDate = transaction.TransactionDate,
+                    Category = transaction.Category,
+                    Type = transaction.Type,
+                    Rank = transaction.Rank,
+                    ServiceProviderId = transaction.VendorId
+                };
+            }
+        }
+        else
+        {
+            _transactionModel = new TransactionModel();
+        }
 
+        _transactionModal?.Open();
+    }
 
     private async Task SaveTransaction()
     {
         var cancellationToken = new CancellationTokenSource().Token;
 
+        var response = await Mediator.Send(new SaveTransactionCommand
+        {
+            Id = _transactionModel.Id,
+            Name = _transactionModel.Name,
+            Description = _transactionModel.Description,
+            Price = _transactionModel.Price,
+            Rank = _transactionModel.Rank,
+            TransactionDate = _transactionModel.TransactionDate,
+            Type = _transactionModel.Type,
+            IsRecurring = _transactionModel.IsRecurring,
+            VendorId = _transactionModel.ServiceProviderId
+        }, cancellationToken);
 
+        if (response.Success)
+        {
+            ToastManager.Show("Save successfully", ToastType.Success);
+
+            _transactionModel = new TransactionModel();
+            _transactionModal?.Close();
+            await FetchData();
+        }
+        else
+        {
+            ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
+        }
     }
 
-    private async Task Delete(string id)
+    private async Task Delete(Guid id)
     {
+        var cancellationToken = new CancellationTokenSource().Token;
+
+        var response = await Mediator.Send(new DeleteTransactionCommand { Id = id }, cancellationToken);
+
+        if (response.Success)
+        {
+            ToastManager.Show("Deleted Successfully", ToastType.Success);
+            await FetchData();
+        }
+        else
+        {
+            ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
+        }
     }
 
     public class ChartDataViewModel

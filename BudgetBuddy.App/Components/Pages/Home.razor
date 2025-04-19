@@ -5,7 +5,6 @@
 @using BudgetBuddy.Infrastructure.Services.Toast
 @using Syncfusion.Blazor.Cards
 @inherits CustomComponentBase
-@inject IToastManager ToastManager
 
 <div class="flex flex-col lg:flex-row gap-4 p-6">
     <div class="w-full lg:w-1/2 flex flex-col gap-8">
@@ -28,10 +27,6 @@
             </SfAccumulationChart>
 
         </div>
-
-        <button @onclick="() => modalRef.Open()" class="py-3 px-4 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-            Open modal
-        </button>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
@@ -77,74 +72,85 @@
     </div>
 
     <div class="w-full lg:w-1/2">
-        <h5 class="text-xl font-bold mb-4"  @onclick='() => ToastManager.Show("Saved successfully!", ToastType.Success)'>Transactions (@Transactions.Count)</h5>
-        <a href="/transactions/edit/">Create button</a>
+        <div class="flex items-center justify-between mb-4">
+            <h5 class="text-xl font-bold">Transactions (@Transactions.Count)</h5>
+            <a @onclick="() => OpenTransactionModal(Guid.Empty)"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                Create
+            </a>
+        </div>
+
 
         @foreach (var transaction in Transactions)
         {
-            <SfCard CssClass="mb-3 shadow">
-                <CardContent>
-                    <div class="p-2">
-                        <div class="flex justify-between items-center">
-                            <!-- Name & Icon -->
-                            <div class="flex items-center gap-2 text-sm">
-                                @switch (transaction.Type)
-                                {
-                                    case TransactionType.Income:
-                                        <svg class="w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
-                                        </svg>
-                                        break;
-                                    case TransactionType.Outcome:
-                                        <svg class="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                        </svg>
-                                        break;
-                                    case TransactionType.Pending:
-                                        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-                                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-                                        </svg>
-                                        break;
-                                }
-                                <span>@transaction.Name</span>
-                            </div>
+            <div class="mb-4">
+                <Card>
+                    <Body>
+                        <div class="p-2">
+                            <div class="flex justify-between items-center">
+                                <!-- Name & Icon -->
+                                <div class="flex items-center gap-2 text-sm">
+                                    @switch (transaction.Type)
+                                    {
+                                        case TransactionType.Income:
+                                            <svg class="w-5 h-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                            </svg>
+                                            break;
+                                        case TransactionType.Outcome:
+                                            <svg class="w-5 h-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                            </svg>
+                                            break;
+                                        case TransactionType.Pending:
+                                            <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                            </svg>
+                                            break;
+                                    }
+                                    <span>@transaction.Name</span>
+                                </div>
 
-                            <!-- Price & Actions -->
-                            <div class="flex items-center gap-4 text-sm">
-                                @switch (transaction.Type)
-                                {
-                                    case TransactionType.Income:
-                                        <span class="text-green-400">@transaction.Price.ToString("£#,0.00")</span>
-                                        break;
-                                    case TransactionType.Outcome:
-                                        <span class="text-red-400">@transaction.Price.ToString("£#,0.00")</span>
-                                        break;
-                                    case TransactionType.Pending:
-                                        <span class="text-yellow-400">@transaction.Price.ToString("£#,0.00")</span>
-                                        break;
-                                }
+                                <!-- Price & Actions -->
+                                <div class="flex items-center gap-4 text-sm">
+                                    @switch (transaction.Type)
+                                    {
+                                        case TransactionType.Income:
+                                            <span class="text-green-400">@transaction.Price.ToString("£#,0.00")</span>
+                                            break;
+                                        case TransactionType.Outcome:
+                                            <span class="text-red-400">@transaction.Price.ToString("£#,0.00")</span>
+                                            break;
+                                        case TransactionType.Pending:
+                                            <span class="text-yellow-400">@transaction.Price.ToString("£#,0.00")</span>
+                                            break;
+                                    }
 
-                                <span class="text-cyan-400 cursor-pointer" @onclick="@(() => Delete(transaction.Name))">
-                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
-                                    </svg>
-                                </span>
+                                    <span class="text-cyan-400 cursor-pointer" @onclick="() => OpenTransactionModal(transaction.Id)">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                                        </svg>
+                                    </span>
 
-                                <span class="text-red-500 cursor-pointer">
-                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
-                                    </svg>
-                                </span>
+                                    <span class="text-red-500 cursor-pointer" @onclick="() => Delete(transaction.Id)">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </CardContent>
-            </SfCard>
+                    </Body>
+                </Card>
+            </div>
         }
     </div>
 </div>
 
-<Modal @ref="modalRef" Title="My Custom Modal" Size="Modal.ModalSize.Large" VerticalAlignment="Modal.ModalVerticalAlignment.Top">
+<Modal @ref="_transactionModal" Title="My Custom Modal" Size="Modal.ModalSize.Large" VerticalAlignment="Modal.ModalVerticalAlignment.Top">
     <Body>
         <EditForm Model="@_transactionModel" OnValidSubmit="SaveTransaction">
             <DataAnnotationsValidator/>
@@ -177,24 +183,40 @@
             </div>
 
             <div class="max-w-md space-y-3">
-                <label for="transactionDate" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
-                <SfDatePicker @bind-Value="_transactionModel.TransactionDate" TValue="DateTime?"
-                Placeholder="Choose a Date"
-                FullScreen="true"
-                StrictMode="true"
-                OpenOnFocus="true"
-                ZIndex="10000"
-                CssClass="tailwind-datepicker" />
+                <label for="transaction_date" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
+                <SfDatePicker ID="transaction_date" @bind-Value="_transactionModel.TransactionDate" TValue="DateTime?" Placeholder="Choose a Date" FullScreen="true" StrictMode="true" OpenOnFocus="true" CssClass="tailwind-datepicker" />
             </div>
 
-            <p class="text-pink-test">this is a test</p>
+            <div class="max-w-md space-y-3">
+                <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Type</label>
+                <select id="transaction_type" @bind="_transactionModel.Type" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                    <option value="@(TransactionType.Unknown)" selected="">-- Please Select --</option>
+                    <option value="@(TransactionType.Income)">Income</option>
+                    <option value="@(TransactionType.Outcome)">Outcome</option>
+                    <option value="@(TransactionType.Pending)">Pending</option>
+                </select>
+            </div>
 
+            @if (_transactionModel.Type == TransactionType.Outcome)
+            {
+                <div class="max-w-md space-y-3">
+                    <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Category</label>
+                    <select id="transaction_type" @bind="_transactionModel.Category" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                        <option value="@(CategoryEnum.None)" selected="">-- Please Select --</option>
+                        <option value="@(CategoryEnum.None)">Bills</option>
+                        <option value="@(CategoryEnum.Shopping)">Shopping</option>
+                        <option value="@(CategoryEnum.Bills)">Groceries</option>
+                        <option value="@(CategoryEnum.Shopping)">Entertainment</option>
+                        <option value="@(CategoryEnum.Groceries)">Activities</option>
+                        <option value="@(CategoryEnum.Entertainment)">Travel</option>
+                        <option value="@(CategoryEnum.Activities)">Payments and Transfers</option>
+                        <option value="@(CategoryEnum.Travel)">Other</option>
+                    </select>
+                </div>
+            }
+
+            <button @onclick="_transactionModal.Close" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Close</button>
+            <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700" type="submit">Save</button>
         </EditForm>
     </Body>
-    <Footer>
-        <div class="flex justify-end gap-2">
-            <button @onclick="modalRef.Close" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Close</button>
-            <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save changes</button>
-        </div>
-    </Footer>
 </Modal>
