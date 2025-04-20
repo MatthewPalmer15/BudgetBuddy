@@ -95,3 +95,16 @@
 .e-footer .e-btn:hover {
     background-color: #2563eb !important;
 }
+
+.dark-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 4px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
