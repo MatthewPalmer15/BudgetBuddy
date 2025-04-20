@@ -25,7 +25,7 @@ public partial class Home : CustomComponentBase
 
     private SfAccumulationChart _sfAccumulationChart;
 
-    private Modal? _transactionModal;
+    private Modal _transactionModal;
 
     private TransactionModel _transactionModel = new();
 
@@ -41,7 +41,7 @@ public partial class Home : CustomComponentBase
         public TransactionType Type { get; set; }
         public CategoryEnum Category { get; set; }
         public int Rank { get; set; }
-        public Guid? ServiceProviderId { get; set; }
+        public Guid? VendorId { get; set; }
     }
 
 
@@ -102,16 +102,24 @@ public partial class Home : CustomComponentBase
                     Category = transaction.Category,
                     Type = transaction.Type,
                     Rank = transaction.Rank,
-                    ServiceProviderId = transaction.VendorId
+                    VendorId = transaction.VendorId
                 };
+                _transactionModal.Title = $"Edit Transaction '{transaction.Name}'";
+            }
+            else
+            {
+                _transactionModel = new TransactionModel();
+                _transactionModal.Title = "Create Transaction";
             }
         }
         else
         {
+            _transactionModal.Title = "Create Transaction";
             _transactionModel = new TransactionModel();
         }
 
-        _transactionModal?.Open();
+
+        _transactionModal.Open();
     }
 
     private async Task SaveTransaction()
@@ -129,7 +137,7 @@ public partial class Home : CustomComponentBase
             TransactionDate = _transactionModel.TransactionDate,
             Type = _transactionModel.Type,
             IsRecurring = _transactionModel.IsRecurring,
-            VendorId = _transactionModel.ServiceProviderId
+            VendorId = _transactionModel.VendorId
         }, cancellationToken);
 
         if (response.Success)
