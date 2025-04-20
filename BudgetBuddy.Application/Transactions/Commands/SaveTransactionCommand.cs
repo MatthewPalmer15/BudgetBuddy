@@ -16,6 +16,7 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
     public DateTime? TransactionDate { get; set; }
     public bool IsRecurring { get; set; }
     public TransactionType Type { get; set; }
+    public CategoryEnum Category { get; set; }
     public int Rank { get; set; }
     public Guid? VendorId { get; set; }
 
@@ -45,6 +46,7 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
                 Price = request.Price,
                 TransactionDate = request.TransactionDate,
                 Type = request.Type,
+                Category = request.Category,
                 Rank = request.Rank,
                 VendorId = request.VendorId
             };
@@ -67,6 +69,7 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             transaction.Price = request.Price;
             transaction.TransactionDate = request.TransactionDate;
             transaction.Type = request.Type;
+            transaction.Category = request.Category;
             transaction.Rank = request.Rank;
             transaction.VendorId = request.VendorId;
 
@@ -81,8 +84,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                where !t.Deleted && t.Id == request.Id
-                select t).FirstOrDefaultAsync(cancellationToken);
+                          where !t.Deleted && t.Id == request.Id
+                          select t).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

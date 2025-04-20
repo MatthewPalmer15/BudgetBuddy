@@ -124,6 +124,7 @@ public partial class Home : CustomComponentBase
             Name = _transactionModel.Name,
             Description = _transactionModel.Description,
             Price = _transactionModel.Price,
+            Category = _transactionModel.Category,
             Rank = _transactionModel.Rank,
             TransactionDate = _transactionModel.TransactionDate,
             Type = _transactionModel.Type,
