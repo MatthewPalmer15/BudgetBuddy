@@ -19,9 +19,28 @@ public partial class Home : CustomComponentBase
 
     private readonly string[] _colourPalette =
     [
-        "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA", "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7",
-        "#4472c4", "#ed7d31", "#ffc000", "#70ad47", "#5b9bd5", "#c1c1c1", "#6f6fe2", "#e269ae", "#9e480e", "#997300"
+        "#365A9B", // Blue
+        "#C86464", // Red
+        "#5C8C3B", // Green
+        "#BB6428", // Orange
+        "#9B9B9B", // Grey
+        "#A9B81A", // Olive
+        "#0098AD", // Teal
+        "#B9548D", // Rose
+        "#9E42AC", // Purple
+        "#C19D00", // Goldenrod
+        "#7D5E00", // Dark Mustard
+        "#6E44B3", // Deep Purple
+        "#313E99", // Indigo
+        "#A35945", // Brown
+        "#4DC7A7", // Mint
+        "#7F3A0B", // Rust
+        "#5858BC", // Cool Blue
+        "#CC9E00", // Warm Yellow
+        "#487DB0", // Steel Blue
+        "#3D4EB8"  // Cobalt
     ];
+
 
     private SfAccumulationChart _sfAccumulationChart;
 
@@ -64,6 +83,7 @@ public partial class Home : CustomComponentBase
 
         ChartData = Transactions
             .Where(x => x.Type == TransactionType.Outcome)
+            .OrderBy(x => x.Category)
             .GroupBy(t => t.Category)
             .Select(g => new ChartDataViewModel
             {
