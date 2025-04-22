@@ -86,162 +86,202 @@
 
         @foreach (var transaction in Transactions.OrderByDescending(x => x.Type == TransactionType.Income).ThenByDescending(x => x.TransactionDate))
         {
-            <div class="mb-3">
-                <Card>
-                    <Body>
-                        <div class="p-3">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-start gap-2 text-sm">
-                                    @switch (transaction.Type)
-                                    {
-                                        case TransactionType.Income:
-                                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 16 16">
-                                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                                            </svg>
-                                            break;
-                                        case TransactionType.Outcome:
-                                            <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 16 16">
-                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                            </svg>
-                                            break;
-                                        case TransactionType.Pending:
-                                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 16 16">
-                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
-                                            </svg>
-                                            break;
-                                    }
+            <div class="mb-3 relative">
+    <div class="text-white border border-gray-800 shadow-md rounded-lg">
+        <div>
+            <div class="p-3">
+                <div class="flex items-center justify-between gap-3">
 
-                                    <div class="flex flex-col">
-                                        <span class="font-medium">@transaction.Name</span>
-                                        @if (transaction.Category != CategoryEnum.None)
-                                        {
-                                            <span class="text-sm text-gray-400">@transaction.Category.ToString()</span>
-                                        }
-                                        @if (transaction.TransactionDate.HasValue)
-                                        {
-                                            <span class="text-sm text-gray-400">@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
-                                        }
-                                    </div>
+                    <!-- Left: Icon and Details -->
+                    <div class="flex items-start gap-3 text-sm">
+                        @switch (transaction.Type)
+                        {
+                            case TransactionType.Income:
+                                <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                    </svg>
                                 </div>
-
-                                <div class="flex items-center gap-3 text-sm">
-                                    @switch (transaction.Type)
-                                    {
-                                        case TransactionType.Income:
-                                            <span class="text-green-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                            break;
-                                        case TransactionType.Outcome:
-                                            <span class="text-red-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                            break;
-                                        case TransactionType.Pending:
-                                            <span class="text-yellow-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                            break;
-                                    }
-
-                                    <span class="text-cyan-400 cursor-pointer" @onclick="() => OpenTransactionModal(transaction.Id)">
-                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-                                        </svg>
-                                    </span>
-
-                                    <span class="text-red-500 cursor-pointer" @onclick="() => Delete(transaction.Id)">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                                  d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                                  clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
+                                break;
+                            case TransactionType.Outcome:
+                                <div class="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                    </svg>
                                 </div>
-                            </div>
+                                break;
+                            case TransactionType.Pending:
+                                <div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                    </svg>
+                                </div>
+                                break;
+                        }
+
+                        <div class="flex flex-col justify-center">
+                            <span class="font-semibold leading-tight">@transaction.Name</span>
+                            @if (transaction.Category != CategoryEnum.None)
+                            {
+                                <span class="text-gray-400 text-xs">@transaction.Category.ToString()</span>
+                            }
+                            @if (transaction.TransactionDate.HasValue)
+                            {
+                                <span class="text-gray-400 text-xs">@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
+                            }
                         </div>
-                    </Body>
-                </Card>
+                    </div>
+
+                    <!-- Right: Amount and Dropdown -->
+                    <div class="flex items-center gap-2 text-sm relative">
+                        @switch (transaction.Type)
+                        {
+                            case TransactionType.Income:
+                                <span class="text-green-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                break;
+                            case TransactionType.Outcome:
+                                <span class="text-red-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                break;
+                            case TransactionType.Pending:
+                                <span class="text-yellow-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                break;
+                        }
+
+                        <!-- Dropdown Button -->
+                        <button class="text-gray-400 hover:text-white" @onclick="() => ToggleDropdown(transaction.Id)">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        @if (IsDropdownOpen(transaction.Id))
+                        {
+                            <div class="absolute right-0 mt-10 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20">
+                                <ul class="text-sm text-white">
+                                    <li>
+                                        <button class="w-full text-left px-4 py-2 hover:bg-gray-700"
+                                                @onclick="() => { ToggleDropdown(transaction.Id); OpenTransactionModal(transaction.Id); }">
+                                            Edit
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="w-full text-left px-4 py-2 hover:bg-red-600 hover:text-white"
+                                                @onclick="() => { ToggleDropdown(transaction.Id); Delete(transaction.Id); }">
+                                            Delete
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
         }
     </div>
 </div>
 
 <Modal @ref="_transactionModal" Title="Create Transaction" Size="Modal.ModalSize.Large" VerticalAlignment="Modal.ModalVerticalAlignment.Top">
     <Body>
-        <EditForm Model="@_transactionModel" OnValidSubmit="SaveTransaction">
-            <DataAnnotationsValidator/>
-            <ValidationSummary/>
-            <input type="hidden" @bind="_transactionModel.Id" />
+    <EditForm Model="@_transactionModel" OnValidSubmit="SaveTransaction">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <input type="hidden" @bind="_transactionModel.Id" />
             
-            <div class="flex flex-col items-center justify-center space-y-6 sm:space-y-5 px-4">
+        <div class="flex flex-col items-center justify-center space-y-6 sm:space-y-5 px-4">
 
-                <div class="max-w-md w-full space-y-3">
-                    <label for="transaction_name" class="block text-sm font-medium mb-2 dark:text-white">Name</label>
-                    <input type="text" id="transaction_name" @bind="_transactionModel.Name" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="you@site.com">
-                </div>
+            <div class="max-w-md w-full space-y-3">
+                <label for="transaction_name" class="block text-sm font-medium mb-2 dark:text-white">Name</label>
+                <input type="text" id="transaction_name" @bind="_transactionModel.Name" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="you@site.com">
+            </div>
 
-                <div class="max-w-md w-full space-y-3">
-                    <label for="transaction_description" class="block text-sm font-medium mb-2 dark:text-white">Description</label>
-                    <textarea id="transaction_description" @bind="_transactionModel.Description" class="py-2 px-3 sm:py-3 sm:px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder="Say hi..."></textarea>
-                </div>
+            <div class="max-w-md w-full space-y-3">
+                <label for="transaction_description" class="block text-sm font-medium mb-2 dark:text-white">Description</label>
+                <textarea id="transaction_description" @bind="_transactionModel.Description" class="py-2 px-3 sm:py-3 sm:px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder="Say hi..."></textarea>
+            </div>
 
-                <div class="max-w-md w-full space-y-3">
-                    <div>
-                        <label for="transaction_price" class="block text-sm font-medium mb-2 dark:text-white">Price</label>
-                        <div class="relative">
-                            <input type="text" id="transaction_price" @bind="_transactionModel.Price" class="py-2.5 sm:py-3 px-4 ps-9 pe-16 block w-full border-gray-200 rounded-lg sm:text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="0.00">
-                            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                                <span class="text-gray-500 dark:text-neutral-500">£</span>
-                            </div>
-                            <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-4">
-                                <span class="text-gray-500 dark:text-neutral-500">GBP</span>
-                            </div>
+            <div class="max-w-md w-full space-y-3">
+                <div>
+                    <label for="transaction_price" class="block text-sm font-medium mb-2 dark:text-white">Price</label>
+                    <div class="relative">
+                        <input type="text" id="transaction_price" @bind="_transactionModel.Price" class="py-2.5 sm:py-3 px-4 ps-9 pe-16 block w-full border-gray-200 rounded-lg sm:text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="0.00">
+                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                            <span class="text-gray-500 dark:text-neutral-500">£</span>
                         </div>
-                    </div>
-                </div>
-
-                <div class="max-w-md w-full space-y-3">
-                    <label for="transaction_date" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
-                    <SfDatePicker ID="transaction_date" @bind-Value="_transactionModel.TransactionDate" TValue="DateTime?" Placeholder="Choose a Date" FullScreen="false" StrictMode="true" OpenOnFocus="true" CssClass="tailwind-datepicker" />
-                </div>
-
-                <div class="max-w-md w-full space-y-3">
-                    <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Type</label>
-                    <select id="transaction_type" @bind="_transactionModel.Type" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                        <option value="@(TransactionType.Unknown)" selected="">-- Please Select --</option>
-                        <option value="@(TransactionType.Income)">Income</option>
-                        <option value="@(TransactionType.Outcome)">Outcome</option>
-                        <option value="@(TransactionType.Pending)">Pending</option>
-                    </select>
-                </div>
-
-                @if (_transactionModel.Type == TransactionType.Outcome)
-                {
-                    <div class="max-w-md w-full space-y-3">
-                        <label for="transaction_category" class="block text-sm font-medium mb-2 dark:text-white">Category</label>
-                        <select id="transaction_category" @bind="_transactionModel.Category" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                            <option value="@(CategoryEnum.None)" selected="">-- Please Select --</option>
-                            <option value="@(CategoryEnum.Bills)">Bills</option>
-                            <option value="@(CategoryEnum.Shopping)">Shopping</option>
-                            <option value="@(CategoryEnum.Groceries)">Groceries</option>
-                            <option value="@(CategoryEnum.Entertainment)">Entertainment</option>
-                            <option value="@(CategoryEnum.Activities)">Activities</option>
-                            <option value="@(CategoryEnum.Travel)">Travel</option>
-                            <option value="@(CategoryEnum.PaymentsAndTransfers)">Payments and Transfers</option>
-                            <option value="@(CategoryEnum.Other)">Other</option>
-                        </select>
-                    </div>
-                }
-
-                <div class="max-w-md w-full space-y-3">
-                    <label for="transaction_rank" class="block text-sm font-medium mb-2 dark:text-white">Rank</label>
-                    <input type="number" id="transaction_rank" @bind="_transactionModel.Rank" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="you@site.com">
-                </div>
-            
-                <div class="max-w-md w-full">
-                    <div class="flex justify-end gap-2">
-                        <button @onclick="_transactionModal.Close" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Close</button>
-                        <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700" type="submit">Save</button>
+                        <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-4">
+                            <span class="text-gray-500 dark:text-neutral-500">GBP</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        </EditForm>
+            <div class="max-w-md w-full space-y-3">
+                <label for="transaction_date" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
+                <SfDatePicker ID="transaction_date" @bind-Value="_transactionModel.TransactionDate" TValue="DateTime?" Placeholder="Choose a Date" FullScreen="false" StrictMode="true" OpenOnFocus="true" CssClass="tailwind-datepicker" />
+            </div>
+
+            <div class="max-w-md w-full space-y-3">
+                <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Type</label>
+                <select id="transaction_type" @bind="_transactionModel.Type" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                    <option value="@(TransactionType.Unknown)" selected="">-- Please Select --</option>
+                    <option value="@(TransactionType.Income)">Income</option>
+                    <option value="@(TransactionType.Outcome)">Outcome</option>
+                    <option value="@(TransactionType.Pending)">Pending</option>
+                </select>
+            </div>
+
+            @if (_transactionModel.Type == TransactionType.Outcome)
+            {
+                <div class="max-w-md w-full space-y-3">
+                    <label for="transaction_category" class="block text-sm font-medium mb-2 dark:text-white">Category</label>
+                    <select id="transaction_category" @bind="_transactionModel.Category" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                        <option value="@(CategoryEnum.None)" selected="">-- Please Select --</option>
+                        <option value="@(CategoryEnum.Bills)">Bills</option>
+                        <option value="@(CategoryEnum.Shopping)">Shopping</option>
+                        <option value="@(CategoryEnum.Groceries)">Groceries</option>
+                        <option value="@(CategoryEnum.Entertainment)">Entertainment</option>
+                        <option value="@(CategoryEnum.Activities)">Activities</option>
+                        <option value="@(CategoryEnum.Travel)">Travel</option>
+                        <option value="@(CategoryEnum.PaymentsAndTransfers)">Payments and Transfers</option>
+                        <option value="@(CategoryEnum.Other)">Other</option>
+                    </select>
+                </div>
+            }
+
+            <div class="max-w-md w-full space-y-3">
+                <label for="transaction_rank" class="block text-sm font-medium mb-2 dark:text-white">Rank</label>
+                <input type="number" id="transaction_rank" @bind="_transactionModel.Rank" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="you@site.com">
+            </div>
+            
+            <div class="max-w-md w-full">
+                <div class="flex justify-end gap-2">
+                    <button @onclick="_transactionModal.Close" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Close</button>
+                    <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </EditForm>
     </Body>
 </Modal>
+
+@code {
+    private Guid? openDropdownId;
+
+    private void ToggleDropdown(Guid id)
+    {
+        if (openDropdownId == id)
+            openDropdownId = null;
+        else
+            openDropdownId = id;
+    }
+
+    private bool IsDropdownOpen(Guid id) => openDropdownId == id;
+
+    private void CloseDropdown() => openDropdownId = null;
+}
