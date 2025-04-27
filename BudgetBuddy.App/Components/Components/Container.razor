@@ -1,0 +1,95 @@
+﻿@using System.Text
+@inherits LayoutComponentBase
+
+@{
+    var visibilityClasses = BuildVisibilityClasses();
+}
+
+<div class="@visibilityClasses">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string CssClasses { get; set; } = string.Empty;
+    [Parameter] public ScreenSize From { get; set; } = ScreenSize.None;
+    [Parameter] public ScreenSize To { get; set; } = ScreenSize.None;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter] public bool ShowOnWindows { get; set; } = true;
+    [Parameter] public bool ShowOnMacOS { get; set; } = true;
+    [Parameter] public bool ShowOnIOS { get; set; } = true;
+    [Parameter] public bool ShowOnAndroid { get; set; } = true;
+
+    private string BuildVisibilityClasses()
+    {
+        if (DeviceInfo.Platform == DevicePlatform.WinUI && !ShowOnWindows)
+            return "hidden";
+
+        if (DeviceInfo.Platform == DevicePlatform.macOS && !ShowOnMacOS)
+            return "hidden";
+
+        if (DeviceInfo.Platform == DevicePlatform.iOS && !ShowOnIOS)
+            return "hidden";
+
+        if (DeviceInfo.Platform == DevicePlatform.Android && !ShowOnAndroid)
+            return "hidden";
+
+        var classes = new StringBuilder();
+
+        if (From == ScreenSize.None)
+        {
+            classes.Append(""); // No restriction = visible
+        }
+        else
+        {
+            classes.Append("hidden ");
+
+            classes.Append(GetMinClass(From) + " ");
+
+            if (To != ScreenSize.None)
+            {
+                classes.Append(GetMaxClass(To) + " ");
+            }
+        }
+
+        classes.Append($" {CssClasses}");
+
+        return classes.ToString().Trim();
+    }
+
+    private string GetMinClass(ScreenSize size)
+    {
+        return size switch
+        {
+            ScreenSize.Small => "sm:block",
+            ScreenSize.Medium => "md:block",
+            ScreenSize.Large => "lg:block",
+            ScreenSize.XLarge => "xl:block",
+            ScreenSize.XXLarge => "2xl:block",
+            _ => "block"
+        };
+    }
+
+    private string GetMaxClass(ScreenSize size)
+    {
+        return size switch
+        {
+            ScreenSize.Small => "sm:hidden",
+            ScreenSize.Medium => "md:hidden",
+            ScreenSize.Large => "lg:hidden",
+            ScreenSize.XLarge => "xl:hidden",
+            ScreenSize.XXLarge => "2xl:hidden",
+            _ => ""
+        };
+    }
+
+    public enum ScreenSize
+    {
+        None,
+        Small,
+        Medium,
+        Large,
+        XLarge,
+        XXLarge
+    }
+}
