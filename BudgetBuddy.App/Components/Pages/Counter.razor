@@ -22,15 +22,17 @@
             <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
             <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
         </ChartPrimaryXAxis>
+        
+        <ChartPrimaryYAxis Visible="false"></ChartPrimaryYAxis>
 
         <ChartTooltipSettings Enable="true" EnableHighlight="true" Header="<b>${series.name}</b>" Format="${point.x} : <b>${point.y}</b>"></ChartTooltipSettings>
         <ChartLegendSettings Visible="false" ShapeHeight="9" ShapeWidth="9" EnableHighlight="true"></ChartLegendSettings>
 
         <ChartSeriesCollection>
-            <ChartSeries DataSource="@ChartData" XName="Year" YName="Count" Name="Apple" PointColorMapping="Colour" Width="10" ColumnSpacing="0" Type="ChartSeriesType.Bar" LegendShape="LegendShape.Rectangle" CornerRadius="@(new ChartCornerRadius { BottomRight = 4, TopRight = 4})">
+            <ChartSeries DataSource="@ChartData" XName="Year" YName="Count" PointColorMapping="Colour" Width="10" ColumnSpacing="0" Type="ChartSeriesType.Bar" LegendShape="LegendShape.Rectangle" CornerRadius="@(new ChartCornerRadius { BottomRight = 4, TopRight = 4})">
                 <ChartMarker>
                     <ChartDataLabel Visible="false" Position="LabelPosition.Top">
-                        <ChartDataLabelFont FontWeight="600" Color="#ffffff"></ChartDataLabelFont>
+                        <ChartDataLabelFont FontWeight="1000" Color="#ffffff"></ChartDataLabelFont>
                     </ChartDataLabel>
                 </ChartMarker>
             </ChartSeries>
@@ -44,9 +46,10 @@
 
     public List<SalesData> ChartData = new List<SalesData>
     {
-        new SalesData { Year = "Income<br>£237.00", Count = 237, Colour = "#9b5de5" },
-        new SalesData { Year = "Outcome<br>£190.00", Count = 190, Colour = "#00f5d4" },
+        new SalesData { Year = "Outcome<br>£190.00", Count = 190, Colour = "#f87171" }, 
+        new SalesData { Year = "Income<br>£237.00", Count = 237, Colour = "#4ade80" }, 
     };
+
 
     public class SalesData
     {

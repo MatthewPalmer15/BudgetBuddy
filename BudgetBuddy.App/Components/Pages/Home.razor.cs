@@ -66,6 +66,7 @@ public partial class Home : CustomComponentBase
 
     private List<GetTransactionsResult.Transaction> Transactions { get; set; } = [];
     private List<ChartDataViewModel> ChartData { get; set; } = [];
+    private List<BarChartViewModel> BarChartData { get; set; } = [];
 
     private decimal TotalIncome => Transactions.Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
     private decimal TotalOutcome => Transactions.Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
@@ -102,6 +103,10 @@ public partial class Home : CustomComponentBase
             Percentage = 100 - leftOverPercentage,
             Tooltip = $"Left Over - {100 - leftOverPercentage}%"
         });
+
+        BarChartData = new List<BarChartViewModel>();
+        BarChartData.Add(new BarChartViewModel { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
+        BarChartData.Add(new BarChartViewModel { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
     }
 
     public async Task OpenTransactionModal(Guid? id = null)
@@ -198,5 +203,12 @@ public partial class Home : CustomComponentBase
         public decimal Price { get; set; }
         public string Title { get; set; }
         public TransactionType Type { get; set; }
+    }
+
+    public class BarChartViewModel
+    {
+        public string Title { get; set; }
+        public decimal Count { get; set; }
+        public string Colour { get; set; }
     }
 }
