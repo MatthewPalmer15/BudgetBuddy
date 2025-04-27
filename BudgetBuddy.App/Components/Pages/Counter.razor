@@ -7,3 +7,51 @@
 
 <button class="btn btn-primary" @onclick="DecreaseCount">Click me (down)</button>
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<div class="control-section" align='center'>
+    <SfChart Width="@Width" Height="175px" Theme="@Theme" Background="Transparent">
+        <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
+        <ChartSubTitleStyle TextOverflow="TextOverflow.Wrap"></ChartSubTitleStyle>
+        <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+        <ChartMargin Bottom="12"></ChartMargin>
+
+        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
+                           LabelIntersectAction="LabelIntersectAction.MultipleRows"
+                           LabelPlacement="LabelPlacement.OnTicks">
+            <ChartAxisLabelStyle TextAlignment="Syncfusion.Blazor.Charts.Alignment.Center"></ChartAxisLabelStyle>
+            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+            <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+        </ChartPrimaryXAxis>
+
+        <ChartTooltipSettings Enable="true" EnableHighlight="true" Header="<b>${series.name}</b>" Format="${point.x} : <b>${point.y}</b>"></ChartTooltipSettings>
+        <ChartLegendSettings Visible="false" ShapeHeight="9" ShapeWidth="9" EnableHighlight="true"></ChartLegendSettings>
+
+        <ChartSeriesCollection>
+            <ChartSeries DataSource="@ChartData" XName="Year" YName="Count" Name="Apple" PointColorMapping="Colour" Width="10" ColumnSpacing="0" Type="ChartSeriesType.Bar" LegendShape="LegendShape.Rectangle" CornerRadius="@(new ChartCornerRadius { BottomRight = 4, TopRight = 4})">
+                <ChartMarker>
+                    <ChartDataLabel Visible="false" Position="LabelPosition.Top">
+                        <ChartDataLabelFont FontWeight="600" Color="#ffffff"></ChartDataLabelFont>
+                    </ChartDataLabel>
+                </ChartMarker>
+            </ChartSeries>
+        </ChartSeriesCollection>
+    </SfChart>
+</div>
+
+@code {
+    private Theme Theme { get; set; } = Theme.Tailwind3Dark;
+    public string Width { get; set; } = "90%";
+
+    public List<SalesData> ChartData = new List<SalesData>
+    {
+        new SalesData { Year = "Income<br>£237.00", Count = 237, Colour = "#9b5de5" },
+        new SalesData { Year = "Outcome<br>£190.00", Count = 190, Colour = "#00f5d4" },
+    };
+
+    public class SalesData
+    {
+        public string Year { get; set; }
+        public double Count { get; set; }
+        public string Colour { get; set; }
+    }
+}
