@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace BlazorHybrid.App.Platforms.MacCatalyst;
+namespace BudgetBuddy.App.Platforms.MacCatalyst;
 
 public class Program
 {

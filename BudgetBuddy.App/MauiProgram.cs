@@ -1,10 +1,10 @@
-﻿using BlazorHybrid.App.Extensions;
+﻿using BudgetBuddy.App.Extensions;
 using BudgetBuddy.Application;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
 
-namespace BlazorHybrid.App;
+namespace BudgetBuddy.App;
 
 public static class MauiProgram
 {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace BlazorHybrid.App.Platforms.iOS;
+namespace BudgetBuddy.App.Platforms.iOS;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorHybrid.App;
+namespace BudgetBuddy.App;
 
 public class CustomComponentBase : ComponentBase
 {

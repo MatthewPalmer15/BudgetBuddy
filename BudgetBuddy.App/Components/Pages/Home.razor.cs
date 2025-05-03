@@ -1,4 +1,4 @@
-﻿using BlazorHybrid.App.Components.Components;
+﻿using BudgetBuddy.App.Components.Components;
 using BudgetBuddy.Application.Transactions.Commands;
 using BudgetBuddy.Application.Transactions.Models;
 using BudgetBuddy.Application.Transactions.Queries;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Syncfusion.Blazor.Charts;
 
-namespace BlazorHybrid.App.Components.Pages;
+namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Home : CustomComponentBase
 {

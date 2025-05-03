@@ -1,7 +1,7 @@
 ﻿using BudgetBuddy.Infrastructure.Services.Notification;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorHybrid.App.Components.Pages;
+namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Counter : CustomComponentBase
 {

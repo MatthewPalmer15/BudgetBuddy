@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace BlazorHybrid.App.Platforms.iOS;
+namespace BudgetBuddy.App.Platforms.iOS;
 
 public class Program
 {

@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.App;
+﻿namespace BudgetBuddy.App;
 
 public partial class MainPage : ContentPage
 {
