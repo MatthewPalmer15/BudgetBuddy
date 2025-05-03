@@ -43,13 +43,12 @@
         else
         {
             classes.Append("hidden ");
-
             classes.Append(GetMinClass(From) + " ");
+        }
 
-            if (To != ScreenSize.None)
-            {
-                classes.Append(GetMaxClass(To) + " ");
-            }
+        if (To != ScreenSize.None)
+        {
+            classes.Append(GetMaxClass(To) + " ");
         }
 
         classes.Append($" {CssClasses}");
