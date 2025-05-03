@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace BlazorHybrid.App.Platforms.Android;
+namespace BudgetBuddy.App.Platforms.Android;
 
 [Application]
 public class MainApplication : MauiApplication

@@ -3,7 +3,7 @@
 @inherits CustomComponentBase
 
 <div class="flex flex-col lg:flex-row gap-4 p-2 lg:p-6">
-    <div class="w-full lg:w-1/2 flex flex-col gap-8">
+    <div class="w-full lg:w-1/2 flex flex-col lg:gap-8">
         <div class="w-full">
             <Container From="Container.ScreenSize.Large" CssClasses="flex justify-center items-center h-[250px] lg:h-[300px]">
                 <SfAccumulationChart @ref="_sfAccumulationChart" EnableAnimation="true"
@@ -32,8 +32,8 @@
                 </SfAccumulationChart>
             </Container>
 
-            <Container To="Container.ScreenSize.Large" CssClasses="mt-4 lg:mt-0">
-                <SfChart Width="90%" Height="175px" Theme="@Theme.Tailwind3Dark" Background="Transparent">
+            <Container To="Container.ScreenSize.Large">
+                <SfChart Width="90%" Height="200px" Theme="@Theme.Tailwind3Dark" Background="Transparent">
                     <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
                     <ChartSubTitleStyle TextOverflow="TextOverflow.Wrap"></ChartSubTitleStyle>
                     <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
@@ -42,7 +42,7 @@
                     <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"
                                        LabelIntersectAction="LabelIntersectAction.MultipleRows"
                                        LabelPlacement="LabelPlacement.OnTicks">
-                        <ChartAxisLabelStyle TextAlignment="Syncfusion.Blazor.Charts.Alignment.Center"></ChartAxisLabelStyle>
+                        <ChartAxisLabelStyle TextAlignment="Alignment.Center"></ChartAxisLabelStyle>
                         <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
                         <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
                     </ChartPrimaryXAxis>
@@ -69,27 +69,38 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
+            
+            <div class="col-span-2 flex flex-col items-center bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-800/70">
+                <div class="m-2 p-2 text-center">
+                    <p class="text-gray-400 text-[10px]">BALANCE</p>
+                    <h6 class="text-blue-400 font-bold text-sm flex items-center justify-center">
+                        <div class="w-5 h-5 rounded-full bg-blue-500/10 flex items-center justify-center me-2">
+                            <i data-lucide="wallet" class="w-3 h-3 text-blue-400"></i>
+                        </div>
+                        @((TotalIncome - TotalOutcome).ToString("£#,0.00")) remaining
+                    </h6>
+                </div>
+            </div>
 
-            <!-- INCOME -->
-            <div class="flex flex-col bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+
+            <div class="flex flex-col bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-800/70">
                 <div class="m-2 p-2">
                     <p class="text-gray-400 text-[10px]">INCOME</p>
                     <h6 class="text-green-400 font-bold text-sm flex items-center">
                         <div class="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center me-2">
-                            <i data-lucide="trending-up" class="w-4 h-4 text-green-400"></i>
+                            <i data-lucide="trending-up" class="w-3 h-3 text-green-400"></i>
                         </div>
                         @TotalIncome.ToString("£#,0.00")
                     </h6>
                 </div>
             </div>
 
-            <!-- OUTCOME -->
-            <div class="flex flex-col bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+            <div class="flex flex-col bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-800/70">
                 <div class="m-2 p-2">
                     <p class="text-gray-400 text-[10px]">OUTCOME</p>
                     <h6 class="text-red-400 font-bold text-sm flex items-center">
                         <div class="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center me-2">
-                            <i data-lucide="trending-down" class="w-4 h-4 text-red-400"></i>
+                            <i data-lucide="trending-down" class="w-3 h-3 text-red-400"></i>
                         </div>
                         @TotalOutcome.ToString("£#,0.00")
                     </h6>
@@ -97,139 +108,126 @@
             </div>
 
         </div>
-        </div>
+    </div>
 
 
     <div class="w-full lg:w-1/2">
-        <div class="flex items-center justify-between mt-5 lg:mt-0 mb-4">
-            <h5 class="text-xl font-bold">Transactions (@Transactions.Count)</h5>
-            <a @onclick="() => OpenTransactionModal(Guid.Empty)"
-               class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
-                <span class="hidden sm:inline">Create</span>
-            </a>
-        </div>
-
-
         @foreach (var transaction in Transactions.OrderByDescending(x => x.Type == TransactionType.Income).ThenByDescending(x => x.TransactionDate))
         {
             <div class="mb-3 relative">
-            <div class="text-white border border-gray-800 shadow-md rounded-lg">
-            <div class="p-3">
-                <div class="flex items-center justify-between gap-3">
+                <div class="bg-white border border-gray-200 shadow-sm rounded-md dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-800/70">
+                    <div class="p-3">
+                        <div class="flex items-center justify-between gap-3">
 
-                    <!-- Left: Icon and Details -->
-                    <div class="flex items-start gap-3 text-sm">
-                        @switch (transaction.Type)
-                        {
-                            case TransactionType.Income:
-                                <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                                    </svg>
-                                </div>
-                                break;
-                            case TransactionType.Outcome:
-                                <div class="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                    </svg>
-                                </div>
-                                break;
-                            case TransactionType.Pending:
-                                <div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
-                                    </svg>
-                                </div>
-                                break;
-                        }
-
-                        <div class="flex flex-col justify-center">
-                            <span class="font-semibold leading-tight">@transaction.Name</span>
-                            <div class="items-center space-x-1 text-gray-400 text-xs hidden md:flex">
-                                @if (transaction.Category != CategoryEnum.None)
+                            <!-- Left: Icon and Details -->
+                            <div class="flex items-start gap-3 text-sm">
+                                @switch (transaction.Type)
                                 {
-                                    <span>@transaction.Category.ToString()</span>
+                                    case TransactionType.Income:
+                                        <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+                                            <i data-lucide="arrow-big-up" class="w-5 h-5 text-green-400"></i>
+                                        </div>
+                                        break;
+                                    case TransactionType.Outcome:
+                                        <div class="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
+                                            <i data-lucide="arrow-big-down" class="w-5 h-5 text-red-400"></i>
+                                        </div>
+                                        break;
+                                    case TransactionType.Pending:
+                                        <div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
+                                            </svg>
+                                        </div>
+                                        break;
                                 }
 
-                                @if (transaction.Category != CategoryEnum.None && transaction.TransactionDate.HasValue)
-                                {
-                                    <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
-                                }
+                                <div class="flex flex-col justify-center">
+                                    <span class="font-semibold leading-tight">@transaction.Name</span>
+                                    <div class="items-center space-x-1 text-gray-400 text-xs hidden md:flex">
+                                        @if (transaction.Category != CategoryEnum.None)
+                                        {
+                                            <span>@transaction.Category.ToString()</span>
+                                        }
 
-                                @if (transaction.TransactionDate.HasValue)
-                                {
-                                    <span>@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
-                                }
-                            </div>
+                                        @if (transaction.Category != CategoryEnum.None && transaction.TransactionDate.HasValue)
+                                        {
+                                            <span class="w-1 h-1 bg-gray-400 rounded-full"></span>
+                                        }
 
-                            @if (transaction.Category != CategoryEnum.None)
-                            {
-                                <span class="text-gray-400 text-xs flex md:hidden">@transaction.Category.ToString()</span>
-                            }
+                                        @if (transaction.TransactionDate.HasValue)
+                                        {
+                                            <span>@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
+                                        }
+                                    </div>
+
+                                    @if (transaction.Category != CategoryEnum.None)
+                                    {
+                                        <span class="text-gray-400 text-xs flex md:hidden">@transaction.Category.ToString()</span>
+                                    }
                             
-                            @if (transaction.TransactionDate.HasValue)
-                            {
-                                <span class="text-gray-400 text-xs flex md:hidden">@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
-                            }
+                                    @if (transaction.TransactionDate.HasValue)
+                                    {
+                                        <span class="text-gray-400 text-xs flex md:hidden">@transaction.TransactionDate.Value.ToString("dd MMMM yyyy")</span>
+                                    }
+                                </div>
                             </div>
-                    </div>
 
-                    <!-- Right: Amount and Dropdown -->
-                    <div class="flex items-center gap-2 text-sm relative">
-                        @switch (transaction.Type)
-                        {
-                            case TransactionType.Income:
-                                <span class="text-green-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                break;
-                            case TransactionType.Outcome:
-                                <span class="text-red-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                break;
-                            case TransactionType.Pending:
-                                <span class="text-yellow-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                break;
-                        }
+                            <!-- Right: Amount and Dropdown -->
+                            <div class="flex items-center gap-2 text-sm relative">
+                                @switch (transaction.Type)
+                                {
+                                    case TransactionType.Income:
+                                        <span class="text-green-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case TransactionType.Outcome:
+                                        <span class="text-red-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                    case TransactionType.Pending:
+                                        <span class="text-yellow-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
+                                        break;
+                                }
 
-                        <!-- Dropdown Button -->
-                        <button class="text-gray-400 hover:text-white" @onclick="() => ToggleDropdown(transaction.Id)">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </button>
+                                <div class="hs-dropdown relative inline-flex">
+                                    <button id="hs-dropdown-trigger-@(transaction.Id)" type="button" class="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                                        <svg class="flex-none size-4 text-gray-600 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" /></svg>
+                                    </button>
 
-                        <!-- Dropdown Menu -->
-                        @if (IsDropdownOpen(transaction.Id))
-                        {
-                            <div class="absolute right-0 mt-10 w-36 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-20">
-                                <ul class="text-sm text-white">
-                                    <li>
-                                        <button class="w-full text-left px-4 py-2 hover:bg-gray-700"
-                                                @onclick="() => { ToggleDropdown(transaction.Id); OpenTransactionModal(transaction.Id); }">
-                                            Edit
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="w-full text-left px-4 py-2 hover:bg-red-600 hover:text-white"
-                                                @onclick="() => { ToggleDropdown(transaction.Id); Delete(transaction.Id); }">
-                                            Delete
-                                        </button>
-                                    </li>
-                                </ul>
+                                    <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-trigger-@(transaction.Id)">
+                                        <div class="p-1 space-y-0.5">
+                                            <a @onclick="() => OpenTransactionModal(transaction.Id)" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                                                Edit
+                                            </a>
+                                            <a @onclick="() => Delete(transaction.Id)" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-red-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-red-400 dark:hover:bg-neutral-700 dark:hover:text-red-300 dark:focus:bg-neutral-700">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                       
                             </div>
-                        }
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-    </div>
 
         }
     </div>
 </div>
+
+<button @onclick="() => OpenTransactionModal(Guid.Empty)"
+    class="fixed bottom-20 right-6 z-50 h-16 w-16 rounded-full bg-blue-600 shadow-xl transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-300 flex items-center justify-center"
+    aria-label="Add"
+>
+    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+    </svg>
+</button>
+
+
 
 <Modal @ref="_transactionModal" Title="Create Transaction" Size="Modal.ModalSize.Large" VerticalAlignment="Modal.ModalVerticalAlignment.Top">
     <Body>
@@ -264,8 +262,8 @@
 
             <div class="max-w-md w-full space-y-3">
                 <label for="transaction_date" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
-                <SfDatePicker ID="transaction_date" @bind-Value="_transactionModel.TransactionDate" TValue="DateTime?" Placeholder="Choose a Date" FullScreen="false" StrictMode="true" OpenOnFocus="true" CssClass="tailwind-datepicker" />
-            </div>
+                    <input type="date" id="transaction_date" @bind="_transactionModel.TransactionDate" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="">
+                </div>
 
             <div class="max-w-md w-full space-y-3">
                 <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Type</label>
@@ -313,23 +311,8 @@
     </Body>
 </Modal>
 
-@code {
-    private Guid? openDropdownId;
 
-    private void ToggleDropdown(Guid id)
-    {
-        if (openDropdownId == id)
-            openDropdownId = null;
-        else
-            openDropdownId = id;
-    }
-
-    private bool IsDropdownOpen(Guid id) => openDropdownId == id;
-
-    private void CloseDropdown() => openDropdownId = null;
-}
-
-            
+@*
 <div class="w-full bg-white rounded-lg shadow-md dark:bg-neutral-800">
     <div class="hs-accordion-group">
         <div class="hs-accordion active" id="hs-basic-heading-one">
@@ -393,3 +376,4 @@
         </div>
     </div>
 </div>
+*@

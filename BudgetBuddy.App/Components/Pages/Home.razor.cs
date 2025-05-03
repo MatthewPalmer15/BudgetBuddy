@@ -1,4 +1,4 @@
-﻿using BlazorHybrid.App.Components.Components;
+﻿using BudgetBuddy.App.Components.Components;
 using BudgetBuddy.Application.Transactions.Commands;
 using BudgetBuddy.Application.Transactions.Models;
 using BudgetBuddy.Application.Transactions.Queries;
@@ -6,14 +6,12 @@ using BudgetBuddy.Database.Enums;
 using BudgetBuddy.Infrastructure.Enums.Toast;
 using BudgetBuddy.Infrastructure.Services.Toast;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Syncfusion.Blazor.Charts;
 
-namespace BlazorHybrid.App.Components.Pages;
+namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Home : CustomComponentBase
 {
-    [Inject] public IJSRuntime JsRuntime { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private IToastManager ToastManager { get; set; }
 
@@ -82,31 +80,37 @@ public partial class Home : CustomComponentBase
 
         Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
 
-        ChartData = Transactions
-            .Where(x => x.Type == TransactionType.Outcome)
-            .OrderBy(x => x.Category)
-            .GroupBy(t => t.Category)
-            .Select(g => new ChartDataViewModel
-            {
-                Title = g.Key.ToString(),
-                Price = g.Sum(t => t.Price),
-                Percentage = Math.Round(g.Sum(t => t.Price) / TotalIncome * 100, 2),
-                Tooltip = $"{g.Key} - {Math.Round(g.Sum(t => t.Price) / TotalIncome * 100, 2)}%"
-            })
-            .ToList();
-
-        var leftOverPercentage = ChartData.Sum(x => x.Percentage);
-        ChartData.Add(new ChartDataViewModel
+        if (Transactions.Any(x => x.Type == TransactionType.Income))
         {
-            Title = "Left Over",
-            Price = TotalIncome - TotalOutcome,
-            Percentage = 100 - leftOverPercentage,
-            Tooltip = $"Left Over - {100 - leftOverPercentage}%"
-        });
+            ChartData = Transactions
+                .Where(x => x.Type == TransactionType.Outcome)
+                .OrderBy(x => x.Category)
+                .GroupBy(t => t.Category)
+                .Select(g => new ChartDataViewModel
+                {
+                    Title = g.Key.ToString(),
+                    Price = g.Sum(t => t.Price),
+                    Percentage = Math.Round(g.Sum(t => t.Price) / TotalIncome * 100, 2),
+                    Tooltip = $"{g.Key} - {Math.Round(g.Sum(t => t.Price) / TotalIncome * 100, 2)}%"
+                })
+                .ToList();
+
+            var leftOverPercentage = ChartData.Sum(x => x.Percentage);
+            ChartData.Add(new ChartDataViewModel
+            {
+                Title = "Left Over",
+                Price = TotalIncome - TotalOutcome,
+                Percentage = 100 - leftOverPercentage,
+                Tooltip = $"Left Over - {100 - leftOverPercentage}%"
+            });
+
+
+        }
 
         BarChartData = new List<BarChartViewModel>();
         BarChartData.Add(new BarChartViewModel { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
         BarChartData.Add(new BarChartViewModel { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
+
     }
 
     public async Task OpenTransactionModal(Guid? id = null)

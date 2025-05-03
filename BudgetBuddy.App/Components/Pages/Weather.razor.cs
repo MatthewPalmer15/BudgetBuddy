@@ -1,4 +1,4 @@
-﻿namespace BlazorHybrid.App.Components.Pages;
+﻿namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Weather : CustomComponentBase
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BlazorHybrid.App.Extensions;
+namespace BudgetBuddy.App.Extensions;
 
 public static class ServiceCollectionExtensions
 {
