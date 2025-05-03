@@ -22,10 +22,10 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>BlazorHybrid.App</ApplicationTitle>
+		<ApplicationTitle>BudgetBuddy</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.blazorhybrid.app</ApplicationId>
+		<ApplicationId>uk.co.maruki.budgetbuddy</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
