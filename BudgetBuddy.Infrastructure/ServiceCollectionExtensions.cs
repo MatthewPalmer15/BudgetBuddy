@@ -6,6 +6,7 @@ using BudgetBuddy.Infrastructure.Encryption;
 using BudgetBuddy.Infrastructure.Services;
 using BudgetBuddy.Infrastructure.Services.Caching;
 using BudgetBuddy.Infrastructure.Services.Csv;
+using BudgetBuddy.Infrastructure.Services.Json;
 using BudgetBuddy.Infrastructure.Services.Notification;
 using BudgetBuddy.Infrastructure.Services.Toast;
 #if WINDOWS
@@ -35,6 +36,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICacheManager, CacheManager>();
 
         services.AddScoped<IToastManager, ToastManager>();
+        services.AddScoped<IJsonSerializer, JsonSerializer>();
 
 
 #if ANDROID
