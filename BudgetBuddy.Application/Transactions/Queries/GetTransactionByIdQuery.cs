@@ -15,20 +15,20 @@ public class GetTransactionByIdQuery : IRequest<GetTransactionByIdResult?>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                          where !t.Deleted && request.Id == t.Id
-                          select new GetTransactionByIdResult
-                          {
-                              Id = t.Id,
-                              Name = t.Name,
-                              Description = t.Description,
-                              Price = t.Price,
-                              TransactionDate = t.TransactionDate,
-                              Type = t.Type,
-                              Category = t.Category,
-                              Rank = t.Rank,
-                              Essential = t.Essential,
-                              VendorId = t.VendorId
-                          }).FirstOrDefaultAsync(cancellationToken);
+                where !t.Deleted && request.Id == t.Id
+                select new GetTransactionByIdResult
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    Price = t.Price,
+                    TransactionDate = t.TransactionDate,
+                    Type = t.Type,
+                    Category = t.Category,
+                    Rank = t.Rank,
+                    Essential = t.Essential,
+                    VendorId = t.VendorId
+                }).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

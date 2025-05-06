@@ -21,15 +21,11 @@
 
 @code {
 
-    [Parameter]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    [Parameter]
-    public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? Header { get; set; }
 
-    [Parameter]
-    public RenderFragment? Body { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
 
-    [Parameter]
-    public RenderFragment? Footer { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
 }

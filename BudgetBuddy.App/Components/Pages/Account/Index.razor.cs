@@ -6,8 +6,7 @@ namespace BudgetBuddy.App.Components.Pages.Account;
 
 public partial class Index : CustomComponentBase
 {
-    [Inject]
-    public NavigationManager Navigation { get; set; }
+    [Inject] public NavigationManager Navigation { get; set; }
 
     private GetUserResult User { get; set; }
 
@@ -15,9 +14,6 @@ public partial class Index : CustomComponentBase
     {
         var cancellationToken = new CancellationTokenSource().Token;
         User = await Mediator.Send(new GetUserQuery(), cancellationToken);
-        if (!User.IsAuthenticated)
-        {
-            Navigation.NavigateTo("/account/login");
-        }
+        if (!User.IsAuthenticated) Navigation.NavigateTo("/account/login");
     }
 }

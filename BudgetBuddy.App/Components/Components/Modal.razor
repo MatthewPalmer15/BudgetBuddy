@@ -24,30 +24,31 @@
 
 
 @code {
-    [Parameter]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    [Parameter]
-    public string Title { get; set; } = "";
+    [Parameter] public string Title { get; set; } = "";
 
-    [Parameter]
-    public ModalSize Size { get; set; } = ModalSize.Medium;
+    [Parameter] public ModalSize Size { get; set; } = ModalSize.Medium;
 
-    [Parameter]
-    public ModalVerticalAlignment VerticalAlignment { get; set; } = ModalVerticalAlignment.Center;
+    [Parameter] public ModalVerticalAlignment VerticalAlignment { get; set; } = ModalVerticalAlignment.Center;
 
 
-    [Parameter]
-    public RenderFragment? Body { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
 
-    [Parameter]
-    public RenderFragment? Footer { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
 
     private bool Show { get; set; }
 
 
-    public void Open() => Show = true;
-    public void Close() => Show = false;
+    public void Open()
+    {
+        Show = true;
+    }
+
+    public void Close()
+    {
+        Show = false;
+    }
 
     public enum ModalSize
     {

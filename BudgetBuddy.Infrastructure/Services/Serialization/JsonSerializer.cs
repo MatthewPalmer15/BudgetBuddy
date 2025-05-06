@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BudgetBuddy.Infrastructure.Services.Json;
+namespace BudgetBuddy.Infrastructure.Services.Serialization;
 
 public interface IJsonSerializer
 {
@@ -15,6 +15,7 @@ internal class JsonSerializer : IJsonSerializer
     {
         return JsonConvert.SerializeObject(obj);
     }
+
     public object? Deserialize(string obj)
     {
         return JsonConvert.DeserializeObject(obj);

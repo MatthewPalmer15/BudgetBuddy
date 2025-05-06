@@ -7,13 +7,9 @@ namespace BudgetBuddy.App.Components.Pages.Account;
 
 public partial class Login : CustomComponentBase
 {
+    public LoginViewModel _model = new();
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private IToastManager ToastManager { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
 
     private async Task LoginUser()
     {
@@ -34,8 +30,6 @@ public partial class Login : CustomComponentBase
 
         ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
     }
-
-    public LoginViewModel _model = new();
 
     public class LoginViewModel
     {

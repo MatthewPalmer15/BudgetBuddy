@@ -16,7 +16,8 @@ public class RegisterUserCommand : IRequest<BaseResponse>
     {
         private readonly IRestClient _client = new RestClient("");
 
-        public async Task<BaseResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse> Handle(RegisterUserCommand request,
+            CancellationToken cancellationToken = default)
         {
             var apiRequest = new RestRequest("/auth/register", Method.Post);
             apiRequest.AddJsonBody(request);

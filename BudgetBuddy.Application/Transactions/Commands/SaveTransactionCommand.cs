@@ -84,8 +84,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                          where !t.Deleted && t.Id == request.Id
-                          select t).FirstOrDefaultAsync(cancellationToken);
+                where !t.Deleted && t.Id == request.Id
+                select t).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

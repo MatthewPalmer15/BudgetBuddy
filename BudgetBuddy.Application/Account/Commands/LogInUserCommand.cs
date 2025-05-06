@@ -1,5 +1,5 @@
 ﻿using BudgetBuddy.Application.Account.Models;
-using BudgetBuddy.Infrastructure.Services.Json;
+using BudgetBuddy.Infrastructure.Services.Serialization;
 using FluentValidation;
 using MediatR;
 using RestSharp;
@@ -27,14 +27,15 @@ public class LogInUserCommand : IRequest<BaseResponse>
                 return BaseResponse.Failed(response.ErrorMessage ?? "Failed to connect to the server.");
 
             if (response is { Data: null or { Success: false } })
-                return BaseResponse.Failed(response?.Data?.Errors ?? [new RequestError("", "Failed to retrieve data from the server")]);
+                return BaseResponse.Failed(response?.Data?.Errors ??
+                                           [new RequestError("", "Failed to retrieve data from the server")]);
 
             var accountModel = _serializer.Serialize(new AccountModel
             {
                 Id = response.Data.Id,
                 FirstName = response.Data.FirstName,
                 LastName = response.Data.LastName,
-                EmailAddress = response.Data.EmailAddress,
+                EmailAddress = response.Data.EmailAddress
             });
 
             await SecureStorage.SetAsync("authentication_token", response.Data.AuthenticationToken);

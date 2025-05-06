@@ -12,9 +12,6 @@ namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Home : CustomComponentBase
 {
-    [Inject] private NavigationManager NavigationManager { get; set; }
-    [Inject] private IToastManager ToastManager { get; set; }
-
     private readonly string[] _colourPalette =
     [
         "#365A9B", // Blue
@@ -36,7 +33,7 @@ public partial class Home : CustomComponentBase
         "#5858BC", // Cool Blue
         "#CC9E00", // Warm Yellow
         "#487DB0", // Steel Blue
-        "#3D4EB8"  // Cobalt
+        "#3D4EB8" // Cobalt
     ];
 
 
@@ -45,21 +42,8 @@ public partial class Home : CustomComponentBase
     private Modal _transactionModal;
 
     private TransactionModel _transactionModel = new();
-
-
-    public class TransactionModel
-    {
-        public Guid? Id { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public decimal Price { get; set; }
-        public DateTime? TransactionDate { get; set; }
-        public bool IsRecurring { get; set; }
-        public TransactionType Type { get; set; }
-        public CategoryEnum Category { get; set; }
-        public int Rank { get; set; }
-        public Guid? VendorId { get; set; }
-    }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IToastManager ToastManager { get; set; }
 
 
     private List<GetTransactionsResult.Transaction> Transactions { get; set; } = [];
@@ -103,14 +87,13 @@ public partial class Home : CustomComponentBase
                 Percentage = 100 - leftOverPercentage,
                 Tooltip = $"Left Over - {100 - leftOverPercentage}%"
             });
-
-
         }
 
         BarChartData = new List<BarChartViewModel>();
-        BarChartData.Add(new BarChartViewModel { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
-        BarChartData.Add(new BarChartViewModel { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
-
+        BarChartData.Add(new BarChartViewModel
+            { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
+        BarChartData.Add(new BarChartViewModel
+            { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
     }
 
     public async Task OpenTransactionModal(Guid? id = null)
@@ -198,6 +181,21 @@ public partial class Home : CustomComponentBase
         {
             ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
         }
+    }
+
+
+    public class TransactionModel
+    {
+        public Guid? Id { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public bool IsRecurring { get; set; }
+        public TransactionType Type { get; set; }
+        public CategoryEnum Category { get; set; }
+        public int Rank { get; set; }
+        public Guid? VendorId { get; set; }
     }
 
     public class ChartDataViewModel

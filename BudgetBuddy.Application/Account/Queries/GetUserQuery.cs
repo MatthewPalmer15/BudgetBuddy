@@ -1,5 +1,5 @@
 ﻿using BudgetBuddy.Application.Account.Models;
-using BudgetBuddy.Infrastructure.Services.Json;
+using BudgetBuddy.Infrastructure.Services.Serialization;
 using MediatR;
 
 namespace BudgetBuddy.Application.Account.Queries;
@@ -33,5 +33,4 @@ public class GetUserQuery : IRequest<GetUserResult>
             };
         }
     }
-
 }

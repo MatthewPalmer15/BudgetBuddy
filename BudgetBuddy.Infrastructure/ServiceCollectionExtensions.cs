@@ -1,16 +1,25 @@
-﻿#if ANDROID
-using BudgetBuddy.Infrastructure.Platforms.Android;
-#endif
-
-using BudgetBuddy.Infrastructure.Encryption;
+﻿using BudgetBuddy.Infrastructure.Encryption;
 using BudgetBuddy.Infrastructure.Services;
 using BudgetBuddy.Infrastructure.Services.Caching;
 using BudgetBuddy.Infrastructure.Services.Csv;
-using BudgetBuddy.Infrastructure.Services.Json;
 using BudgetBuddy.Infrastructure.Services.Notification;
+using BudgetBuddy.Infrastructure.Services.Serialization;
 using BudgetBuddy.Infrastructure.Services.Toast;
+#if ANDROID
+using BudgetBuddy.Infrastructure.Platforms.Android;
+#endif
+
+/* Unmerged change from project 'BudgetBuddy.Infrastructure (net9.0-android)'
+Before:
+#if WINDOWS
+After:
+using BudgetBuddy.Infrastructure.Services.Serialization;
+#if WINDOWS
+*/
+
 #if WINDOWS
 using BudgetBuddy.Infrastructure.Platforms.Windows;
+using BudgetBuddy.Infrastructure.Services.Serialization;
 #endif
 
 #if IOS
@@ -37,6 +46,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IToastManager, ToastManager>();
         services.AddScoped<IJsonSerializer, JsonSerializer>();
+        services.AddScoped<IXmlSerializer, XmlSerializer>();
 
 
 #if ANDROID

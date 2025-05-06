@@ -12,7 +12,8 @@ public class DeleteTransactionCommand : IRequest<BaseResponse>
 
     public class Handler(IDbContext context) : IRequestHandler<DeleteTransactionCommand, BaseResponse>
     {
-        public async Task<BaseResponse> Handle(DeleteTransactionCommand request, CancellationToken cancellationToken = default)
+        public async Task<BaseResponse> Handle(DeleteTransactionCommand request,
+            CancellationToken cancellationToken = default)
         {
             var validationResult = await new Validator().ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
@@ -34,8 +35,8 @@ public class DeleteTransactionCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                          where !t.Deleted && t.Id == request.Id
-                          select t).FirstOrDefaultAsync(cancellationToken);
+                where !t.Deleted && t.Id == request.Id
+                select t).FirstOrDefaultAsync(cancellationToken);
         }
     }
 
