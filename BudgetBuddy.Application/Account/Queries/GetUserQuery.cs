@@ -10,17 +10,17 @@ public class GetUserQuery : IRequest<GetUserResult>
     {
         public async Task<GetUserResult> Handle(GetUserQuery query, CancellationToken cancellationToken = default)
         {
-            var authenticationToken = await SecureStorage.GetAsync("authentication_token");
+            var authenticationToken = await SecureStorage.Default.GetAsync("authentication_token");
             if (string.IsNullOrWhiteSpace(authenticationToken))
                 return new GetUserResult { IsAuthenticated = false };
 
             var json = await SecureStorage.GetAsync("authentication_user");
             if (string.IsNullOrWhiteSpace(json))
-                return new GetUserResult { IsAuthenticated = true };
+                return new GetUserResult { IsAuthenticated = false };
 
             var accountModel = serializer.Deserialize<AccountModel>(json);
             if (accountModel == null)
-                return new GetUserResult { IsAuthenticated = true };
+                return new GetUserResult { IsAuthenticated = false };
 
             return new GetUserResult
             {

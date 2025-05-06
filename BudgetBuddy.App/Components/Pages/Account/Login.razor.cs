@@ -1,8 +1,45 @@
-﻿namespace BudgetBuddy.App.Components.Pages.Account;
+﻿using BudgetBuddy.Application.Account.Commands;
+using BudgetBuddy.Infrastructure.Enums.Toast;
+using BudgetBuddy.Infrastructure.Services.Toast;
+using Microsoft.AspNetCore.Components;
+
+namespace BudgetBuddy.App.Components.Pages.Account;
 
 public partial class Login : CustomComponentBase
 {
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private IToastManager ToastManager { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+
+    }
+
+    private async Task LoginUser()
+    {
+        var cancellationToken = new CancellationTokenSource().Token;
+
+        var response = await Mediator.Send(new LogInUserCommand
+        {
+            EmailAddress = _model.EmailAddress,
+            Password = _model.Password
+        }, cancellationToken);
+
+        if (response.Success)
+        {
+            ToastManager.Show("Save successfully", ToastType.Success);
+            await Task.Delay(1000, cancellationToken);
+            NavigationManager.NavigateTo("/account");
+        }
+
+        ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
+    }
+
+    public LoginViewModel _model = new();
+
+    public class LoginViewModel
+    {
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -11,7 +11,10 @@ public class CustomComponentBase : ComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("marukiInit");
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("marukiInit");
+        }
     }
 
 }
