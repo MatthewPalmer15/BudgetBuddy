@@ -1,6 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import "flatpickr/dist/flatpickr.min.css";
+@import "flatpickr/dist/themes/dark.css";
 
 .hs-overlay-backdrop.bg-gray-900 {
   background-color: rgba(17, 24, 39, 0.5); /* Set your desired background color and opacity */
@@ -107,4 +109,72 @@
 
 .dark-scrollbar::-webkit-scrollbar-track {
     background: transparent;
+}
+
+/* === LIGHT MODE === */
+.flatpickr-calendar {
+    @apply bg-white border border-gray-200 rounded-lg shadow-lg text-sm text-gray-800;
+}
+
+.flatpickr-day {
+    @apply w-8 h-8 flex items-center justify-center rounded hover:bg-blue-100;
+}
+
+.flatpickr-day.today {
+    @apply border border-blue-500 text-blue-600;
+}
+
+.flatpickr-day.selected {
+    @apply bg-blue-500 text-white;
+}
+
+.flatpickr-months,
+.flatpickr-weekdays {
+    @apply text-gray-700 font-medium;
+}
+
+/* === DARK MODE === */
+.dark .flatpickr-calendar {
+    @apply bg-neutral-900 border border-neutral-700 text-neutral-200;
+}
+
+.dark .flatpickr-months {
+    @apply bg-neutral-900 text-neutral-200 border-b border-neutral-700 !important;
+}
+
+.dark .flatpickr-weekdays {
+    @apply bg-neutral-900 text-neutral-300 !important;
+}
+
+.dark .flatpickr-weekday {
+    @apply bg-neutral-900 text-neutral-400;
+}
+
+.dark .flatpickr-day {
+    @apply text-neutral-300 hover:bg-neutral-800;
+}
+
+.dark .flatpickr-day.today {
+    @apply border border-blue-400 text-blue-400;
+}
+
+.dark .flatpickr-day.selected {
+    @apply bg-blue-500 text-white;
+}
+
+.dark .flatpickr-current-month input.cur-year {
+    @apply bg-neutral-900 text-neutral-200;
+}
+
+.dark .flatpickr-prev-month,
+.dark .flatpickr-next-month {
+    @apply text-neutral-400 hover:text-blue-400 !important;
+}
+
+.dark .flatpickr-monthDropdown-months {
+    @apply bg-neutral-800 text-white border border-neutral-700 shadow-lg;
+}
+
+.dark .flatpickr-monthDropdown-months option {
+    @apply bg-neutral-800 text-white !important;
 }
