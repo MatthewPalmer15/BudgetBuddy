@@ -21,6 +21,11 @@ window.marukiInit = () => {
 
     flatpickr("[data-datepicker]", {
         dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "j F Y",
+        onReady: function (_, __, instance) {
+            instance.currentYearElement.readOnly = true;
+        }
     });
 
     console.log(`Hit at ${new Date()}`);
