@@ -2,10 +2,15 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: './scripts/main.ts',
+    entry: {
+        'component/modal': './scripts/component/modal.ts',
+        'home/home': './scripts/home/home.ts',
+        'main/main': './scripts/main.ts',
+    },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js', // uses the full key as folder/name
         path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
     module: {
         rules: [
@@ -23,14 +28,6 @@ module.exports = {
                     'sass-loader',
                 ],
             },
-            {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'postcss-loader',
-                ],
-            },
         ],
     },
     resolve: {
@@ -38,7 +35,8 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'bundle.css',
+            filename: '[name].css', // matches the JS folder structure
         }),
     ],
+    mode: 'production',
 };
