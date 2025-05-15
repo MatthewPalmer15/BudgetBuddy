@@ -3,6 +3,12 @@
 @using ValueType = Syncfusion.Blazor.Charts.ValueType
 @inherits CustomComponentBase
 
+<HeadContent>
+    <Cache CacheKey="Home_Resources" Expiration="TimeSpan.FromHours(10)">
+        <link href="/dist/home/home.css" />
+    </Cache>
+</HeadContent>
+
 <div class="pb-20">
     <div class="flex flex-col lg:flex-row gap-4 p-2 lg:p-6">
         <div class="w-full lg:w-1/2 flex flex-col lg:gap-8">

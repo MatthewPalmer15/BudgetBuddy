@@ -1,0 +1,36 @@
+﻿@using BudgetBuddy.Infrastructure.Services.Caching
+
+@if (_cachedContent != null)
+{
+    @_cachedContent
+}
+
+
+@code {
+    private RenderFragment? _cachedContent;
+
+    [Inject]
+    public ICacheManager CacheManager { get; set; }
+
+    [Parameter, EditorRequired]
+    public string CacheKey { get; set; } = null!;
+
+    [Parameter]
+    public TimeSpan? Expiration { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    protected override Task OnInitializedAsync()
+    {
+        if (CacheManager.Exists(CacheKey))
+        {
+            _cachedContent = CacheManager.Get<RenderFragment>(CacheKey);
+            if (_cachedContent != null) return Task.CompletedTask;
+        }
+
+        _cachedContent = ChildContent;
+        CacheManager.Set(CacheKey, _cachedContent, Expiration);
+        return Task.CompletedTask;
+    }
+}
