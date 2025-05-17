@@ -29,6 +29,13 @@ module.exports = {
                     'sass-loader',
                 ],
             },
+            {
+                test: /\.(ttf|woff2?|eot|otf)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'fonts/[name][ext]'
+                }
+            }
         ],
     },
     resolve: {

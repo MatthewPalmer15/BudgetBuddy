@@ -1,0 +1,100 @@
+﻿/* Fonts */
+$font-path: '../fonts';
+
+@mixin font-face($name, $file) {
+  @font-face {
+    font-family: $name;
+    src: url('#{$font-path}/#{$file}.ttf');
+  }
+}
+
+.font-inter-black {
+  font-family: "Inter-Black";
+}
+
+.font-inter-blackitalic {
+  font-family: "Inter-BlackItalic";
+}
+
+.font-inter-bold {
+  font-family: "Inter-Bold";
+}
+
+.font-inter-blockitalic {
+  font-family: "Inter-BoldItalic";
+}
+
+.font-inter-extrabold {
+  font-family: "Inter-ExtraBold";
+}
+
+.font-inter-extrabolditalic {
+  font-family: "Inter-ExtraBoldItalic";
+}
+
+.font-inter-extralight {
+  font-family: "Inter-ExtraLight";
+}
+
+.font-inter-extralightitalic {
+  font-family: "Inter-ExtraLightItalic";
+}
+
+.font-inter-italic {
+  font-family: "Inter-Italic";
+}
+
+.font-inter-light {
+  font-family: "Inter-Light";
+}
+
+.font-inter-lightitalic {
+  font-family: "Inter-LightItalic";
+}
+
+.font-inter-medium {
+  font-family: "Inter-Medium";
+}
+
+.font-inter-mediumitalic {
+  font-family: "Inter-MediumItalic";
+}
+
+.font-inter-regular {
+  font-family: "Inter-Regular";
+}
+
+.font-inter-semibold {
+  font-family: "Inter-SemiBold";
+}
+
+.font-inter-semibolditalic {
+  font-family: "Inter-SemiBoldItalic";
+}
+
+.font-inter-thin {
+  font-family: "Inter-Thin";
+}
+
+.font-inter-thinitalic {
+  font-family: "Inter-ThinItalic";
+}
+
+@include font-face("Inter-Black", "Inter-Black");
+@include font-face("Inter-BlackItalic", "Inter-BlackItalic");
+@include font-face("Inter-Bold", "Inter-Bold");
+@include font-face("Inter-BoldItalic", "Inter-BoldItalic");
+@include font-face("Inter-ExtraBold", "Inter-ExtraBold");
+@include font-face("Inter-ExtraBoldItalic", "Inter-ExtraBoldItalic");
+@include font-face("Inter-ExtraLight", "Inter-ExtraLight");
+@include font-face("Inter-ExtraLightItalic", "Inter-ExtraLightItalic");
+@include font-face("Inter-Italic", "Inter-Italic");
+@include font-face("Inter-Light", "Inter-Light");
+@include font-face("Inter-LightItalic", "Inter-LightItalic");
+@include font-face("Inter-Medium", "Inter-Medium");
+@include font-face("Inter-MediumItalic", "Inter-MediumItalic");
+@include font-face("Inter-Regular", "Inter-Regular");
+@include font-face("Inter-SemiBold", "Inter-SemiBold");
+@include font-face("Inter-SemiBoldItalic", "Inter-SemiBoldItalic");
+@include font-face("Inter-Thin", "Inter-Thin");
+@include font-face("Inter-ThinItalic", "Inter-ThinItalic");

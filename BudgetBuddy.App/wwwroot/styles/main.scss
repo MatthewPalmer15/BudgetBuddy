@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import "flatpickr/dist/flatpickr.min.css";
+@import "utility/fonts.scss";
 
 .hs-overlay-backdrop.bg-gray-900 {
   background-color: rgba(17, 24, 39, 0.5); /* Set your desired background color and opacity */
