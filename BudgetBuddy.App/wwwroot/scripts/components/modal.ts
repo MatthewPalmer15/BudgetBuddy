@@ -1,4 +1,4 @@
-import '../../styles/component/modal.scss';
+import '../../styles/components/modal.scss';
 
 
 
