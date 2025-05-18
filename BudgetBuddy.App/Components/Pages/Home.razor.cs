@@ -1,12 +1,10 @@
-﻿using BudgetBuddy.App.Components.Components;
-using BudgetBuddy.Application.Transactions.Commands;
+﻿using BudgetBuddy.Application.Transactions.Commands;
 using BudgetBuddy.Application.Transactions.Models;
 using BudgetBuddy.Application.Transactions.Queries;
 using BudgetBuddy.Database.Enums;
 using BudgetBuddy.Infrastructure.Enums.Toast;
 using BudgetBuddy.Infrastructure.Services.Toast;
 using Microsoft.AspNetCore.Components;
-using Syncfusion.Blazor.Charts;
 
 namespace BudgetBuddy.App.Components.Pages;
 
@@ -38,11 +36,6 @@ public partial class Home : CustomComponentBase
 
     private string selectedPeriod = "Daily";
 
-    private SfAccumulationChart _sfAccumulationChart;
-
-    private Modal _transactionModal;
-
-    private TransactionModel _transactionModel = new();
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private IToastManager ToastManager { get; set; }
 
@@ -108,76 +101,6 @@ public partial class Home : CustomComponentBase
         { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
     }
 
-    public async Task OpenTransactionModal(Guid? id = null)
-    {
-        var cancellationToken = new CancellationTokenSource().Token;
-        if (id.HasValue && id.Value != Guid.Empty)
-        {
-            var transaction = await Mediator.Send(new GetTransactionByIdQuery { Id = id.Value }, cancellationToken);
-            if (transaction != null)
-            {
-                _transactionModel = new TransactionModel
-                {
-                    Id = transaction.Id,
-                    Name = transaction.Name,
-                    Description = transaction.Description,
-                    Price = transaction.Price,
-                    TransactionDate = transaction.TransactionDate,
-                    Category = transaction.Category,
-                    Type = transaction.Type,
-                    Rank = transaction.Rank,
-                    VendorId = transaction.VendorId
-                };
-                _transactionModal.Title = $"Edit Transaction '{transaction.Name}'";
-            }
-            else
-            {
-                _transactionModel = new TransactionModel();
-                _transactionModal.Title = "Create Transaction";
-            }
-        }
-        else
-        {
-            _transactionModal.Title = "Create Transaction";
-            _transactionModel = new TransactionModel();
-        }
-
-
-        _transactionModal.Open();
-    }
-
-    private async Task SaveTransaction()
-    {
-        var cancellationToken = new CancellationTokenSource().Token;
-
-        var response = await Mediator.Send(new SaveTransactionCommand
-        {
-            Id = _transactionModel.Id,
-            Name = _transactionModel.Name,
-            Description = _transactionModel.Description,
-            Price = _transactionModel.Price,
-            Category = _transactionModel.Category,
-            Rank = _transactionModel.Rank,
-            TransactionDate = _transactionModel.TransactionDate,
-            Type = _transactionModel.Type,
-            IsRecurring = _transactionModel.IsRecurring,
-            VendorId = _transactionModel.VendorId
-        }, cancellationToken);
-
-        if (response.Success)
-        {
-            ToastManager.Show("Save successfully", ToastType.Success);
-
-            _transactionModel = new TransactionModel();
-            _transactionModal?.Close();
-            await FetchData();
-        }
-        else
-        {
-            ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
-        }
-    }
-
     private async Task Delete(Guid id)
     {
         var cancellationToken = new CancellationTokenSource().Token;
@@ -194,22 +117,6 @@ public partial class Home : CustomComponentBase
             ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
         }
     }
-
-
-    public class TransactionModel
-    {
-        public Guid? Id { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public decimal Price { get; set; }
-        public DateTime? TransactionDate { get; set; }
-        public bool IsRecurring { get; set; }
-        public TransactionType Type { get; set; }
-        public CategoryEnum Category { get; set; }
-        public int Rank { get; set; }
-        public Guid? VendorId { get; set; }
-    }
-
     public class ChartDataViewModel
     {
         public string Tooltip { get; set; }

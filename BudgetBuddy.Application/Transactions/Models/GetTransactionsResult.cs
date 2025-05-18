@@ -6,8 +6,7 @@ public class GetTransactionsResult
 {
     private decimal TotalIncome => Transactions.Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
     private decimal TotalOutcome => Transactions.Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
-    private decimal TotalPending => Transactions.Where(x => x.Type == TransactionType.Pending).Sum(x => x.Price);
-    private decimal TotalLeft => TotalIncome - TotalOutcome - TotalPending;
+    private decimal TotalLeft => TotalIncome - TotalOutcome;
 
     public List<Transaction> Transactions { get; set; } = [];
 
