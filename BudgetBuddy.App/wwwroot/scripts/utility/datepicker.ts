@@ -7,7 +7,7 @@ export function initDatePickers() {
         let options: Partial<flatpickr.Options.Options> = {
             ariaDateFormat: "l J F Y",
             disableMobile: true,
-            dateFormat: "Y-m-d",
+            dateFormat: "d/m/Y H:i:S",  // matches "05/05/2025 00:00:00"
             altInput: true,
             altFormat: "j F Y",
             onReady: function (_, __, instance) {

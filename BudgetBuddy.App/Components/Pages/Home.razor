@@ -154,6 +154,21 @@
                     }
                 }
             }
+            @if (selectedPeriod == "Weekly")
+            {
+                @foreach (var week in WeeklyData)
+                {
+                            <div class="flex justify-between items-center mt-8 mb-4">
+                                <h6 class="font-bold">@week.WeekNumber</h6>
+                                <span class="font-bold @(week.Amount > 0 ? "text-green-400" : "text-red-400")">@week.Amount.ToString("£#,0.00")</span>
+                            </div>
+
+                    @foreach (var transaction in week.Transactions)
+                    {
+                        <Transaction Item="transaction" ShowDate="true" />
+                    }
+                }
+            }
             else if (selectedPeriod == "Monthly")
             {
                 @foreach (var month in MonthlyData)
@@ -169,18 +184,18 @@
                     }
                 }
             }
-            else if (selectedPeriod == "Year")
+            else if (selectedPeriod == "Yearly")
             {
-                @foreach (var month in MonthlyData)
+                @foreach (var year in YearlyData)
                 {
-                            <div class="flex justify-between items-center mt-8 mb-4">
-                                <h6 class="font-bold">@month.MonthName</h6>
-                                <span class="font-bold @(month.Amount > 0 ? "text-green-400" : "text-red-400")">@month.Amount.ToString("£#,0.00")</span>
-                            </div>
+                    <div class="flex justify-between items-center mt-8 mb-4">
+                        <h6 class="font-bold">@year.Year</h6>
+                        <span class="font-bold @(year.Amount > 0 ? "text-green-400" : "text-red-400")">@year.Amount.ToString("£#,0.00")</span>
+                    </div>
 
-                    @foreach (var transaction in month.Transactions)
+                    @foreach (var transaction in year.Transactions)
                     {
-                                    <Transaction Item="transaction" ShowDate="true" />
+                        <Transaction Item="transaction" ShowDate="true" />
                     }
                 }
             }

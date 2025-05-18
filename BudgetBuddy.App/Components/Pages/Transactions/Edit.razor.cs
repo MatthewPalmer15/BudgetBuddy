@@ -20,6 +20,7 @@ public partial class Edit : CustomComponentBase
     public Guid? transactionId { get; set; }
 
     private TransactionModel _transactionModel = new();
+    private string _title { get; set; } = "Create Transaction";
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,6 +42,7 @@ public partial class Edit : CustomComponentBase
                     Rank = transaction.Rank,
                     VendorId = transaction.VendorId
                 };
+                _title = $"Edit Transaction '{transaction.Name}'";
             }
         }
     }

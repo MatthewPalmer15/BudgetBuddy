@@ -15,6 +15,7 @@ public partial class Home : CustomComponentBase
 
 
     private List<GetGroupedTransactionsResult.DailyData> DailyData { get; set; } = [];
+    private List<GetGroupedTransactionsResult.WeeklyData> WeeklyData { get; set; } = [];
     private List<GetGroupedTransactionsResult.MonthlyData> MonthlyData { get; set; } = [];
     private List<GetGroupedTransactionsResult.YearlyData> YearlyData { get; set; } = [];
     private List<ChartDataViewModel> ChartData { get; set; } = [];
@@ -40,14 +41,10 @@ public partial class Home : CustomComponentBase
         TotalOutcome = transactions.TotalOutcome;
         TotalBalance = transactions.TotalBalance;
         DailyData = transactions.Days.Where(x => x.Date.Month == DateTime.Now.Month).ToList();
+        WeeklyData = transactions.Weeks;
         MonthlyData = transactions.Months.Where(x => x.Year == DateTime.Now.Year).ToList();
+        YearlyData = transactions.Years;
 
-
-
-        // Transactions = (await Mediator.Send(new GetTransactionsQuery(), cancellationToken)).Transactions;
-        // 
-        // if (Transactions.Any(x => x.Type == TransactionType.Income))
-        // {
         ChartData = transactions.Days.SelectMany(x => x.Transactions)
             .Where(x => x.Type == TransactionType.Outcome)
             .OrderBy(x => x.Category)
@@ -69,7 +66,6 @@ public partial class Home : CustomComponentBase
             Percentage = 100 - leftOverPercentage,
             Tooltip = $"Left Over - {100 - leftOverPercentage}%"
         });
-        // }
 
         BarChartData = new List<BarChartViewModel>();
         BarChartData.Add(new BarChartViewModel
