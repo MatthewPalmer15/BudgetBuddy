@@ -14,6 +14,7 @@
     [Parameter] public ScreenSize From { get; set; } = ScreenSize.None;
     [Parameter] public ScreenSize To { get; set; } = ScreenSize.None;
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Visible { get; set; } = true;
 
     [Parameter] public bool ShowOnWindows { get; set; } = true;
     [Parameter] public bool ShowOnMacOS { get; set; } = true;
@@ -22,6 +23,9 @@
 
     private string BuildVisibilityClasses()
     {
+        if (!Visible)
+            return "hidden";
+
         if (DeviceInfo.Platform == DevicePlatform.WinUI && !ShowOnWindows)
             return "hidden";
 

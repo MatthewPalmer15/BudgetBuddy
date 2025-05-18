@@ -3,6 +3,9 @@ import { IPage } from '../interfaces/page';
 import { initDatePickers } from '../utility/datepicker';
 
 export class Modal implements IPage {
+
+    name: string = "Modal Page";
+
     constructor() {
         this.onLoad();
     }
@@ -13,6 +16,10 @@ export class Modal implements IPage {
 
     onReady(): void {
         console.log("Page ready.");
+    }
+
+    onRefresh(): void {
+        console.log("Page refreshed.");
     }
 
     open(): void {

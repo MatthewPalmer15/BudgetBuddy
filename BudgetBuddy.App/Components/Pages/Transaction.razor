@@ -1,0 +1,108 @@
+﻿@using BudgetBuddy.Application.Transactions.Commands
+@using BudgetBuddy.Application.Transactions.Models
+@using BudgetBuddy.Database.Enums
+@using BudgetBuddy.Infrastructure.Enums.Toast
+@using BudgetBuddy.Infrastructure.Services.Toast
+@inherits CustomComponentBase
+
+<div class="mb-3 relative">
+    <div class="bg-white/5 border border-white/10 rounded-xl shadow-lg">
+        <div class="p-3">
+            <div class="flex items-center justify-between gap-3">
+
+                <!-- Left: Icon and Details -->
+                <div class="flex items-start gap-3 text-sm">
+                    @switch (Item.Type)
+                    {
+                        case TransactionType.Income:
+                            <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+                                <i data-lucide="arrow-big-up" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            break;
+                        case TransactionType.Outcome:
+                            <div class="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
+                                <i data-lucide="arrow-big-down" class="w-5 h-5 text-red-400"></i>
+                            </div>
+                            break;
+                    }
+
+                    <div class="flex flex-col justify-center">
+                        <span class="font-semibold leading-tight">@Item.Name</span>
+                        <span class="text-gray-400 text-xs">@(Item.Type == TransactionType.Income ? "Income" : Item.Category.ToString()) @(ShowDate ? $" - {(Item.TransactionDate ?? DateTime.Now.Date).ToString("dd MMMM yyyy")}" : "") </span>
+                    </div>
+                </div>
+
+                <!-- Right: Amount and Dropdown -->
+                <div class="flex items-center gap-2 text-sm relative">
+                    @switch (Item.Type)
+                    {
+                        case TransactionType.Income:
+                            <span class="text-green-400 font-bold">@Item.Price.ToString("£#,0.00")</span>
+                            break;
+                        case TransactionType.Outcome:
+                            <span class="text-red-400 font-bold">@Item.Price.ToString("£#,0.00")</span>
+                            break;
+                    }
+
+                    <div class="hs-dropdown relative inline-flex">
+                        <button id="hs-dropdown-trigger-@(Item.Id)" type="button" class="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg bg-transparent text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                            <svg class="flex-none size-4 text-gray-600 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="12" cy="5" r="1" />
+                                <circle cx="12" cy="19" r="1" />
+                            </svg>
+                        </button>
+
+                        <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-trigger-@(Item.Id)">
+                            <div class="p-1 space-y-0.5">
+                                <a href="/transactions/view/@Item.Id" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                    View
+                                </a>
+                                <a href="/transactions/edit/@Item.Id" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                                    <i data-lucide="pencil" class="w-4 h-4"></i>
+                                    Edit
+                                </a>
+                                <a @onclick="() => Delete(Item.Id)" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-red-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-red-400 dark:hover:bg-neutral-700 dark:hover:text-red-300 dark:focus:bg-neutral-700">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public IToastManager ToastManager { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public GetGroupedTransactionsResult.Transaction Item { get; set; } = new();
+
+    [Parameter] public bool ShowDate { get; set; }
+
+    private async Task Delete(Guid id)
+    {
+        var cancellationToken = new CancellationTokenSource().Token;
+
+        var response = await Mediator.Send(new DeleteTransactionCommand { Id = id }, cancellationToken);
+
+        if (response.Success)
+        {
+            ToastManager.Show("Deleted Successfully", ToastType.Success);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ToastManager.Show(string.Join(",", response.Errors.Select(x => x.ErrorMessage).ToList()), ToastType.Error);
+        }
+    }
+}

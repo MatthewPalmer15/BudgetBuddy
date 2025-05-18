@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using BudgetBuddy.Database.Enums
 @using ValueType = Syncfusion.Blazor.Charts.ValueType
 @inherits CustomComponentBase
 
@@ -13,7 +12,7 @@
     <div class="flex flex-col lg:flex-row gap-4 p-2 lg:p-6">
         <div class="w-full lg:w-1/2 flex flex-col lg:gap-8">
             <div class="w-full">
-                <Container From="Container.ScreenSize.Large" CssClasses="flex justify-center items-center h-[250px] lg:h-[300px]">
+                <Container From="Container.ScreenSize.Large" CssClasses="flex justify-center items-center h-[250px] lg:h-[300px]" Visible="false">
                     <SfAccumulationChart EnableAnimation="true"
                                          Width="100%" Height="100%"
                                          Theme="@Theme.Tailwind3Dark"
@@ -26,7 +25,7 @@
                             <AccumulationChartSeries DataSource="@ChartData"
                                                      Radius="95%" InnerRadius="65%"
                                                      XName="Tooltip" YName="Percentage"
-                                                     Palettes="@_colourPalette"
+                                                     Palettes="@(new[] {"#365A9B", "#C86464", "#5C8C3B", "#BB6428", "#9B9B9B", "#A9B81A", "#0098AD", "#B9548D", "#9E42AC", "#C19D00", "#7D5E00", "#6E44B3", "#313E99", "#A35945", "#4DC7A7", "#7F3A0B", "#5858BC", "#CC9E00", "#487DB0", "#3D4EB8" })"
                                                      StartAngle="270" EndAngle="270">
                                 <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
                                     <AccumulationChartConnector Length="5px" Type="ConnectorType.Curve" Color="Transparent"/>
@@ -40,7 +39,7 @@
                     </SfAccumulationChart>
                 </Container>
 
-                <Container To="Container.ScreenSize.Large" CssClasses="mt-4">
+                <Container CssClasses="mt-4">
                     <SfChart Width="90%" Height="200px" Theme="@Theme.Tailwind3Dark" Background="Transparent">
                         <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
                         <ChartSubTitleStyle TextOverflow="TextOverflow.Wrap"></ChartSubTitleStyle>
@@ -139,93 +138,61 @@
                     }
                 </div>
             </div>
-
-            @foreach (var day in DailyData)
+            
+            @if (selectedPeriod == "Daily")
             {
-                <div class="flex justify-between items-center mt-8 mb-4">
-                    <h6 class="font-bold">@day.Date.ToString("dddd dd MMM yyyy")</h6>
-                    <span class="font-bold @(day.Amount > 0 ? "text-green-400" : "text-red-400")">@day.Amount.ToString("£#,0.00")</span>
-                </div>
-
-                @foreach (var transaction in day.Transactions.OrderByDescending(x => x.Type == TransactionType.Income).ThenByDescending(x => x.TransactionDate))
+                @foreach (var day in DailyData)
                 {
-                    <div class="mb-3 relative">
-                        <div class="bg-white/5 border border-white/10 rounded-xl shadow-lg">
-                            <div class="p-3">
-                                <div class="flex items-center justify-between gap-3">
-
-                                    <!-- Left: Icon and Details -->
-                                    <div class="flex items-start gap-3 text-sm">
-                                        @switch (transaction.Type)
-                                        {
-                                            case TransactionType.Income:
-                                                <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
-                                                    <i data-lucide="arrow-big-up" class="w-5 h-5 text-green-400"></i>
-                                                </div>
-                                                break;
-                                            case TransactionType.Outcome:
-                                                <div class="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                                                    <i data-lucide="arrow-big-down" class="w-5 h-5 text-red-400"></i>
-                                                </div>
-                                                break;
-                                        }
-
-                                        <div class="flex flex-col justify-center">
-                                            <span class="font-semibold leading-tight">@transaction.Name</span>
-                                            <span class="text-gray-400 text-xs">@(transaction.Type == TransactionType.Income ? "Income" : transaction.Category.ToString())</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Amount and Dropdown -->
-                                    <div class="flex items-center gap-2 text-sm relative">
-                                        @switch (transaction.Type)
-                                        {
-                                            case TransactionType.Income:
-                                                <span class="text-green-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                                break;
-                                            case TransactionType.Outcome:
-                                                <span class="text-red-400 font-bold">@transaction.Price.ToString("£#,0.00")</span>
-                                                break;
-                                        }
-
-                                        <div class="hs-dropdown relative inline-flex">
-                                            <button id="hs-dropdown-trigger-@(transaction.Id)" type="button" class="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg bg-transparent text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-                                                <svg class="flex-none size-4 text-gray-600 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
-                                                </svg>
-                                            </button>
-
-                                            <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 z-50" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-trigger-@(transaction.Id)">
-                                                <div class="p-1 space-y-0.5">
-                                                    <a href="/transaction/view/@transaction.Id" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
-                                                        <i data-lucide="eye" class="w-4 h-4"></i>
-                                                        View
-                                                    </a>
-                                                    <a href="/transaction/edit/@transaction.Id" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
-                                                        <i data-lucide="pencil" class="w-4 h-4"></i>
-                                                        Edit
-                                                    </a>
-                                                    <a @onclick="() => Delete(transaction.Id)" class="flex items-center gap-x-2 py-2 px-3 rounded-lg cursor-pointer text-sm text-red-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-red-400 dark:hover:bg-neutral-700 dark:hover:text-red-300 dark:focus:bg-neutral-700">
-                                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                                        Delete
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex justify-between items-center mt-8 mb-4">
+                        <h6 class="font-bold">@day.Date.ToString("dddd dd MMM yyyy")</h6>
+                        <span class="font-bold @(day.Amount > 0 ? "text-green-400" : "text-red-400")">@day.Amount.ToString("£#,0.00")</span>
                     </div>
+
+                    @foreach (var transaction in day.Transactions)
+                    {
+                        <Transaction Item="transaction" />
+                    }
                 }
             }
-        </div>
+            else if (selectedPeriod == "Monthly")
+            {
+                @foreach (var month in MonthlyData)
+                {
+                    <div class="flex justify-between items-center mt-8 mb-4">
+                        <h6 class="font-bold">@month.MonthName</h6>
+                        <span class="font-bold @(month.Amount > 0 ? "text-green-400" : "text-red-400")">@month.Amount.ToString("£#,0.00")</span>
+                    </div>
+
+                    @foreach (var transaction in month.Transactions)
+                    {
+                        <Transaction Item="transaction" ShowDate="true" />
+                    }
+                }
+            }
+            else if (selectedPeriod == "Year")
+            {
+                @foreach (var month in MonthlyData)
+                {
+                            <div class="flex justify-between items-center mt-8 mb-4">
+                                <h6 class="font-bold">@month.MonthName</h6>
+                                <span class="font-bold @(month.Amount > 0 ? "text-green-400" : "text-red-400")">@month.Amount.ToString("£#,0.00")</span>
+                            </div>
+
+                    @foreach (var transaction in month.Transactions)
+                    {
+                                    <Transaction Item="transaction" ShowDate="true" />
+                    }
+                }
+            }
+            
+                
+        
+        
+            </div>
     </div>
 </div>
 
-<a href="/transaction/edit" class="fixed bottom-20 right-6 z-60 h-16 w-16 rounded-full bg-blue-600 shadow-xl transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-300 flex items-center justify-center" aria-label="Add">
+<a href="/transactions/edit/" class="fixed bottom-20 right-6 z-60 h-16 w-16 rounded-full bg-blue-600 shadow-xl transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-300 flex items-center justify-center" aria-label="Add">
     <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" stroke-width="2"
          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>

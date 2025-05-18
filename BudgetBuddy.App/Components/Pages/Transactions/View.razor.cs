@@ -2,7 +2,7 @@
 using BudgetBuddy.Database.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace BudgetBuddy.App.Components.Pages.Transaction;
+namespace BudgetBuddy.App.Components.Pages.Transactions;
 
 public partial class View : CustomComponentBase
 {

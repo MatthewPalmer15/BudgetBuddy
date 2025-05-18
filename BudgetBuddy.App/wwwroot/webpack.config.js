@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     entry: {
         'components/modal': './scripts/components/modal.ts',
+        'pages/transactions/edit': './scripts/pages/transactions/edit.ts',
         'pages/home': './scripts/pages/home.ts',
         'main': './scripts/main.ts',
     },
