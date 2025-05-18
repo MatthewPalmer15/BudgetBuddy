@@ -36,6 +36,7 @@ public partial class Home : CustomComponentBase
         "#3D4EB8" // Cobalt
     ];
 
+    private string selectedPeriod = "Daily";
 
     private SfAccumulationChart _sfAccumulationChart;
 
