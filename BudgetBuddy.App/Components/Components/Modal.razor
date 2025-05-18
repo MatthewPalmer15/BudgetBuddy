@@ -1,4 +1,7 @@
-﻿@if (Show)
+﻿<link href="/dist/components/modal.css" />
+
+
+@if (Show)
 {
     <div class="fixed inset-0 z-50 flex justify-center bg-black bg-opacity-50 @GetVerticalAlignmentClass()" @onclick="Close" id="@Id">
         <div class="@GetSizeClasses() flex flex-col bg-white dark:bg-neutral-800 rounded-xl shadow-lg mx-4 max-h-[calc(100vh-120px)] overflow-hidden" @onclick:stopPropagation>
@@ -50,11 +53,8 @@
     public async Task Open()
     {
         Show = true;
-        if (_firstRender)
-        {
-            await Task.Yield();
-            await JsRuntime.InvokeVoidAsync("eval", "window.currentPage.open()");
-        }
+        await Task.Yield();
+        await JsRuntime.InvokeVoidAsync("eval", "window.currentPage.open()");
     }
 
     public void Close()

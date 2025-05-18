@@ -1,5 +1,6 @@
 ﻿const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
@@ -44,6 +45,18 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css',
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'scripts/libs/vanta.waves.min.js'),
+                    to: path.resolve(__dirname, 'dist/libs/vanta.waves.min.js')
+                },
+                {
+                    from: path.resolve(__dirname, 'scripts/libs/three.min.js'),
+                    to: path.resolve(__dirname, 'dist/libs/three.min.js')
+                }
+            ]
         }),
     ],
     mode: 'production',

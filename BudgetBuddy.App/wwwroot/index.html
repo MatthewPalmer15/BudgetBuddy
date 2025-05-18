@@ -10,7 +10,7 @@
     <script src="_content/Syncfusion.Blazor/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
     <link rel="icon" href="data:,">
 </head>
-<body class="h-screen min-h-screen flex flex-col dark:text-white dark:bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-950">
+<body id="animated-background" class="dark:text-white"> <!--  class="h-screen min-h-screen flex flex-col dark:text-white dark:bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-950" -->
 <div id="app" class="flex flex-col flex-grow">
 
     <div class="flex items-center justify-center min-h-screen">
@@ -36,7 +36,10 @@
     </button>
 </div>
 <script src="_framework/blazor.webview.js" autostart="false"></script>
+<script src="dist/libs/three.min.js"></script>
+<script src="dist/libs/vanta.waves.min.js"></script>
 <script src="dist/main.js"></script>
+
 
 <script>
         document.documentElement.classList.add('dark');
