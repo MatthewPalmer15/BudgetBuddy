@@ -150,7 +150,7 @@
 
                     @foreach (var transaction in day.Transactions)
                     {
-                        <Transaction Item="transaction" />
+                        <Transaction Item="transaction" OnDeleted="OnTransactionDeleted" />
                     }
                 }
             }
@@ -165,7 +165,7 @@
 
                     @foreach (var transaction in week.Transactions)
                     {
-                        <Transaction Item="transaction" ShowDate="true" />
+                        <Transaction Item="transaction" ShowDate="true" OnDeleted="OnTransactionDeleted" />
                     }
                 }
             }
@@ -180,7 +180,7 @@
 
                     @foreach (var transaction in month.Transactions)
                     {
-                        <Transaction Item="transaction" ShowDate="true" />
+                        <Transaction Item="transaction" ShowDate="true" OnDeleted="OnTransactionDeleted" />
                     }
                 }
             }
@@ -195,7 +195,7 @@
 
                     @foreach (var transaction in year.Transactions)
                     {
-                        <Transaction Item="transaction" ShowDate="true" />
+                        <Transaction Item="transaction" ShowDate="true" OnDeleted="OnTransactionDeleted" />
                     }
                 }
             }

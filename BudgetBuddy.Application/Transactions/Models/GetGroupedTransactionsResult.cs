@@ -52,7 +52,7 @@ public class GetGroupedTransactionsResult
         public CategoryEnum Category { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public DateTime? TransactionDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public TransactionType Type { get; set; }
     }
 }

@@ -2,78 +2,51 @@
 @using BudgetBuddy.Database.Enums
 @inherits CustomComponentBase
 
-<div class="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg">
-        <input type="hidden" @bind="_transactionModel.Id"/>
-
-        <div class="flex flex-col items-center justify-center space-y-6 sm:space-y-5 px-4">
-
-            <div class="max-w-md w-full space-y-3">
-                <label for="transaction_name" class="block text-sm font-medium mb-2 dark:text-white">Name</label>
-                <input type="text" id="transaction_name" @bind="_transactionModel.Name" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="">
-            </div>
-
-            <div class="max-w-md w-full space-y-3">
-                <label for="transaction_description" class="block text-sm font-medium mb-2 dark:text-white">Description</label>
-                <textarea id="transaction_description" @bind="_transactionModel.Description" class="py-2 px-3 sm:py-3 sm:px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" rows="3" placeholder=""></textarea>
-            </div>
-
-            <div class="max-w-md w-full space-y-3">
-                <div>
-                    <label for="transaction_price" class="block text-sm font-medium mb-2 dark:text-white">Price</label>
-                    <div class="relative">
-                        <input type="text" id="transaction_price" @bind="_transactionModel.Price" class="py-2.5 sm:py-3 px-4 ps-9 pe-16 block w-full border-gray-200 rounded-lg sm:text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="">
-                        <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                            <span class="text-gray-500 dark:text-neutral-500">£</span>
-                        </div>
+<div class="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg mx-auto max-w-lg p-4">
+    <div>
+        <h5 class="font-bold text-center">Transaction '@_transactionModel.Name'</h5>
+        <div class="mt-6 border-t border-gray-100">
+            
+            <dl class="divide-y divide-gray-100">
+                <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm/6 font-medium text-gray-300">Name</dt>
+                    <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.Name</dd>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(_transactionModel.Description))
+                {
+                    <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm/6 font-medium text-gray-300">Description</dt>
+                        <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.Description</dd>
                     </div>
+                }
+                <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm/6 font-medium text-gray-300">Price</dt>
+                    <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.Price.ToString("£#,0.00")</dd>
                 </div>
-            </div>
-
-
-            <div class="max-w-md w-full space-y-3">
-                <div>
-                    <label for="transaction_date" class="block text-sm font-medium mb-2 dark:text-white">Transaction Date</label>
-                    <div class="relative">
-                        <input type="text" id="transaction_date" @bind="_transactionModel.TransactionDate" data-datepicker class="py-2.5 sm:py-3 px-4 ps-9 pe-16 block w-full border-gray-200 rounded-lg sm:text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" placeholder="">
-                        <div class="absolute inset-y-0 end-0 flex items-center z-20 px-3 pointer-events-none">
-                            <i data-lucide="calendar" class="size-3.5 text-gray-400 dark:text-neutral-600"></i>
-                        </div>
+                @if (_transactionModel.TransactionDate.HasValue)
+                {
+                    <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm/6 font-medium text-gray-300">Transaction Date</dt>
+                        <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.TransactionDate.Value.ToString("dd MMMM yyyy")</dd>
                     </div>
+                }
+                <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt class="text-sm/6 font-medium text-gray-300">Type</dt>
+                    <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.Type.ToString()</dd>
                 </div>
-            </div>
-
-            <div class="max-w-md w-full space-y-3">
-                <label for="transaction_type" class="block text-sm font-medium mb-2 dark:text-white">Type</label>
-                <select id="transaction_type" @bind="_transactionModel.Type" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                    <option value="@(TransactionType.Unknown)" selected="">-- Please Select --</option>
-                    <option value="@(TransactionType.Income)">Income</option>
-                    <option value="@(TransactionType.Outcome)">Outcome</option>
-                </select>
-            </div>
-
-            @if (_transactionModel.Type == TransactionType.Outcome)
-            {
-                        <div class="max-w-md w-full space-y-3">
-                            <label for="transaction_category" class="block text-sm font-medium mb-2 dark:text-white">Category</label>
-                            <select id="transaction_category" @bind="_transactionModel.Category" class="py-3 px-4 pe-9 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                <option value="@(CategoryEnum.None)" selected="">-- Please Select --</option>
-                                <option value="@(CategoryEnum.Bills)">Bills</option>
-                                <option value="@(CategoryEnum.Shopping)">Shopping</option>
-                                <option value="@(CategoryEnum.Groceries)">Groceries</option>
-                                <option value="@(CategoryEnum.Entertainment)">Entertainment</option>
-                                <option value="@(CategoryEnum.Activities)">Activities</option>
-                                <option value="@(CategoryEnum.Travel)">Travel</option>
-                                <option value="@(CategoryEnum.PaymentsAndTransfers)">Payments and Transfers</option>
-                                <option value="@(CategoryEnum.Other)">Other</option>
-                            </select>
-                        </div>
-            }
-
-            <div class="max-w-md w-full">
-                <div class="flex justify-end gap-2">
-                    <a href="/" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Close</a>
-                    <button class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700" type="submit">Save</button>
+                @if (_transactionModel.Type == TransactionType.Outcome)
+                {
+                    <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm/6 font-medium text-gray-300">Category</dt>
+                        <dd class="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">@_transactionModel.Category.ToString()</dd>
+                    </div>
+                }
+                <div class="p-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dd class="mt-1 text-sm/6 sm:col-span-3 sm:mt-0">
+                        <a href="/" class="px-4 py-2 text-sm font-medium bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-600">Back</a>
+                    </dd>
                 </div>
-            </div>
+            </dl>
         </div>
+    </div>
 </div>

@@ -20,26 +20,26 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
             if (transactions.Count <= 0)
                 return new GetGroupedTransactionsResult();
 
-            var transactionsGroupedByDay = transactions.GroupBy(x => x.TransactionDate.HasValue ? x.TransactionDate.Value.Date : DateTime.Now.Date)
+            var transactionsGroupedByDay = transactions.GroupBy(x => x.TransactionDate.Date)
                 .OrderByDescending(x => x.Key)
                 .Select(x => new GetGroupedTransactionsResult.DailyData
                 {
                     Date = x.Key,
-                    Transactions = x.ToList(),
+                    Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
                     Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();
 
             var culture = CultureInfo.CurrentCulture;
-            var transactionsGroupedByWeek = transactions.GroupBy(x => culture.Calendar.GetWeekOfYear(x.TransactionDate ?? DateTime.Now.Date, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek))
+            var transactionsGroupedByWeek = transactions.GroupBy(x => culture.Calendar.GetWeekOfYear(x.TransactionDate, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek))
                 .OrderByDescending(x => x.Key)
                 .Select(x => new GetGroupedTransactionsResult.WeeklyData
                 {
                     WeekNumber = x.Key,
-                    Transactions = x.ToList(),
+                    Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
                     Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();
 
-            var transactionsGroupedByMonth = transactions.GroupBy(x => new { (x.TransactionDate ?? DateTime.Now.Date).Month, (x.TransactionDate ?? DateTime.Now.Date).Year })
+            var transactionsGroupedByMonth = transactions.GroupBy(x => new { x.TransactionDate.Month, x.TransactionDate.Year })
                 .OrderByDescending(x => x.Key.Year)
                 .ThenByDescending(x => x.Key.Month)
                 .Select(x => new GetGroupedTransactionsResult.MonthlyData
@@ -47,16 +47,17 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
                     Month = x.Key.Month,
                     Year = x.Key.Year,
                     MonthName = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(x.Key.Month)} {x.Key.Year}",
-                    Transactions = x.ToList(),
+                    Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
                     Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();
 
 
-            var transactionsGroupedByYear = transactions.GroupBy(x => (x.TransactionDate ?? DateTime.Now.Date).Year)
+            var transactionsGroupedByYear = transactions.GroupBy(x => x.TransactionDate.Year)
+                .OrderByDescending(x => x.Key)
                 .Select(x => new GetGroupedTransactionsResult.YearlyData
                 {
                     Year = x.Key,
-                    Transactions = x.ToList(),
+                    Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
                     Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();
 

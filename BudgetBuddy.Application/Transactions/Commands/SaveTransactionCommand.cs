@@ -20,7 +20,7 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
     public int Rank { get; set; }
     public Guid? VendorId { get; set; }
 
-    public class Handler(IDbContext context) : IRequestHandler<SaveTransactionCommand, BaseResponse>
+    internal class Handler(IDbContext context) : IRequestHandler<SaveTransactionCommand, BaseResponse>
     {
         public async Task<BaseResponse> Handle(SaveTransactionCommand request,
             CancellationToken cancellationToken = default)
@@ -28,6 +28,9 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             var validationResult = await new Validator().ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
                 return BaseResponse.Failed(validationResult.Errors);
+
+            if (request.Type == TransactionType.Income && request.Category != CategoryEnum.None)
+                request.Category = CategoryEnum.None;
 
             var response = request.Id.HasValue
                 ? await UpdateAsync(request, cancellationToken)
@@ -84,8 +87,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from t in context.Transactions
-                where !t.Deleted && t.Id == request.Id
-                select t).FirstOrDefaultAsync(cancellationToken);
+                          where !t.Deleted && t.Id == request.Id
+                          select t).FirstOrDefaultAsync(cancellationToken);
         }
     }
 
@@ -94,7 +97,26 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
         public Validator()
         {
             RuleFor(x => x.Name)
+                .MaximumLength(100).WithMessage("Name should be 100 characters or less.")
                 .NotNull().WithMessage("Name cannot be null or empty");
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0).WithMessage("Price should be greater than £0.00.")
+                .NotNull().WithMessage("Price cannot be null or empty");
+
+            RuleFor(x => x.TransactionDate)
+                .NotNull().WithMessage("Transaction date cannot be null or empty")
+                .LessThanOrEqualTo(DateTime.Now).WithMessage("Transaction date cannot be in the future");
+
+            RuleFor(x => x.Type)
+                .IsInEnum().WithMessage("Transaction type is invalid")
+                .Must(x => x != TransactionType.Unknown).WithMessage("Transaction type cannot be unknown")
+                .NotNull().WithMessage("Transaction type cannot be null or empty");
+
+            RuleFor(x => x.Category)
+                .Must(category => category != CategoryEnum.None)
+                .WithMessage("Category must be selected for outcome transactions.")
+                .When(x => x.Type == TransactionType.Outcome);
         }
     }
 }
