@@ -22,8 +22,15 @@
     </div>
 }
 
+<script src="/dist/components/modal.js"></script>
 
 @code {
+    [Inject] 
+    private IJSRuntime JsRuntime { get; set; }
+
+
+    private bool _firstRender { get; set; } = true;
+
     [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [Parameter] public string Title { get; set; } = "";
@@ -40,9 +47,14 @@
     private bool Show { get; set; }
 
 
-    public void Open()
+    public async Task Open()
     {
         Show = true;
+        if (_firstRender)
+        {
+            await Task.Yield();
+            await JsRuntime.InvokeVoidAsync("eval", "window.currentPage.open()");
+        }
     }
 
     public void Close()
