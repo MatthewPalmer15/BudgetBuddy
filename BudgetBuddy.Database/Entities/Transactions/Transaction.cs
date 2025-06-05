@@ -12,6 +12,4 @@ public class Transaction : BaseEntity<Guid>
     public CategoryEnum Category { get; set; }
     public int Rank { get; set; }
     public bool Essential { get; set; }
-    public Guid? VendorId { get; set; }
-    public virtual Vendor? Vendor { get; set; }
 }

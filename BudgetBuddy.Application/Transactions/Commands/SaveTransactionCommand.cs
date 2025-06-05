@@ -51,7 +51,6 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
                 Type = request.Type,
                 Category = request.Category,
                 Rank = request.Rank,
-                VendorId = request.VendorId
             };
 
             context.Transactions.Add(transaction);
@@ -74,7 +73,6 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             transaction.Type = request.Type;
             transaction.Category = request.Category;
             transaction.Rank = request.Rank;
-            transaction.VendorId = request.VendorId;
 
 
             context.Transactions.Update(transaction);
