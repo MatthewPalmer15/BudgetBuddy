@@ -30,11 +30,12 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
                 }).ToList();
 
             var culture = CultureInfo.CurrentCulture;
-            var transactionsGroupedByWeek = transactions.GroupBy(x => culture.Calendar.GetWeekOfYear(x.TransactionDate, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek))
-                .OrderByDescending(x => x.Key)
+            var transactionsGroupedByWeek = transactions.GroupBy(x => new { WeekNumber = culture.Calendar.GetWeekOfYear(x.TransactionDate, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek), Year = x.TransactionDate.Year })
+                .OrderByDescending(x => x.Key.Year).ThenByDescending(x => x.Key.WeekNumber)
                 .Select(x => new GetGroupedTransactionsResult.WeeklyData
                 {
-                    WeekNumber = x.Key,
+                    WeekNumber = x.Key.WeekNumber,
+                    Year = x.Key.Year,
                     Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
                     Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();

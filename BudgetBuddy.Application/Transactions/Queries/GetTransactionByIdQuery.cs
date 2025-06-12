@@ -27,6 +27,7 @@ public class GetTransactionByIdQuery : IRequest<GetTransactionByIdResult?>
                               Category = t.Category,
                               Rank = t.Rank,
                               Essential = t.Essential,
+                              AccountId = t.AccountId
                           }).FirstOrDefaultAsync(cancellationToken);
         }
     }

@@ -13,5 +13,5 @@ public class GetTransactionByIdResult
     public CategoryEnum Category { get; set; }
     public int Rank { get; set; }
     public bool Essential { get; set; }
-    public Guid? VendorId { get; set; }
+    public Guid? AccountId { get; set; }
 }

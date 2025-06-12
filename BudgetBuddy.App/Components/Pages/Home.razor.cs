@@ -30,18 +30,15 @@ public partial class Home : CustomComponentBase
         await FetchData();
     }
 
-    public async Task FetchData()
+    private async Task FetchData()
     {
         var cancellationToken = new CancellationTokenSource().Token;
-
-        var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         var transactions = await Mediator.Send(new GetGroupedTransactionsQuery(), cancellationToken);
-
         TotalIncome = transactions.TotalIncome;
         TotalOutcome = transactions.TotalOutcome;
         TotalBalance = transactions.TotalBalance;
         DailyData = transactions.Days.Where(x => x.Date.Month == DateTime.Now.Month).ToList();
-        WeeklyData = transactions.Weeks;
+        WeeklyData = transactions.Weeks.Where(x => x.Year == DateTime.Now.Year).ToList();
         MonthlyData = transactions.Months.Where(x => x.Year == DateTime.Now.Year).ToList();
         YearlyData = transactions.Years;
 
@@ -67,11 +64,7 @@ public partial class Home : CustomComponentBase
         //     Tooltip = $"Left Over - {100 - leftOverPercentage}%"
         // });
 
-        BarChartData = new List<BarChartViewModel>();
-        BarChartData.Add(new BarChartViewModel
-        { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
-        BarChartData.Add(new BarChartViewModel
-        { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
+        SetPeriod(selectedPeriod);
     }
 
     private void OnTransactionDeleted(Guid id)
@@ -112,15 +105,42 @@ public partial class Home : CustomComponentBase
             }
         }
 
-        TotalIncome = DailyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
-        TotalOutcome = DailyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
-        TotalBalance = TotalIncome - TotalOutcome;
+        SetPeriod(selectedPeriod);
+    }
 
-        BarChartData = new List<BarChartViewModel>();
-        BarChartData.Add(new BarChartViewModel
-        { Title = $"Outcome<br>{TotalOutcome.ToString("£#,0.00")}", Count = TotalOutcome, Colour = "#f87171" });
-        BarChartData.Add(new BarChartViewModel
-        { Title = $"Income<br>{TotalIncome.ToString("£#,0.00")}", Count = TotalIncome, Colour = "#4ade80" });
+    private void SetPeriod(string period)
+    {
+        selectedPeriod = period;
+        switch (selectedPeriod)
+        {
+            case "Daily":
+                TotalIncome = DailyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
+                TotalOutcome = DailyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
+                TotalBalance = TotalIncome - TotalOutcome;
+                break;
+
+            case "Weekly":
+                TotalIncome = WeeklyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
+                TotalOutcome = WeeklyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
+                TotalBalance = TotalIncome - TotalOutcome;
+                break;
+
+            case "Monthly":
+                TotalIncome = MonthlyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
+                TotalOutcome = MonthlyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
+                TotalBalance = TotalIncome - TotalOutcome;
+                break;
+
+            case "Yearly":
+                TotalIncome = YearlyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Income).Sum(x => x.Price);
+                TotalOutcome = YearlyData.SelectMany(x => x.Transactions).Where(x => x.Type == TransactionType.Outcome).Sum(x => x.Price);
+                TotalBalance = TotalIncome - TotalOutcome;
+                break;
+        }
+
+        BarChartData = [];
+        BarChartData.Add(new BarChartViewModel { Title = $"Outcome<br>{TotalOutcome:£#,0.00}", Count = TotalOutcome, Colour = "#f87171" });
+        BarChartData.Add(new BarChartViewModel { Title = $"Income<br>{TotalIncome:£#,0.00}", Count = TotalIncome, Colour = "#4ade80" });
     }
 
 

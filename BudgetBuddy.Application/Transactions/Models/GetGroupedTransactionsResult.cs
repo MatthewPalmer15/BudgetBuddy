@@ -24,8 +24,7 @@ public class GetGroupedTransactionsResult
     public class WeeklyData
     {
         public int WeekNumber { get; set; }
-        public DateTime WeekStartDate { get; set; }
-        public DateTime WeekEndDate { get; set; }
+        public int Year { get; set; }
         public decimal Amount { get; set; }
         public List<Transaction> Transactions { get; set; } = [];
     }

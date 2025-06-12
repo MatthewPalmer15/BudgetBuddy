@@ -14,11 +14,11 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
     public string? Description { get; set; }
     public decimal Price { get; set; }
     public DateTime? TransactionDate { get; set; }
-    public bool IsRecurring { get; set; }
     public TransactionType Type { get; set; }
     public CategoryEnum Category { get; set; }
     public int Rank { get; set; }
-    public Guid? VendorId { get; set; }
+    public bool Essential { get; set; }
+    public Guid? AccountId { get; set; }
 
     internal class Handler(IDbContext context) : IRequestHandler<SaveTransactionCommand, BaseResponse>
     {
@@ -51,6 +51,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
                 Type = request.Type,
                 Category = request.Category,
                 Rank = request.Rank,
+                Essential = request.Essential,
+                AccountId = request.AccountId
             };
 
             context.Transactions.Add(transaction);
@@ -73,7 +75,8 @@ public class SaveTransactionCommand : IRequest<BaseResponse>
             transaction.Type = request.Type;
             transaction.Category = request.Category;
             transaction.Rank = request.Rank;
-
+            transaction.Essential = request.Essential;
+            transaction.AccountId = request.AccountId;
 
             context.Transactions.Update(transaction);
             await context.SaveChangesAsync(cancellationToken);

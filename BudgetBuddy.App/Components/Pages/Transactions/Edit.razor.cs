@@ -40,7 +40,8 @@ public partial class Edit : CustomComponentBase
                     Category = transaction.Category,
                     Type = transaction.Type,
                     Rank = transaction.Rank,
-                    VendorId = transaction.VendorId
+                    Essential = transaction.Essential,
+                    AccountId = transaction.AccountId
                 };
                 _title = $"Edit Transaction '{transaction.Name}'";
             }
@@ -61,8 +62,8 @@ public partial class Edit : CustomComponentBase
             Rank = _transactionModel.Rank,
             TransactionDate = _transactionModel.TransactionDate,
             Type = _transactionModel.Type,
-            IsRecurring = _transactionModel.IsRecurring,
-            VendorId = _transactionModel.VendorId
+            Essential = _transactionModel.Essential,
+            AccountId = _transactionModel.AccountId
         }, cancellationToken);
 
         if (response.Success)
@@ -84,11 +85,11 @@ public partial class Edit : CustomComponentBase
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public DateTime? TransactionDate { get; set; }
-        public bool IsRecurring { get; set; }
         public TransactionType Type { get; set; }
         public CategoryEnum Category { get; set; }
         public int Rank { get; set; }
-        public Guid? VendorId { get; set; }
+        public bool Essential { get; set; }
+        public Guid? AccountId { get; set; }
     }
 
 }

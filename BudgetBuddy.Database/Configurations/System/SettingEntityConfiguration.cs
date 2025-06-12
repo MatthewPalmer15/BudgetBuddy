@@ -3,7 +3,7 @@ using BudgetBuddy.Database.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BudgetBuddy.Database.Configurations.Configuration;
+namespace BudgetBuddy.Database.Configurations.System;
 
 internal class SettingEntityConfiguration : IEntityTypeConfiguration<Setting>
 {

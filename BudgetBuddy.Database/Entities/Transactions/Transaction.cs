@@ -12,4 +12,6 @@ public class Transaction : BaseEntity<Guid>
     public CategoryEnum Category { get; set; }
     public int Rank { get; set; }
     public bool Essential { get; set; }
+    public Guid? AccountId { get; set; }
+    public virtual Account? Account { get; set; }
 }

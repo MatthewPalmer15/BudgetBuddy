@@ -7,7 +7,6 @@ namespace BudgetBuddy.Database;
 public interface IDbContext
 {
     DbSet<Transaction> Transactions { get; set; }
-    DbSet<Vendor> Vendors { get; set; }
     DbSet<Setting> Settings { get; set; }
 
     int SaveChanges();

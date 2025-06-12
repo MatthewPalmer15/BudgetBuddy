@@ -17,7 +17,7 @@ public partial class View : CustomComponentBase
     protected override async Task OnInitializedAsync()
     {
         var cancellationToken = new CancellationTokenSource().Token;
-        if (transactionId == null || transactionId == Guid.Empty)
+        if (!transactionId.HasValue || transactionId == Guid.Empty)
             NavigationManager.NavigateTo("/");
 
         var transaction = await Mediator.Send(new GetTransactionByIdQuery { Id = transactionId.Value }, cancellationToken);
@@ -34,7 +34,8 @@ public partial class View : CustomComponentBase
             Category = transaction.Category,
             Type = transaction.Type,
             Rank = transaction.Rank,
-            VendorId = transaction.VendorId
+            Essential = transaction.Essential,
+            AccountId = transaction.AccountId
         };
     }
     public class TransactionModel
@@ -44,11 +45,11 @@ public partial class View : CustomComponentBase
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public DateTime? TransactionDate { get; set; }
-        public bool IsRecurring { get; set; }
         public TransactionType Type { get; set; }
         public CategoryEnum Category { get; set; }
         public int Rank { get; set; }
-        public Guid? VendorId { get; set; }
+        public bool Essential { get; set; }
+        public Guid? AccountId { get; set; }
     }
 
 }

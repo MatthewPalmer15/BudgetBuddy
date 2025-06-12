@@ -11,8 +11,8 @@ namespace BudgetBuddy.Database;
 
 public class ApplicationDbContext(IEncryptionService encryptionService) : DbContext, IDbContext
 {
+    public DbSet<Account> Accounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
-    public DbSet<Vendor> Vendors { get; set; }
     public DbSet<Setting> Settings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
