@@ -2,6 +2,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const WebpackObfuscator = require('webpack-obfuscator');
 
 module.exports = {
     entry: {
@@ -59,6 +60,19 @@ module.exports = {
                 }
             ]
         }),
+        new WebpackObfuscator(
+            {
+                rotateStringArray: true,
+                stringArray: true,
+                stringArrayThreshold: 0.75,
+                compact: true,
+                controlFlowFlattening: true,
+                deadCodeInjection: true,
+                debugProtection: true,
+                selfDefending: true,
+            },
+            ['**/libs/*.js']
+        ),
     ],
     mode: 'production',
     optimization: {
