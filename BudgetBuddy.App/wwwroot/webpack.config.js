@@ -60,19 +60,19 @@ module.exports = {
                 }
             ]
         }),
-        new WebpackObfuscator(
-            {
-                rotateStringArray: true,
-                stringArray: true,
-                stringArrayThreshold: 0.75,
-                compact: true,
-                controlFlowFlattening: true,
-                deadCodeInjection: true,
-                debugProtection: true,
-                selfDefending: true,
-            },
-            ['**/libs/*.js']
-        ),
+        // new WebpackObfuscator(
+        //     {
+        //         rotateStringArray: true,
+        //         stringArray: true,
+        //         stringArrayThreshold: 0.75,
+        //         compact: true,
+        //         controlFlowFlattening: true,
+        //         deadCodeInjection: true,
+        //         debugProtection: true,
+        //         selfDefending: true,
+        //     },
+        //     ['**/libs/*.js']
+        // ),
     ],
     mode: 'production',
     optimization: {

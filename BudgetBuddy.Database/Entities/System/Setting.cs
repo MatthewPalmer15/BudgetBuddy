@@ -1,4 +1,4 @@
-﻿namespace BudgetBuddy.Database.Entities.Configuration;
+﻿namespace BudgetBuddy.Database.Entities.System;
 
 public class Setting : BaseEntity<Guid>
 {

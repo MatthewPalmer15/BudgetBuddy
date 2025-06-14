@@ -1,5 +1,5 @@
 ﻿using BudgetBuddy.Database;
-using BudgetBuddy.Database.Entities.Configuration;
+using BudgetBuddy.Database.Entities.System;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -66,8 +66,8 @@ public class SaveSettingCommand : IRequest<BaseResponse>
             CancellationToken cancellationToken = default)
         {
             return await (from s in context.Settings
-                where !s.Deleted && s.Id == request.Id
-                select s).FirstOrDefaultAsync(cancellationToken);
+                          where !s.Deleted && s.Id == request.Id
+                          select s).FirstOrDefaultAsync(cancellationToken);
         }
     }
 

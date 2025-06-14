@@ -1,4 +1,4 @@
-﻿using BudgetBuddy.Database.Entities.Configuration;
+﻿using BudgetBuddy.Database.Entities.System;
 using BudgetBuddy.Database.Entities.Transactions;
 using Microsoft.EntityFrameworkCore;
 
