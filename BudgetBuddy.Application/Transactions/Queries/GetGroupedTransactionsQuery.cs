@@ -1,6 +1,7 @@
 ﻿using BudgetBuddy.Application.Transactions.Models;
 using BudgetBuddy.Database;
 using BudgetBuddy.Database.Enums;
+using BudgetBuddy.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -32,12 +33,19 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
             var culture = CultureInfo.CurrentCulture;
             var transactionsGroupedByWeek = transactions.GroupBy(x => new { WeekNumber = culture.Calendar.GetWeekOfYear(x.TransactionDate, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek), Year = x.TransactionDate.Year })
                 .OrderByDescending(x => x.Key.Year).ThenByDescending(x => x.Key.WeekNumber)
-                .Select(x => new GetGroupedTransactionsResult.WeeklyData
+                .Select(x =>
                 {
-                    WeekNumber = x.Key.WeekNumber,
-                    Year = x.Key.Year,
-                    Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
-                    Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
+                    var (startOfWeek, endOfWeek) = culture.Calendar.GetWeekStartAndEnd(x.Key.Year, x.Key.WeekNumber, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
+                    return new GetGroupedTransactionsResult.WeeklyData
+                    {
+                        WeekNumber = x.Key.WeekNumber,
+                        Year = x.Key.Year,
+                        StartDate = startOfWeek,
+                        EndDate = endOfWeek,
+                        Transactions = x.OrderByDescending(y => y.TransactionDate.Date)
+                            .ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
+                        Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
+                    };
                 }).ToList();
 
             var transactionsGroupedByMonth = transactions.GroupBy(x => new { x.TransactionDate.Month, x.TransactionDate.Year })
@@ -95,4 +103,5 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
                           }).ToListAsync(cancellationToken);
         }
     }
+
 }

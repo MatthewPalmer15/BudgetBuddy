@@ -12,33 +12,6 @@
     <div class="flex flex-col lg:flex-row gap-4 p-2 lg:p-6">
         <div class="w-full lg:w-1/2 flex flex-col lg:gap-8">
             <div class="w-full">
-                <Container From="Container.ScreenSize.Large" CssClasses="flex justify-center items-center h-[250px] lg:h-[300px]" Visible="false">
-                    <SfAccumulationChart EnableAnimation="true"
-                                         Width="100%" Height="100%"
-                                         Theme="@Theme.Tailwind3Dark"
-                                         Background="Transparent"
-                                         EnableBorderOnMouseMove="false"
-                                         EnableSmartLabels="false">
-                        <AccumulationChartBorder Color="Transparent"/>
-                        <AccumulationChartTooltipSettings Enable="true" Format="${point.x}" EnableHighlight="true"/>
-                        <AccumulationChartSeriesCollection>
-                            <AccumulationChartSeries DataSource="@ChartData"
-                                                     Radius="95%" InnerRadius="65%"
-                                                     XName="Tooltip" YName="Percentage"
-                                                     Palettes="@(new[] {"#365A9B", "#C86464", "#5C8C3B", "#BB6428", "#9B9B9B", "#A9B81A", "#0098AD", "#B9548D", "#9E42AC", "#C19D00", "#7D5E00", "#6E44B3", "#313E99", "#A35945", "#4DC7A7", "#7F3A0B", "#5858BC", "#CC9E00", "#487DB0", "#3D4EB8" })"
-                                                     StartAngle="270" EndAngle="270">
-                                <AccumulationDataLabelSettings Visible="true" Name="Title" Position="AccumulationLabelPosition.Outside">
-                                    <AccumulationChartConnector Length="5px" Type="ConnectorType.Curve" Color="Transparent"/>
-                                    <AccumulationChartDataLabelFont Color="Transparent"/>
-                                </AccumulationDataLabelSettings>
-                            </AccumulationChartSeries>
-                        </AccumulationChartSeriesCollection>
-                        <AccumulationChartLegendSettings Visible="false" Position="LegendPosition.Top" Background="transparent" EnableHighlight="true">
-                            <AccumulationChartLegendFont Color="white" Size="8px" TextAlignment="Alignment.Center"></AccumulationChartLegendFont>
-                        </AccumulationChartLegendSettings>
-                    </SfAccumulationChart>
-                </Container>
-
                 <Container CssClasses="mt-4">
                     <SfChart Width="90%" Height="200px" Theme="@Theme.Tailwind3Dark" Background="Transparent">
                         <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
@@ -123,7 +96,7 @@
         <div class="w-full lg:w-1/2">
             <div class="mt-6 mb-8 text-center">
                 <h4 class="font-bold text-center mb-4 text-white">
-                    Transactions This Month
+                    Transactions This Year
                 </h4>
 
                 <div class="inline-flex gap-2">
@@ -144,7 +117,7 @@
                 @foreach (var day in DailyData)
                 {
                     <div class="flex justify-between items-center mt-8 mb-4">
-                        <h6 class="font-bold">@day.Date.ToString("dddd dd MMM yyyy")</h6>
+                        <h6 class="font-bold">@day.Date.ToString("dddd dd MMMM yyyy")</h6>
                         <span class="font-bold @(day.Amount > 0 ? "text-green-400" : "text-red-400")">@day.Amount.ToString("£#,0.00")</span>
                     </div>
 
@@ -159,7 +132,7 @@
                 @foreach (var week in WeeklyData)
                 {
                             <div class="flex justify-between items-center mt-8 mb-4">
-                                <h6 class="font-bold">@week.WeekNumber</h6>
+                        <h6 class="font-bold">@week.StartDate.ToString("dd MMMM yyyy") - @week.EndDate.ToString("dd MMMM yyyy")</h6>
                                 <span class="font-bold @(week.Amount > 0 ? "text-green-400" : "text-red-400")">@week.Amount.ToString("£#,0.00")</span>
                             </div>
 
