@@ -1,39 +1,41 @@
 ﻿@page "/weather"
 @inherits CustomComponentBase
 
-<div class="control-section" align='center'>
-    <SfChart Title="Financial History" SubTitle="Source: wikipedia.org" Width="100%" Theme="Theme.Tailwind3Dark" Background="Transparent">
-        <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
-        <ChartSubTitleStyle TextOverflow="TextOverflow.Wrap"></ChartSubTitleStyle>
-        <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
-        <ChartMargin Bottom="12"></ChartMargin>
-        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="MMM yyyy" IntervalType="IntervalType.Months" EdgeLabelPlacement="EdgeLabelPlacement.Shift" Interval="1">
-            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
-        </ChartPrimaryXAxis>
-        <ChartPrimaryYAxis Title="Volume in million metric tons" RangePadding="ChartRangePadding.None">
-            <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
-            <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
-        </ChartPrimaryYAxis>
-        <ChartTooltipSettings Enable="true" EnableHighlight="true" ShowNearestTooltip="true" Header="<b>${series.name}</b>" Format="${point.x} : <b>£${point.y}</b>"></ChartTooltipSettings>
-        <ChartSeriesCollection>
-            <ChartSeries DataSource="@IncomeChartData" Name="Income" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Green">
-                <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
-                </ChartMarker>
-            </ChartSeries>
-            <ChartSeries DataSource="@OutcomeChartData" Name="Outcome" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Red">
-                <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
-                </ChartMarker>
-            </ChartSeries>
-            <ChartSeries DataSource="@BalanceChartData" Name="Balance" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Blue">
-                <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
-                </ChartMarker>
-            </ChartSeries>
-        </ChartSeriesCollection>
-        <ChartLegendSettings EnableHighlight="true"></ChartLegendSettings>
-    </SfChart>
+<div class="grid grid-cols-1 gap-3">
+    <div class="flex flex-col backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg px-5">
+        <SfChart Title="Financial History" Width="100%" Theme="Theme.Tailwind3Dark" Background="Transparent">
+            <ChartTitleStyle TextOverflow="TextOverflow.Wrap"></ChartTitleStyle>
+            <ChartSubTitleStyle TextOverflow="TextOverflow.Wrap"></ChartSubTitleStyle>
+            <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+            <ChartMargin Bottom="12"></ChartMargin>
+            <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" LabelFormat="MMM yyyy" IntervalType="IntervalType.Months" EdgeLabelPlacement="EdgeLabelPlacement.Shift" Interval="1">
+                <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+            </ChartPrimaryXAxis>
+            <ChartPrimaryYAxis Title="" RangePadding="ChartRangePadding.None">
+                <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+                <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+            </ChartPrimaryYAxis>
+            <ChartTooltipSettings Enable="true" EnableHighlight="true" ShowNearestTooltip="true" Header="<b>${series.name}</b>" Format="${point.x} : <b>£${point.y}</b>"></ChartTooltipSettings>
+            <ChartSeriesCollection>
+                <ChartSeries DataSource="@IncomeChartData" Name="Income" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Green">
+                    <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
+                    </ChartMarker>
+                </ChartSeries>
+                <ChartSeries DataSource="@OutcomeChartData" Name="Outcome" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Red">
+                    <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
+                    </ChartMarker>
+                </ChartSeries>
+                <ChartSeries DataSource="@BalanceChartData" Name="Balance" XName="Date" Width="2" Opacity="1" YName="Value" Type="ChartSeriesType.Line" Fill="Blue">
+                    <ChartMarker Visible="true" Width="7" Height="7" IsFilled="true" Shape="ChartShape.Circle">
+                    </ChartMarker>
+                </ChartSeries>
+            </ChartSeriesCollection>
+            <ChartLegendSettings EnableHighlight="true"></ChartLegendSettings>
+        </SfChart>
+    </div>
 </div>
 
-<div class="grid grid-cols-2 gap-3">
+<div class="grid grid-cols-2 gap-3 mt-4">
 
     <div class="flex flex-col backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg">
         <div class="m-2 p-2 text-center">
@@ -63,6 +65,29 @@
                     @PercentageLeft.ToString("P0")
                 </p>
                 <p class="text-sm text-neutral-500">Average based on all time</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="grid grid-cols-1 gap-3 mt-4">
+
+    <div class="flex flex-col backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg">
+        <div class="m-2 p-2">
+            <h5 class="text-center mb-4">Suggestions</h5>
+            @if (Suggestions.Count > 0)
+            {
+                <ul class="marker:text-blue-600 list-disc ps-5 space-y-2 text-sm text-gray-600 dark:text-neutral-400">
+                    @foreach (var suggestion in Suggestions)
+                    {
+                        <li>@suggestion</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No suggestions. Good work!</p>
+            }
         </div>
     </div>
 

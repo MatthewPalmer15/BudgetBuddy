@@ -57,5 +57,6 @@ public class GetGroupedTransactionsResult
         public decimal Price { get; set; }
         public DateTime TransactionDate { get; set; }
         public TransactionType Type { get; set; }
+        public bool Essential { get; set; }
     }
 }
