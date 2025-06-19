@@ -57,7 +57,9 @@ public class GetGroupedTransactionsQuery : IRequest<GetGroupedTransactionsResult
                     Year = x.Key.Year,
                     MonthName = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(x.Key.Month)} {x.Key.Year}",
                     Transactions = x.OrderByDescending(y => y.TransactionDate.Date).ThenByDescending(y => y.Type == TransactionType.Income).ToList(),
-                    Amount = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
+                    Income = x.Where(y => y.Type == TransactionType.Income).Sum(y => y.Price),
+                    Outcome = x.Where(y => y.Type == TransactionType.Outcome).Sum(y => y.Price),
+                    Balance = x.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price)
                 }).ToList();
 
 

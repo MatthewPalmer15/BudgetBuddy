@@ -70,7 +70,7 @@ public partial class Home : CustomComponentBase
             if (month.Transactions.Any(x => x.Id == id))
             {
                 month.Transactions.RemoveAll(x => x.Id == id);
-                month.Amount = month.Transactions.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price);
+                month.Balance = month.Transactions.Sum(y => y.Type == TransactionType.Income ? y.Price : -y.Price);
             }
         }
 

@@ -1,30 +1,59 @@
-﻿namespace BudgetBuddy.App.Components.Pages;
+﻿using BudgetBuddy.Application.Transactions.Queries;
+
+namespace BudgetBuddy.App.Components.Pages;
 
 public partial class Weather : CustomComponentBase
 {
-    private WeatherForecast[]? forecasts;
+    public List<ChartDataViewModel> IncomeChartData { get; set; } = [];
+    public decimal AverageIncome { get; set; }
+    public List<ChartDataViewModel> OutcomeChartData { get; set; } = [];
+    public decimal AverageOutcome { get; set; }
+    public List<ChartDataViewModel> BalanceChartData { get; set; } = [];
+    public decimal AverageBalance { get; set; }
+    public decimal PercentageLeft { get; set; }
+    public string PercentageColour { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
+        var cancellationToken = new CancellationTokenSource().Token;
+        var transactions = await Mediator.Send(new GetGroupedTransactionsQuery(), cancellationToken);
 
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[]
-            { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        IncomeChartData = transactions.Months.Select(x => new ChartDataViewModel
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+            Date = new DateTime(x.Year, x.Month, 1),
+            Value = x.Income
+        }).ToList();
+        AverageIncome = IncomeChartData.Average(x => x.Value);
+
+        OutcomeChartData = transactions.Months.Select(x => new ChartDataViewModel
+        {
+            Date = new DateTime(x.Year, x.Month, 1),
+            Value = x.Outcome
+        }).ToList();
+        AverageOutcome = OutcomeChartData.Average(x => x.Value);
+
+        BalanceChartData = transactions.Months.Select(x => new ChartDataViewModel
+        {
+            Date = new DateTime(x.Year, x.Month, 1),
+            Value = x.Balance
+        }).ToList();
+        AverageBalance = BalanceChartData.Average(x => x.Value);
+
+        PercentageLeft = AverageIncome > 0 ? ((AverageIncome - AverageOutcome) / AverageIncome) : 0;
+        PercentageColour = PercentageLeft >= 0.60m
+            ? "green"
+            : PercentageLeft > 0.40m
+                ? "yellow"
+                : "red";
+
+
     }
 
-    private class WeatherForecast
+    public class ChartDataViewModel
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public DateTime Date { get; set; }
+        public decimal Value { get; set; }
     }
+
 }

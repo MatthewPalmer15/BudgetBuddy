@@ -36,7 +36,9 @@ public class GetGroupedTransactionsResult
         public int Month { get; set; }
         public int Year { get; set; }
         public string MonthName { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Income { get; set; }
+        public decimal Outcome { get; set; }
+        public decimal Balance { get; set; }
         public List<Transaction> Transactions { get; set; } = [];
     }
 
